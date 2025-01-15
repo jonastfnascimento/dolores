@@ -1,0 +1,49 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended",
+    "prettier"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "plugins": ["@typescript-eslint"],
+  "rules": {
+    // Exigir ponto e vírgula no final das instruções
+    "semi": ["error", "always"],
+    // Usar aspas simples para strings
+    "quotes": ["error", "single"],
+    // Indentar com 2 espaços
+    "indent": ["error", 2],
+    // Avisar sobre variáveis não utilizadas
+    "no-unused-vars": "warn",
+    // Avisar sobre o uso de console.log
+    "no-console": "warn",
+    // Exigir o uso de === e !==
+    "eqeqeq": ["error", "always"],
+    // Exigir o uso de chaves em blocos
+    "curly": ["error", "all"],
+    // Estilo de chaves "one true brace style"
+    "brace-style": ["error", "1tbs"],
+    // Exigir vírgula no final de listas multilinha
+    "comma-dangle": ["error", "only-multiline"],
+    // Não permitir espaços em branco no final das linhas
+    "no-trailing-spaces": "error",
+    // Exigir uma linha em branco no final dos arquivos
+    "eol-last": ["error", "always"],
+    // Avisar sobre o uso do tipo any
+    "@typescript-eslint/no-explicit-any": "warn",
+    // Não exigir tipo de retorno explícito em funções
+    "@typescript-eslint/explicit-function-return-type": "off",
+    // Avisar sobre variáveis não utilizadas, ignorando aquelas que começam com _
+    "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }]
+  }
+}
