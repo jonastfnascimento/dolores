@@ -1,0 +1,21 @@
+{
+  "Vue Single File Component Setup First Composition API with Typescript": {
+    "prefix": "vbase-ts-first",
+    "body": [
+      "<script setup lang=\"ts\">",
+      "import { Props } from './types';",
+      "defineProps<Props>();",
+      "</script>",
+      "",
+      "<template>",
+      "\t<div>",
+      "",
+      "\t</div>",
+      "</template>",
+      "",
+      "<style scoped src=\"./styles.scoped.css\" />",
+      "",
+    ],
+    "description": "Base for Vue File Setup First Composition API - Typescript - Dolores Pattern"
+  }
+}

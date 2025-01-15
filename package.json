@@ -1,6 +1,9 @@
 {
   "name": "dolores",
   "version": "0.0.0",
+  "engines": {
+    "node": "22.13.0"
+  },
   "private": true,
   "type": "module",
   "scripts": {
