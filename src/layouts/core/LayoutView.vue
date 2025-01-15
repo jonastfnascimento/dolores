@@ -3,13 +3,7 @@ import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 
 const { currentRoute } = useRouter();
-const layoutName = computed(() => {
-  if (currentRoute.value.meta.layout) {
-    return currentRoute.value.meta.layout;
-  }
-
-  return 'DefaultLayout';
-});
+const layoutName = computed(() => currentRoute.value.meta.layout || 'DefaultLayout');
 </script>
 <template>
   <component :is="layoutName">
