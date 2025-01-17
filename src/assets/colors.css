@@ -1,25 +1,11 @@
 :root {
-  /* FONTS SIZE */
-  /* --text-xxs: 9px;
-  --text-xs: 10px;
-  --text-s: 12px;
-  --text-ms: 14px;
-  --text-m: 15px;
-  --text-mt: 16px;
-  --text-l: 18px;
-  --text-xl: 20px;
-  --text-xxl: 24px;
-  --text-xxxl: 32px;
-  --text-xxxxl: 36px;
-  --text-xxxxxl: 40px; */
-
-  --text-xxs: 10px;
-  --text-xs: 12px;
-  --text-s: 16px;
-  --text-ms: 18px;
-  --text-m: 24px;
-  --text-mt: 32px;
-  --text-l: 36px;
+  --text-xs: 0.625rem;  /* 10px */
+  --text-sm: 0.75rem;   /* 12px */
+  --text-base: 1rem;    /* 16px */
+  --text-lg: 1.125rem;  /* 18px */
+  --text-xl: 1.5rem;    /* 24px */
+  --text-2xl: 2rem;     /* 32px */
+  --text-3xl: 2.25rem;  /* 36px */
 
   /* gray scale */
   --gray-100: #FAFAFA;
@@ -29,29 +15,29 @@
   --gray-900: #1C1C1E;
 
 
-  /* red & error */
+  /* red ⇋ error */
   --red-200: #FFDADA;
   --red-400: #FF7575;
   --red-500: #FF3C3C;
 
 
-  /* blue & info */
-  --gray-200: #F1F1F4;
+  /* blue ⇋ info */
+  --blue-200: #F1F1F4;
   --blue-400: #D6EFF7;
   --blue-500: #1D74B3;
 
-  /* yellow & warning */
+  /* yellow ⇋ warning */
   --yellow-100: #FFFEE8;
   --yellow-400: #F7EBD4;
   --yellow-900: #B37C1D;
 
 
-  /* green & success */
+  /* green ⇋ success */
   --green-100: #EDFBF1;
   --green-400: #D6F7E0;
   --green-500: #007D1A;
 
-  /* white & black */
+  /* white ⇋ black */
   --white: #FFFFFF;
   --black: #000000;
 
@@ -63,28 +49,3 @@
   --primary-hover: #6229B3;
   --primary-disabled: #D0A9F5;
 }
-
-/*
-  FONTS MAP
-
-  mobile
-
-  --text-xxxl: 36px;
-  --text-xl: 24px;
-  --text-mt: 18px;
-  --text-ms: 14px;
-  --text-s: 12px;
-  --text-xxs: 9px;
-  --text-xs: 10px;
-
-  both
-
-  --text-mt: 18px;
-
-  desktop
-  --text-xxxxl: 40px;
-  --text-xxl: 32px;
-  --text-lg: 20px;
-  --text-ms: 15px;
-  --text-m: 16px;
-*/
