@@ -1,0 +1,11 @@
+.row,
+.rows {
+  margin: 0 auto;
+  max-width: 1190px;
+  width: 100%;
+}
+
+.column,
+.columns {
+  padding: 25px;
+}

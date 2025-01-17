@@ -1,0 +1,56 @@
+:root {
+  /* FONTS SIZE */
+  /* --text-xxs: 9px;
+  --text-xs: 10px;
+  --text-s: 12px;
+  --text-ms: 14px;
+  --text-m: 15px;
+  --text-mt: 16px;
+  --text-l: 18px;
+  --text-xl: 20px;
+  --text-xxl: 24px;
+  --text-xxxl: 32px;
+  --text-xxxxl: 36px;
+  --text-xxxxxl: 40px; */
+
+  --text-xxs: 10px;
+  --text-xs: 12px;
+  --text-s: 16px;
+  --text-ms: 18px;
+  --text-m: 24px;
+  --text-mt: 32px;
+  --text-l: 36px;
+
+  /* COLORS */
+  --primary-color: #1c1c1e;
+  --secundary-color: #ffffff;
+
+  --text-color-s: #777777;
+  --text-color-m: #4b4b4d;
+  --text-color-l: #1c1c1e;
+}
+
+/* 
+  FONTS MAP
+
+  mobile
+
+  --text-xxxl: 36px;
+  --text-xl: 24px;
+  --text-mt: 18px;
+  --text-ms: 14px;
+  --text-s: 12px;
+  --text-xxs: 9px;
+  --text-xs: 10px;
+
+  both
+
+  --text-mt: 18px;
+
+  desktop
+  --text-xxxxl: 40px;
+  --text-xxl: 32px;
+  --text-lg: 20px;
+  --text-ms: 15px;
+  --text-m: 16px;
+*/
