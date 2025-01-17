@@ -21,16 +21,50 @@
   --text-mt: 32px;
   --text-l: 36px;
 
-  /* COLORS */
-  --primary-color: #1c1c1e;
-  --secundary-color: #ffffff;
+  /* gray scale */
+  --gray-100: #FAFAFA;
+  --gray-300: #C1C1C1;
+  --gray-400: #777777;
+  --gray-500: #4B4B4D;
+  --gray-900: #1C1C1E;
 
-  --text-color-s: #777777;
-  --text-color-m: #4b4b4d;
-  --text-color-l: #1c1c1e;
+
+  /* red & error */
+  --red-200: #FFDADA;
+  --red-400: #FF7575;
+  --red-500: #FF3C3C;
+
+
+  /* blue & info */
+  --gray-200: #F1F1F4;
+  --blue-400: #D6EFF7;
+  --blue-500: #1D74B3;
+
+  /* yellow & warning */
+  --yellow-100: #FFFEE8;
+  --yellow-400: #F7EBD4;
+  --yellow-900: #B37C1D;
+
+
+  /* green & success */
+  --green-100: #EDFBF1;
+  --green-400: #D6F7E0;
+  --green-500: #007D1A;
+
+  /* white & black */
+  --white: #FFFFFF;
+  --black: #000000;
+
+  /* background */
+  --background: #e7e7e7;
+
+  /* primary */
+  --primary: #7433DA;
+  --primary-hover: #6229B3;
+  --primary-disabled: #D0A9F5;
 }
 
-/* 
+/*
   FONTS MAP
 
   mobile
