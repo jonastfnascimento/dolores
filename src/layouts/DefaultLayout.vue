@@ -1,9 +1,10 @@
 <script setup lang="ts">
+import MainHeader from '@/components/Default/MainHeader/MainHeader.vue';
 </script>
 
 <template>
   <div class="default-layout">
-    <p>Start Defaultlayout</p>
+    <MainHeader />
 
     <slot />
 
