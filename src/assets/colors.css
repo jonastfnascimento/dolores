@@ -1,80 +1,80 @@
 :root {
   /* light */
-  --text-xxs-light: 0.625rem 1 300 'Open Sans'; /* 10px */
-  --text-xs-light: 0.75rem 1 300 'Open Sans';   /* 12px */
-  --text-sm-light: 0.875rem 1 300 'Open Sans';  /* 14px */
-  --text-base-light: 1rem 1 300 'Open Sans';    /* 16px */
-  --text-lg-light: 1.125rem 1 300 'Open Sans';  /* 18px */
-  --text-xl-light: 1.5rem 1 300 'Open Sans';    /* 24px */
-  --text-2xl-light: 2rem 1 300 'Open Sans';     /* 32px */
-  --text-3xl-light: 2.25rem 1 300 'Open Sans';  /* 36px */
+  --text-xxs-light: 300 0.625rem / 1 'Open Sans'; /* 10px */
+  --text-xs-light: 300 0.75rem / 1 'Open Sans'; /* 12px */
+  --text-sm-light: 300 0.875rem / 1 'Open Sans'; /* 14px */
+  --text-base-light: 300 1rem / 1 'Open Sans'; /* 16px */
+  --text-lg-light: 300 1.125rem / 1 'Open Sans'; /* 18px */
+  --text-xl-light: 300 1.5rem / 1 'Open Sans'; /* 24px */
+  --text-2xl-light: 300 2rem / 1 'Open Sans'; /* 32px */
+  --text-3xl-light: 300 2.25rem / 1 'Open Sans'; /* 36px */
 
   /* regular */
-  --text-xxs: 0.625rem 1 400 'Open Sans';       /* 10px */
-  --text-xs: 0.75rem 1 400 'Open Sans';         /* 12px */
-  --text-sm: 0.875rem 1 400 'Open Sans';        /* 14px */
-  --text-base: 1rem 1 400 'Open Sans';          /* 16px */
-  --text-lg: 1.125rem 1 400 'Open Sans';        /* 18px */
-  --text-xl: 1.5rem 1 400 'Open Sans';          /* 24px */
-  --text-2xl: 2rem 1 400 'Open Sans';           /* 32px */
-  --text-3xl: 2.25rem 1 400 'Open Sans';        /* 36px */
+  --text-xxs: 400 0.625rem / 1 'Open Sans'; /* 10px */
+  --text-xs: 400 0.75rem / 1 'Open Sans'; /* 12px */
+  --text-sm: 400 0.875rem / 1 'Open Sans'; /* 14px */
+  --text-base: 400 1rem / 1 'Open Sans'; /* 16px */
+  --text-lg: 400 1.125rem / 1 'Open Sans'; /* 18px */
+  --text-xl: 400 1.5rem / 1 'Open Sans'; /* 24px */
+  --text-2xl: 400 2rem / 1 'Open Sans'; /* 32px */
+  --text-3xl: 400 2.25rem / 1 'Open Sans'; /* 36px */
 
   /* semi-bold */
-  --text-xxs-semibold: 0.625rem 1 600 'Open Sans'; /* 10px */
-  --text-xs-semibold: 0.75rem 1 600 'Open Sans';   /* 12px */
-  --text-sm-semibold: 0.875rem 1 600 'Open Sans';  /* 14px */
-  --text-base-semibold: 1rem 1 600 'Open Sans';    /* 16px */
-  --text-lg-semibold: 1.125rem 1 600 'Open Sans';  /* 18px */
-  --text-xl-semibold: 1.5rem 1 600 'Open Sans';    /* 24px */
-  --text-2xl-semibold: 2rem 1 600 'Open Sans';     /* 32px */
-  --text-3xl-semibold: 2.25rem 1 600 'Open Sans';  /* 36px */
+  --text-xxs-semibold: 600 0.625rem / 1 'Open Sans'; /* 10px */
+  --text-xs-semibold: 600 0.75rem / 1 'Open Sans'; /* 12px */
+  --text-sm-semibold: 600 0.875rem / 1 'Open Sans'; /* 14px */
+  --text-base-semibold: 600 1rem / 1 'Open Sans'; /* 16px */
+  --text-lg-semibold: 600 1.125rem / 1 'Open Sans'; /* 18px */
+  --text-xl-semibold: 600 1.5rem / 1 'Open Sans'; /* 24px */
+  --text-2xl-semibold: 600 2rem / 1 'Open Sans'; /* 32px */
+  --text-3xl-semibold: 600 2.25rem / 1 'Open Sans'; /* 36px */
 
   /* bold */
-  --text-xxs-bold: 0.625rem 1 700 'Open Sans';    /* 10px */
-  --text-xs-bold: 0.75rem 1 700 'Open Sans';      /* 12px */
-  --text-sm-bold: 0.875rem 1 700 'Open Sans';     /* 14px */
-  --text-base-bold: 1rem 1 700 'Open Sans';       /* 16px */
-  --text-lg-bold: 1.125rem 1 700 'Open Sans';     /* 18px */
-  --text-xl-bold: 1.5rem 1 700 'Open Sans';       /* 24px */
-  --text-2xl-bold: 2rem 1 700 'Open Sans';        /* 32px */
-  --text-3xl-bold: 2.25rem 1 700 'Open Sans';     /* 36px */
+  --text-xxs-bold: 700 0.625rem / 1 'Open Sans'; /* 10px */
+  --text-xs-bold: 700 0.75rem / 1 'Open Sans'; /* 12px */
+  --text-sm-bold: 700 0.875rem / 1 'Open Sans'; /* 14px */
+  --text-base-bold: 700 1rem / 1 'Open Sans'; /* 16px */
+  --text-lg-bold: 700 1.125rem / 1 'Open Sans'; /* 18px */
+  --text-xl-bold: 700 1.5rem / 1 'Open Sans'; /* 24px */
+  --text-2xl-bold: 700 2rem / 1 'Open Sans'; /* 32px */
+  --text-3xl-bold: 700 2.25rem / 1 'Open Sans'; /* 36px */
 
   /* gray scale */
-  --gray-100: #FAFAFA;
-  --gray-300: #C1C1C1;
+  --gray-100: #fafafa;
+  --gray-300: #c1c1c1;
   --gray-400: #777777;
-  --gray-500: #4B4B4D;
-  --gray-900: #1C1C1E;
+  --gray-500: #4b4b4d;
+  --gray-900: #1c1c1e;
 
   /* red ⇋ error */
-  --red-200: #FFDADA;
-  --red-400: #FF7575;
-  --red-500: #FF3C3C;
+  --red-200: #ffdada;
+  --red-400: #ff7575;
+  --red-500: #ff3c3c;
 
   /* blue ⇋ info */
-  --blue-200: #F1F1F4;
-  --blue-400: #D6EFF7;
-  --blue-500: #1D74B3;
+  --blue-200: #f1f1f4;
+  --blue-400: #d6eff7;
+  --blue-500: #1d74b3;
 
   /* yellow ⇋ warning */
-  --yellow-100: #FFFEE8;
-  --yellow-400: #F7EBD4;
-  --yellow-900: #B37C1D;
+  --yellow-100: #fffee8;
+  --yellow-400: #f7ebd4;
+  --yellow-900: #b37c1d;
 
   /* green ⇋ success */
-  --green-100: #EDFBF1;
-  --green-400: #D6F7E0;
-  --green-500: #007D1A;
+  --green-100: #edfbf1;
+  --green-400: #d6f7e0;
+  --green-500: #007d1a;
 
   /* white ⇋ black */
-  --white: #FFFFFF;
+  --white: #ffffff;
   --black: #000000;
 
   /* background */
   --background: #e7e7e7;
 
   /* primary */
-  --primary: #7433DA;
-  --primary-hover: #6229B3;
-  --primary-disabled: #D0A9F5;
+  --primary: #7433da;
+  --primary-hover: #6229b3;
+  --primary-disabled: #d0a9f5;
 }

@@ -1,0 +1,9 @@
+.desktop-navigation {
+  display: flex;
+  gap: 39px;
+}
+.desktop-navigation--link {
+  font: var(--text-lg-semibold);
+  color: var(--gray-900);
+  text-decoration: none;
+}
