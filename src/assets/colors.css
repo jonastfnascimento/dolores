@@ -1,11 +1,43 @@
 :root {
-  --text-xs: 0.625rem;  /* 10px */
-  --text-sm: 0.75rem;   /* 12px */
-  --text-base: 1rem;    /* 16px */
-  --text-lg: 1.125rem;  /* 18px */
-  --text-xl: 1.5rem;    /* 24px */
-  --text-2xl: 2rem;     /* 32px */
-  --text-3xl: 2.25rem;  /* 36px */
+  /* light */
+  --text-xxs-light: 0.625rem 1 300 'Open Sans'; /* 10px */
+  --text-xs-light: 0.75rem 1 300 'Open Sans';   /* 12px */
+  --text-sm-light: 0.875rem 1 300 'Open Sans';  /* 14px */
+  --text-base-light: 1rem 1 300 'Open Sans';    /* 16px */
+  --text-lg-light: 1.125rem 1 300 'Open Sans';  /* 18px */
+  --text-xl-light: 1.5rem 1 300 'Open Sans';    /* 24px */
+  --text-2xl-light: 2rem 1 300 'Open Sans';     /* 32px */
+  --text-3xl-light: 2.25rem 1 300 'Open Sans';  /* 36px */
+
+  /* regular */
+  --text-xxs: 0.625rem 1 400 'Open Sans';       /* 10px */
+  --text-xs: 0.75rem 1 400 'Open Sans';         /* 12px */
+  --text-sm: 0.875rem 1 400 'Open Sans';        /* 14px */
+  --text-base: 1rem 1 400 'Open Sans';          /* 16px */
+  --text-lg: 1.125rem 1 400 'Open Sans';        /* 18px */
+  --text-xl: 1.5rem 1 400 'Open Sans';          /* 24px */
+  --text-2xl: 2rem 1 400 'Open Sans';           /* 32px */
+  --text-3xl: 2.25rem 1 400 'Open Sans';        /* 36px */
+
+  /* semi-bold */
+  --text-xxs-semibold: 0.625rem 1 600 'Open Sans'; /* 10px */
+  --text-xs-semibold: 0.75rem 1 600 'Open Sans';   /* 12px */
+  --text-sm-semibold: 0.875rem 1 600 'Open Sans';  /* 14px */
+  --text-base-semibold: 1rem 1 600 'Open Sans';    /* 16px */
+  --text-lg-semibold: 1.125rem 1 600 'Open Sans';  /* 18px */
+  --text-xl-semibold: 1.5rem 1 600 'Open Sans';    /* 24px */
+  --text-2xl-semibold: 2rem 1 600 'Open Sans';     /* 32px */
+  --text-3xl-semibold: 2.25rem 1 600 'Open Sans';  /* 36px */
+
+  /* bold */
+  --text-xxs-bold: 0.625rem 1 700 'Open Sans';    /* 10px */
+  --text-xs-bold: 0.75rem 1 700 'Open Sans';      /* 12px */
+  --text-sm-bold: 0.875rem 1 700 'Open Sans';     /* 14px */
+  --text-base-bold: 1rem 1 700 'Open Sans';       /* 16px */
+  --text-lg-bold: 1.125rem 1 700 'Open Sans';     /* 18px */
+  --text-xl-bold: 1.5rem 1 700 'Open Sans';       /* 24px */
+  --text-2xl-bold: 2rem 1 700 'Open Sans';        /* 32px */
+  --text-3xl-bold: 2.25rem 1 700 'Open Sans';     /* 36px */
 
   /* gray scale */
   --gray-100: #FAFAFA;
@@ -14,12 +46,10 @@
   --gray-500: #4B4B4D;
   --gray-900: #1C1C1E;
 
-
   /* red ⇋ error */
   --red-200: #FFDADA;
   --red-400: #FF7575;
   --red-500: #FF3C3C;
-
 
   /* blue ⇋ info */
   --blue-200: #F1F1F4;
@@ -30,7 +60,6 @@
   --yellow-100: #FFFEE8;
   --yellow-400: #F7EBD4;
   --yellow-900: #B37C1D;
-
 
   /* green ⇋ success */
   --green-100: #EDFBF1;
