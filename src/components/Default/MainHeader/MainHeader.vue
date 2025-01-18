@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { RouterView } from 'vue-router';
+import { RouterLink } from 'vue-router';
 
 import { useDevice } from '@/composables/useDevice';
 
 import GoToBackButton from './GoToBackButton/GoToBackButton.vue';
+import DesktopNavigation from './DesktopNavigation/DesktopNavigation.vue';
 
-const { isMobile } = useDevice();
+const { isMobile, isDesktop } = useDevice();
 </script>
 
 <template>
@@ -13,7 +14,8 @@ const { isMobile } = useDevice();
     <div class="row column">
       <div class="header__flex">
         <GoToBackButton v-if="isMobile" />
-        <RouterView to="/" class="header--logo-link"> Dolores </RouterView>
+        <RouterLink to="/" class="header--logo-link"> Dolores </RouterLink>
+        <DesktopNavigation v-if="isDesktop" />
       </div>
     </div>
   </header>

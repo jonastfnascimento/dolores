@@ -1,0 +1,38 @@
+.fade-bottom-to-top-enter-active,
+.fade-bottom-to-top-leave-active {
+  transition: all 0.7s ease;
+}
+.fade-bottom-to-top-enter-from,
+.fade-bottom-to-top-leave-to {
+  opacity: 0;
+}
+
+.fade-bottom-to-top-enter-active .mobile-navigation--link,
+.fade-bottom-to-top-leave-active .mobile-navigation--link {
+  transition: all 0.7s ease;
+}
+
+.fade-bottom-to-top-enter-to .mobile-navigation--link:nth-child(1),
+.fade-bottom-to-top-leave-from .mobile-navigation--link:nth-child(1),
+.fade-bottom-to-top-enter-to .mobile-navigation--link:nth-child(2),
+.fade-bottom-to-top-leave-from .mobile-navigation--link:nth-child(2),
+.fade-bottom-to-top-enter-to .mobile-navigation--link:nth-child(3),
+.fade-bottom-to-top-leave-from .mobile-navigation--link:nth-child(3) {
+  transform: translateY(0%);
+}
+.fade-bottom-to-top-enter-from .mobile-navigation--link:nth-child(1),
+.fade-bottom-to-top-leave-to .mobile-navigation--link:nth-child(1) {
+  transform: translateY(352%);
+  opacity: 0;
+}
+.fade-bottom-to-top-enter-from .mobile-navigation--link:nth-child(2),
+.fade-bottom-to-top-leave-to .mobile-navigation--link:nth-child(2) {
+  transform: translateY(233%);
+  opacity: 0;
+}
+.fade-bottom-to-top-enter-from .mobile-navigation--link:nth-child(3),
+.fade-bottom-to-top-leave-to .mobile-navigation--link:nth-child(3) {
+  transform: translateY(116%);
+}
+
+/* mobile-navigation__links fade-bottom-to-top-enter-active fade-bottom-to-top-enter-to */

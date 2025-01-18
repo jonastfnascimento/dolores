@@ -12,7 +12,11 @@ function goToBack() {
 </script>
 
 <template>
-  <button v-if="!onTheHomePage" @click="goToBack" title="Clique para voltar">
+  <button
+    v-if="!onTheHomePage || true"
+    @click="goToBack"
+    title="Clique para voltar"
+  >
     <img
       src="./img/back-icon.svg"
       alt="Clique para voltar"
