@@ -1,0 +1,16 @@
+button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: none;
+  border-radius: 100%;
+  overflow: hidden;
+  width: 43px;
+  height: 43px;
+  border: none;
+  padding: 0;
+}
+button img {
+  display: block;
+  width: 100%;
+}
