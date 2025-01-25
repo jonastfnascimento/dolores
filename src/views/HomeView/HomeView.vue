@@ -18,19 +18,19 @@ onMounted(async () => {
   loadingAll.value = true;
   await Promise.all([
     api
-      .get('a639000d-d2a8-44c0-be19-1b9fb7f272c2?id_user=1')
+      .get('a639000d-d2a8-44c0-be19-1b9fb7f272c2', { params: { user_id: 1 } })
       .then(({ data }) => {
         avatars.value = data.avatars.avatars;
       })
       .catch(() => ({})),
     api
-      .get('/a60029ee-936b-4397-a81a-577d80b22f9f?user_id=1')
+      .get('/a60029ee-936b-4397-a81a-577d80b22f9f', { params: { user_id: 1 } })
       .then(({ data }) => {
         personas.value = data.avatars.personas;
       })
       .catch(() => ({})),
     api
-      .get('/399b962f-dd3e-4ceb-828c-2e3ea26d8661?user_id=1')
+      .get('/399b962f-dd3e-4ceb-828c-2e3ea26d8661', { params: { user_id: 1 } })
       .then(({ data }) => {
         contents.value = data.contents['Content List'];
       })
@@ -93,7 +93,7 @@ async function onSearch(term: string) {
         />
         <ShelfMate
           v-if="contents"
-          :items="[]"
+          :items="contents"
           types="content"
           label="Conteúdos"
           class="home__shelf-content"

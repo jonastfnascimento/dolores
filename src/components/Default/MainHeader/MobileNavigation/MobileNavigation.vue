@@ -39,19 +39,19 @@ watch(seeBackground, () => {
       name="fade-bottom-to-top"
     >
       <nav v-if="show" class="mobile-navigation__links">
-        <RouterLink to="/" class="mobile-navigation--link">
+        <RouterLink to="/contents" class="mobile-navigation--link">
           Conteúdos
           <div class="mobile-navigation_icon">
             <img src="./img/content.svg" />
           </div>
         </RouterLink>
-        <RouterLink to="/" class="mobile-navigation--link">
+        <RouterLink to="/personas" class="mobile-navigation--link">
           Personas
           <div class="mobile-navigation_icon">
             <img src="./img/persona.svg" />
           </div>
         </RouterLink>
-        <RouterLink to="/" class="mobile-navigation--link">
+        <RouterLink to="/avatars" class="mobile-navigation--link">
           Avatares
           <div class="mobile-navigation_icon">
             <img src="./img/avatar.svg" />

@@ -21,6 +21,14 @@ const entityData = computed(() => {
     entity.name = props.entity.company_name || '-';
     entity.date = props.entity.created_at || '-';
     entity.data = `${props.entity.related_publications || '0'} conteúdos`;
+  } else if (props.type === 'persona') {
+    entity.name = props.entity.name || '-';
+    entity.date = props.entity.created_at || '-';
+    entity.data = `${props.entity.related_publications || '0'} conteúdos`;
+  } else {
+    entity.name = props.entity.keyword || '-';
+    entity.date = props.entity.created_at || '-';
+    entity.data = `${props.entity.related_publications || '0'} palavras`;
   }
 
   return entity;
@@ -66,7 +74,14 @@ const entityData = computed(() => {
         </p>
         <p class="entity-card__data">
           <img
+            v-if="props.type !== 'content'"
             src="./img/graphic.svg"
+            :width="isMobile ? 13 : 23"
+            :height="isMobile ? 13 : 23"
+          />
+          <img
+            v-else
+            src="./img/message.svg"
             :width="isMobile ? 13 : 23"
             :height="isMobile ? 13 : 23"
           />

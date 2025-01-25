@@ -1,26 +1,33 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 
 import type { Entity, EntityType } from './types';
 
 import { api } from '@/services/api';
+
 import EntityGrid from '@/components/Listing/EntityGrid/EntityGrid.vue';
 import StartingBar from '@/components/Listing/StartingBar/StartingBar.vue';
 import SearchInput from '@/components/Base/SearchInput/SearchInput.vue';
+import NotfoundView from '../NotfoundView/NotfoundView.vue';
 
-// import { Props } from './types';
-// defineProps<Props>();
+const route = useRoute();
 onMounted(() => {
   listEntities();
 });
+watch(
+  () => route.path,
+  () => {
+    listEntities();
+  }
+);
 
-const route = useRoute();
 const listingType = computed<EntityType>(() => {
   if (route.params.slug === 'avatars') return 'avatar';
   if (route.params.slug === 'personas') return 'persona';
+  if (route.params.slug === 'contents') return 'content';
 
-  return 'content';
+  return 'notfound';
 });
 
 const entites = ref<Array<Entity>>([]);
@@ -36,8 +43,14 @@ async function listEntities(searchTerm: string = '') {
     urlByType = 'a60029ee-936b-4397-a81a-577d80b22f9f';
 
   entites.value = await api
-    .get(`${urlByType}`, { params: { id_user: 1, query: searchTerm } })
-    .then(({ data }) => data.avatars.avatars)
+    .get(`${urlByType}`, { params: { user_id: 1, query: searchTerm } })
+    .then(({ data }) => {
+      if (listingType.value === 'avatar') return data?.avatars?.avatars || [];
+
+      if (listingType.value === 'persona') return data?.avatars?.personas || [];
+
+      return data?.contents['Content List'] || [];
+    })
     .catch(() => ({}));
 
   loading.value = false;
@@ -47,20 +60,35 @@ async function listEntities(searchTerm: string = '') {
 <template>
   <main class="listing">
     <div class="row column">
-      <SearchInput
-        @change="(term) => listEntities(term)"
-        placeholder="Pesquisar..."
-        class="listing__search"
-      />
+      <NotfoundView v-if="listingType === 'notfound'" />
 
-      <StartingBar :type="listingType" class="listing__starting-bar" />
+      <template v-else>
+        <SearchInput
+          @change="(term) => listEntities(term)"
+          placeholder="Pesquisar..."
+          class="listing__search"
+        />
 
-      <EntityGrid
-        :type="listingType"
-        :entites="entites"
-        :loading="loading"
-        class="listing__items"
-      />
+        <StartingBar :type="listingType" class="listing__starting-bar" />
+
+        <EntityGrid
+          v-if="loading || entites.length"
+          :type="listingType"
+          :entites="entites"
+          :loading="loading"
+          class="listing__items"
+        />
+        <div v-else class="listing__no-entites">
+          Não foi encontrado
+          {{
+            listingType === 'avatar'
+              ? 'nenhum avatar'
+              : listingType === 'persona'
+                ? 'nenhuma persona'
+                : 'nenhum conteúdo'
+          }}
+        </div>
+      </template>
     </div>
   </main>
 </template>
