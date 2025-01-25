@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import { RouterLink } from 'vue-router';
+import { RouterLink, useRoute } from 'vue-router';
 
 const show = ref<boolean>(false);
 const seeBackground = ref<boolean>(false);
@@ -8,6 +8,14 @@ const seeBackground = ref<boolean>(false);
 watch(seeBackground, () => {
   document.body.style.overflow = seeBackground.value ? 'hidden' : 'unset';
 });
+
+const route = useRoute();
+watch(
+  () => route.path,
+  () => {
+    show.value = false;
+  }
+);
 </script>
 
 <template>
