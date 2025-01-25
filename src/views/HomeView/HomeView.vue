@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+
 import { api } from '@/services/api';
+
 import ShelfMate from '@/components/Home/ShelfMate/ShelfMate.vue';
 import HomeSkeleton from '@/components/Home/HomeSkeleton/HomeSkeleton.vue';
 import SearchInput from '@/components/Base/SearchInput/SearchInput.vue';

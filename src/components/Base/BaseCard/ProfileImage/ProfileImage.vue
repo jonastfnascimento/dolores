@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { withDefaults } from 'vue';
-
 import type { Props } from './types';
 
 const props = withDefaults(defineProps<Props>(), {

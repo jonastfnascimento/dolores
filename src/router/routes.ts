@@ -11,16 +11,22 @@ declare module 'vue-router' {
 }
 
 export const routes: Array<RouteRecordRaw> = [
-    {
-      path: '/',
-      name: 'home',
-      component: HomeView,
-      meta: { layout: 'DefaultLayout' }
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: LoginView,
-      meta: { layout: 'LoginLayout' }
-    },
-  ];
+  {
+    path: '/',
+    name: 'home',
+    component: HomeView,
+    meta: { layout: 'DefaultLayout' },
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: LoginView,
+    meta: { layout: 'LoginLayout' },
+  },
+  {
+    path: '/:slug',
+    name: 'listing',
+    component: () => import('@/views/ListingView/Listingview.vue'),
+    meta: { layout: 'DefaultLayout' },
+  },
+];

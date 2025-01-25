@@ -52,6 +52,12 @@ const formattedItems = computed(() => {
     };
   });
 });
+
+const listingUrl = computed(() => {
+  if (props.types === 'avatar') return '/avatars';
+  if (props.types === 'persona') return '/personas';
+  return '/contents';
+});
 </script>
 
 <template>
@@ -60,7 +66,11 @@ const formattedItems = computed(() => {
       <p class="shelf-mate__title">
         {{ props.label }}
       </p>
-      <RouterLink v-if="formattedItems.length" to="/" class="shelf-mate--link">
+      <RouterLink
+        v-if="formattedItems.length"
+        :to="listingUrl"
+        class="shelf-mate--link"
+      >
         Ver Todos
       </RouterLink>
     </div>
