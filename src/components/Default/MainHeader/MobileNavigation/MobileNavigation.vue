@@ -1,12 +1,25 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { RouterLink } from 'vue-router';
 
 const show = ref<boolean>(false);
+const seeBackground = ref<boolean>(false);
+
+watch(seeBackground, () => {
+  document.body.style.overflow = seeBackground.value ? 'hidden' : 'unset';
+});
 </script>
 
 <template>
   <div class="mobile-navigation">
+    <Transition name="fade" mode="out-in">
+      <div
+        v-if="seeBackground"
+        @click.self="show = false"
+        class="mobile-navigation__background"
+      />
+    </Transition>
+
     <button
       @click="show = !show"
       :class="['mobile-navigation--button', { disabled: show }]"
@@ -20,21 +33,25 @@ const show = ref<boolean>(false);
       />
     </button>
 
-    <Transition name="fade-bottom-to-top">
+    <Transition
+      @before-enter="seeBackground = true"
+      @before-leave="seeBackground = false"
+      name="fade-bottom-to-top"
+    >
       <nav v-if="show" class="mobile-navigation__links">
-        <RouterLink to="/" class="mobile-navigation--link">
+        <RouterLink to="/contents" class="mobile-navigation--link">
           Conteúdos
           <div class="mobile-navigation_icon">
             <img src="./img/content.svg" />
           </div>
         </RouterLink>
-        <RouterLink to="/" class="mobile-navigation--link">
+        <RouterLink to="/personas" class="mobile-navigation--link">
           Personas
           <div class="mobile-navigation_icon">
             <img src="./img/persona.svg" />
           </div>
         </RouterLink>
-        <RouterLink to="/" class="mobile-navigation--link">
+        <RouterLink to="/avatars" class="mobile-navigation--link">
           Avatares
           <div class="mobile-navigation_icon">
             <img src="./img/avatar.svg" />

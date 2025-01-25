@@ -77,4 +77,7 @@
   --primary: #7433da;
   --primary-hover: #6229b3;
   --primary-disabled: #d0a9f5;
+
+  /* skeleton */
+  --skeleton-color: #ced6da;
 }

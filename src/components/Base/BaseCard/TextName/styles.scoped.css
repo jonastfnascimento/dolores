@@ -1,0 +1,9 @@
+p {
+  font: var(--text-xs-bold);
+  color: var(--gray-900);
+}
+@media (min-width: 1024px) {
+  p {
+    font: var(--text-lg-bold);
+  }
+}

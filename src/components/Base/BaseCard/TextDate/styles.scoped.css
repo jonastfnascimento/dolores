@@ -1,0 +1,14 @@
+p {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+  font: var(--text-xxs);
+  color: var(--gray-900);
+}
+@media (min-width: 1024px) {
+  p {
+    gap: 5px;
+    font: var(--text-sm);
+  }
+}

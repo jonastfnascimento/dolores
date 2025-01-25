@@ -4,9 +4,15 @@ import { RouterLink } from 'vue-router';
 
 <template>
   <nav class="desktop-navigation">
-    <RouterLink to="/" class="desktop-navigation--link"> Conteúdos </RouterLink>
-    <RouterLink to="/" class="desktop-navigation--link"> Personas </RouterLink>
-    <RouterLink to="/" class="desktop-navigation--link"> Avatares </RouterLink>
+    <RouterLink to="/contents" class="desktop-navigation--link">
+      Conteúdos
+    </RouterLink>
+    <RouterLink to="/personas" class="desktop-navigation--link">
+      Personas
+    </RouterLink>
+    <RouterLink to="/avatars" class="desktop-navigation--link">
+      Avatares
+    </RouterLink>
   </nav>
 </template>
 

@@ -1,0 +1,36 @@
+.notfound {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  --headerHeight: 89px;
+  --footerHeight: 43px;
+  --listingMargins: 90px;
+  height: calc(
+    100vh - (var(--headerHeight) + var(--footerHeight) + var(--listingMargins))
+  );
+}
+.nofound__404 {
+  margin-bottom: 8px;
+  font: var(--text-3xl-bold);
+  color: var(--gray-900);
+  text-align: center;
+}
+.notfound__title {
+  margin-bottom: 10px;
+  font: var(--text-lg);
+  color: var(--gray-900);
+  text-align: center;
+}
+.notfound--link {
+  display: block;
+  font: var(--text-sm);
+  color: var(--gray-400);
+  text-align: center;
+}
+
+@media (min-width: 1024px) {
+  .notfound {
+    --listingMargins: 75px;
+  }
+}

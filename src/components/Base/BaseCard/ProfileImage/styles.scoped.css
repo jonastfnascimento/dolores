@@ -1,0 +1,11 @@
+img {
+  border-radius: 100%;
+  display: block;
+}
+
+canvas {
+  display: block;
+  border-radius: 7px;
+  background-color: var(--gray-300);
+  width: 100%;
+}

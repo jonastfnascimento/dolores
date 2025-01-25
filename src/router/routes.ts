@@ -3,6 +3,7 @@ import type { LayoutName } from './types';
 
 import HomeView from '@/views/HomeView/HomeView.vue';
 import LoginView from '@/views/LoginView/LoginView.vue';
+import Listingview from '@/views/ListingView/ListingView.vue';
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -11,16 +12,22 @@ declare module 'vue-router' {
 }
 
 export const routes: Array<RouteRecordRaw> = [
-    {
-      path: '/',
-      name: 'home',
-      component: HomeView,
-      meta: { layout: 'DefaultLayout' }
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: LoginView,
-      meta: { layout: 'LoginLayout' }
-    },
-  ];
+  {
+    path: '/',
+    name: 'home',
+    component: HomeView,
+    meta: { layout: 'DefaultLayout' },
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: LoginView,
+    meta: { layout: 'LoginLayout' },
+  },
+  {
+    path: '/:slug',
+    name: 'listing',
+    component: Listingview,
+    meta: { layout: 'DefaultLayout' },
+  },
+];

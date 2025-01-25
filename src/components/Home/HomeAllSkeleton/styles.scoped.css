@@ -1,0 +1,16 @@
+.home-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  overflow: hidden;
+}
+.home-skeleton__search {
+  width: 100%;
+  height: 45px;
+}
+
+@media (min-width: 1024px) {
+  .home-skeleton__search {
+    height: 52px;
+  }
+}
