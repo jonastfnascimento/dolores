@@ -18,6 +18,7 @@
   "dependencies": {
     "axios": "^1.7.9",
     "pinia": "^2.3.0",
+    "pinia-plugin-persistedstate": "^4.2.0",
     "swiper": "^11.2.1",
     "typeit": "^8.8.7",
     "vue": "^3.5.13",
