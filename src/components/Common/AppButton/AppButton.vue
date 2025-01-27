@@ -13,8 +13,13 @@
     ]"
     :disabled="disabled"
   >
-    <slot name="label"></slot>
-    <slot name="icon"></slot>
+    <Transition name="fade" mode="out-in" :duration="200">
+      <div v-if="!props.loading">
+        <slot name="label"></slot>
+        <slot name="icon"></slot>
+      </div>
+      <span v-else class="loader"></span>
+    </Transition>
   </component>
 </template>
 

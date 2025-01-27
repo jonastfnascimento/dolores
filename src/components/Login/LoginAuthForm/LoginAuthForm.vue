@@ -14,6 +14,7 @@ const errorEmail = ref(false);
 const errorPassword = ref(false);
 const userStore = useUserStore();
 const router = useRouter();
+const isLoading = ref(false);
 
 watch(userEmail, () => {
   errorEmail.value = false;
@@ -45,6 +46,7 @@ const handleSubmit = async () => {
   }
 
   try {
+    isLoading.value = true;
     const { data } = await api.get<LoginResponse>(
       'c55233a4-4fc5-45bb-b306-b05818774d5b',
       {
@@ -64,16 +66,21 @@ const handleSubmit = async () => {
         errorEmail.value = false;
         errorPassword.value = false;
       }, 4000);
+      isLoading.value = false;
+
       return;
     }
 
     if (data.message === 'Login Allowed') {
       userStore.setUser(data.user);
+      isLoading.value = false;
+
       router.push('/');
     }
   } catch (error) {
     console.error(error);
     toast.error('Ocorreu um erro inesperado! Entre em contato com o suporte.');
+    isLoading.value = false;
   }
 };
 
@@ -106,7 +113,8 @@ const handleForgotPassword = () => {
 
     <AppButton
       :dark="true"
-      :disabled="!userEmail.length || !userPassword.length"
+      :disabled="!userEmail.length || !userPassword.length || isLoading"
+      :loading="isLoading"
     >
       <template #label> Login </template>
     </AppButton>

@@ -13,7 +13,7 @@
   color: var(--gray-900);
 }
 .shelf-mate--link {
-  font: var(--text-xl-semibold);
+  font: var(--text-sm-semibold);
   color: var(--gray-900);
   text-decoration: none;
 }
