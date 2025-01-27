@@ -3,7 +3,7 @@ import type { LayoutName } from './types';
 
 import HomeView from '@/views/HomeView/HomeView.vue';
 import LoginView from '@/views/LoginView/LoginView.vue';
-import Listingview from '@/views/ListingView/ListingView.vue';
+import ListingView from '@/views/ListingView/ListingView.vue';
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -27,7 +27,7 @@ export const routes: Array<RouteRecordRaw> = [
   {
     path: '/:slug',
     name: 'listing',
-    component: Listingview,
+    component: ListingView,
     meta: { layout: 'DefaultLayout' },
   },
 ];

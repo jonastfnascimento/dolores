@@ -1,4 +1,3 @@
-// CSS
 import './assets/main.css';
 import './assets/grid.css';
 import './assets/colors.css';
