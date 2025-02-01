@@ -9,7 +9,7 @@ const props = defineProps<Props>();
 const approachText = computed(() => {
   if (props.type === 'avatar') return 'Crie aqui um novo avatar.';
 
-  if (props.type === 'persona') return 'Crie uaqui uma nova persona';
+  if (props.type === 'persona') return 'Crie aqui uma nova persona';
 
   return 'Crie aqui um novo conteudo';
 });

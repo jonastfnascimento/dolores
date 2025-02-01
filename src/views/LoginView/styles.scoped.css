@@ -1,11 +1,92 @@
-h1 {
-  font-weight: 500;
-  font-size: 4rem;
-  font-style: italic;
-  position: relative;
-  top: -10px;
-  justify-content: center;
+.login-view {
+  padding: 20px;
   display: flex;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
+  background-image: url(img/background-pattern.svg);
   height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.login-view__wrapper {
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100%;
+  max-width: 768px;
+  overflow: hidden;
+}
+
+.login-view__top-decorator {
+  position: absolute;
+  top: 0px;
+  right: -100px;
+}
+
+.login-view__bottom-decorator {
+  position: absolute;
+  bottom: 0px;
+  left: -100px;
+}
+
+.login-view__logo {
+  margin-bottom: 30px;
+}
+
+.login-view__project-infos {
+  margin-bottom: 30px;
+}
+
+.login-view__auth-form {
+  z-index: 3;
+}
+
+@media (min-width: 1024px) {
+  .login-view {
+    padding: 0;
+    flex-direction: row;
+  }
+
+  .login-view__wrapper {
+    width: 50%;
+    box-shadow: -12px 4px 22px 0px rgba(0, 0, 0, 0.15);
+    background: var(--background);
+    z-index: 2;
+    padding: 70px;
+    max-width: 860px;
+  }
+
+  .login-view__auth-form {
+    max-width: 484px;
+  }
+
+  .login-view__graphics-section {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 70px;
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .login-view__cogna-logo {
+    position: absolute;
+    left: 40px;
+    top: 50px;
+  }
+
+  .login-view__top-decorator {
+    right: 0px;
+  }
+
+  .login-view__bottom-decorator {
+    left: 0px;
+  }
 }

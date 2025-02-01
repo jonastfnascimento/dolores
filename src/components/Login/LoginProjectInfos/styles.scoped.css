@@ -1,0 +1,32 @@
+.project-infos {
+  text-align: center;
+}
+
+.project-infos__title {
+  font: var(--text-3xl-bold);
+  color: var(--gray-900);
+  margin-bottom: 13px;
+}
+
+.project-infos__description {
+  font: var(--text-lg);
+  color: var(--gray-500);
+  height: 55px;
+  max-width: 450px;
+}
+
+@media (min-width: 1024px) {
+  .project-infos__title {
+    font: 700 6rem / 1 'Open Sans';
+    color: var(--gray-900);
+    margin-bottom: 10px;
+  }
+
+  .project-infos__description {
+    font: var(--text-2xl);
+    color: var(--gray-500);
+    height: 132px;
+    max-width: 450px;
+    line-height: 1.2;
+  }
+}

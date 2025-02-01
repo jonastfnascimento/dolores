@@ -1,3 +1,4 @@
+import { useUserStore } from '@/stores/userStore';
 import { createRouter, createWebHistory } from 'vue-router';
 
 import { routes } from './routes';
@@ -7,5 +8,16 @@ const router = createRouter({
   routes,
 });
 
-export default router;
+router.beforeEach((to) => {
+  const userStore = useUserStore();
 
+  if (to.name !== 'login' && !userStore.isAuthenticated) {
+    return { name: 'login' };
+  }
+
+  if (to.name === 'login' && userStore.isAuthenticated) {
+    return { name: 'home' };
+  }
+});
+
+export default router;

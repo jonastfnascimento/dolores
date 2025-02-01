@@ -41,7 +41,22 @@
   transform: translateX(0);
 }
 
-/********************************************/
+/*********************************************/
+
+.router-slide-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.router-slide-leave-active {
+  transition: all 0.3s ease-in-out;
+}
+
+.router-slide-enter-from,
+.router-slide-leave-to {
+  transform: translateY(-10px);
+  opacity: 0;
+}
+
 .error-enter-active,
 .error-leave-active {
   transition: 250ms;
