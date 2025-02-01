@@ -16,19 +16,23 @@ const entityData = computed(() => {
     img: '',
     date: '',
     data: '',
+    url: '',
   };
   if (props.type === 'avatar') {
     entity.name = props.entity.company_name || '-';
     entity.date = props.entity.created_at || '-';
     entity.data = `${props.entity.related_publications || '0'} conteúdos`;
+    entity.url = `/avatars/${props.entity.id_avatar}`;
   } else if (props.type === 'persona') {
     entity.name = props.entity.name || '-';
     entity.date = props.entity.created_at || '-';
     entity.data = `${props.entity.related_publications || '0'} conteúdos`;
+    entity.url = `/personas/${props.entity.id_target}`;
   } else {
     entity.name = props.entity.keyword || '-';
     entity.date = props.entity.created_at || '-';
     entity.data = `${props.entity.related_publications || '0'} palavras`;
+    entity.url = `/contents/{id}`;
   }
 
   return entity;
@@ -38,7 +42,7 @@ const entityData = computed(() => {
 <template>
   <div class="entity-card">
     <div class="entity-card__top">
-      <RouterLink class="entity-card--img" to="/">
+      <RouterLink class="entity-card--img" :to="entityData.url">
         <img
           v-if="entityData.img.length"
           :src="entityData.img"
@@ -57,7 +61,7 @@ const entityData = computed(() => {
         />
       </RouterLink>
 
-      <RouterLink class="entity-card--name" to="/">
+      <RouterLink class="entity-card--name" :to="entityData.url">
         {{ entityData.name }}
       </RouterLink>
     </div>
@@ -89,7 +93,9 @@ const entityData = computed(() => {
         </p>
       </div>
 
-      <RouterLink class="entity-card--link" to="/"> Detalhes </RouterLink>
+      <RouterLink class="entity-card--link" :to="entityData.url">
+        Detalhes
+      </RouterLink>
     </div>
   </div>
 </template>

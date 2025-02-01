@@ -22,13 +22,18 @@ const formattedItems = computed(() => {
     let id = 0;
     let name = '';
     let date = '';
+    let url = '';
     let publications = 0;
+    //conteudo
+    let persona = '';
+    let avatar = '';
 
     if (props.types === 'avatar') {
       id = item.id_avatar;
       name = item.company_name;
       date = item.created_at;
       publications = item.related_publications;
+      url = `/avatars/${item.id_avatar}`;
     }
 
     if (props.types === 'persona') {
@@ -36,12 +41,15 @@ const formattedItems = computed(() => {
       name = item.name;
       date = item.created_at;
       publications = item.related_publications;
+      url = `/personas/${item.id_target}`;
     }
 
     if (props.types === 'content') {
       id = item.id;
       name = item.keyword;
-      date = item.created_at;
+      persona = item['Nome Persona'];
+      avatar = item['Nome Avatar'];
+      url = `/contents/${item.id}`;
     }
 
     return {
@@ -49,6 +57,9 @@ const formattedItems = computed(() => {
       name,
       date,
       publications,
+      url,
+      persona,
+      avatar,
     };
   });
 });
@@ -57,6 +68,12 @@ const listingUrl = computed(() => {
   if (props.types === 'avatar') return '/avatars';
   if (props.types === 'persona') return '/personas';
   return '/contents';
+});
+
+const saveUrl = computed(() => {
+  if (props.types === 'avatar') return '/create/avatar';
+  if (props.types === 'persona') return '/create/persona';
+  return '/create/content';
 });
 </script>
 
@@ -84,7 +101,9 @@ const listingUrl = computed(() => {
       class="shelf-mate__slide"
     >
       <SwiperSlide class="slide-item shelf-mate__create">
-        <CreateCard :type="props.types" />
+        <RouterLink :to="saveUrl">
+          <CreateCard :type="props.types" />
+        </RouterLink>
       </SwiperSlide>
 
       <SwiperSlide
@@ -94,7 +113,7 @@ const listingUrl = computed(() => {
       >
         <div class="shelf-mate__item-cointainer">
           <div class="shelf-mate__item-profile">
-            <RouterLink to="/" class="shelf-mate--item-img">
+            <RouterLink :to="item.url" class="shelf-mate--item-img">
               <img
                 v-if="props.types === 'avatar'"
                 src="./img/avatar.svg"
@@ -115,7 +134,7 @@ const listingUrl = computed(() => {
               ></canvas>
             </RouterLink>
 
-            <RouterLink to="/" class="shelf-mate--item-name">
+            <RouterLink :to="item.url" class="shelf-mate--item-name">
               {{ item?.name || '-' }}
             </RouterLink>
           </div>
@@ -140,7 +159,7 @@ const listingUrl = computed(() => {
                   :width="isMobile ? 12 : 20"
                   :height="isMobile ? 12 : 20"
                 />
-                Persona A
+                {{ item.persona }}
               </p>
               <p class="shelf-mate__content-caracteristic">
                 <img
@@ -149,7 +168,7 @@ const listingUrl = computed(() => {
                   :width="isMobile ? 12 : 20"
                   :height="isMobile ? 12 : 20"
                 />
-                Anhanguera
+                {{ item.avatar }}
               </p>
             </template>
           </div>

@@ -40,3 +40,19 @@
 .right-to-left-enter-to {
   transform: translateX(0);
 }
+
+/********************************************/
+.error-enter-active,
+.error-leave-active {
+  transition: 250ms;
+}
+.error-enter-from,
+.error-leave-to {
+  opacity: 0;
+  height: 0 !important;
+}
+.error-enter-to,
+.error-leave-from {
+  opacity: 1;
+  height: 20px !important;
+}

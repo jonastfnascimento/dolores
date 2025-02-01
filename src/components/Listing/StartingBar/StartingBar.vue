@@ -13,6 +13,14 @@ const approachText = computed(() => {
 
   return 'Crie aqui um novo conteudo';
 });
+
+const urlType = computed(() => {
+  if (props.type === 'avatar') return '/create/avatar';
+
+  if (props.type === 'persona') return '/create/persona';
+
+  return '/create/content';
+});
 </script>
 
 <template>
@@ -21,7 +29,7 @@ const approachText = computed(() => {
       {{ approachText }}
     </p>
 
-    <RouterLink to="/" class="starting-bar--link"> Começar </RouterLink>
+    <RouterLink :to="urlType" class="starting-bar--link"> Começar </RouterLink>
   </div>
 </template>
 

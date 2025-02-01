@@ -18,7 +18,7 @@ onMounted(async () => {
   loadingAll.value = true;
   await Promise.all([
     api
-      .get('a639000d-d2a8-44c0-be19-1b9fb7f272c2', { params: { user_id: 1 } })
+      .get('a639000d-d2a8-44c0-be19-1b9fb7f272c2', { params: { id_user: 1 } })
       .then(({ data }) => {
         avatars.value = data.avatars.avatars;
       })
@@ -32,7 +32,7 @@ onMounted(async () => {
     api
       .get('/399b962f-dd3e-4ceb-828c-2e3ea26d8661', { params: { user_id: 1 } })
       .then(({ data }) => {
-        contents.value = data.contents['Content List'];
+        contents.value = data.contents;
       })
       .catch(() => ({})),
   ]);
