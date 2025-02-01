@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
+import { toast } from 'vue-sonner';
 
 import type { Persona } from './types';
 
@@ -12,7 +13,6 @@ import ResumeInfos from '@/components/Detail/ResumeInfos/ResumeInfos.vue';
 import FieldInput from '@/components/Detail/FieldInput/FieldInput.vue';
 import BaseSpinner from '@/components/Base/BaseSpinner/BaseSpinner.vue';
 import { useFileToBase64 } from '@/composables/useFileToBase64';
-import FeedbackModal from '@/components/Detail/FeedbackModal/FeedbackModal.vue';
 
 const { isMobile } = useDevice();
 
@@ -112,7 +112,6 @@ const resumeInfos = computed(() => {
   ];
 });
 
-const upsertStatus = ref(false);
 const showFeedbackModal = ref(false);
 const editingPersona = ref(false); // Está editando um avatar já existente!
 const editLoading = ref(false);
@@ -183,6 +182,7 @@ async function updateAvatar() {
   if (!editLoading.value) {
     if (errorAll.value) return (invalidAttempt.value = true);
 
+    window.scrollTo(0, 0);
     editLoading.value = true;
     await api
       .get(`31c93e6a-b011-4c17-9937-a897c676698f`, {
@@ -198,7 +198,6 @@ async function updateAvatar() {
         },
       })
       .then(({ data }) => {
-        upsertStatus.value = true;
         currentPersona.value = {
           id: data.avatar.id,
           name: data.avatar.name,
@@ -211,9 +210,10 @@ async function updateAvatar() {
         };
 
         personaName.value = data.avatar.name;
+        toast.success('Persona atualizada com sucesso!');
       })
       .catch(() => {
-        upsertStatus.value = false;
+        toast.error('Ops! Ocorreu um erro ao tentar atualizar.');
         return {};
       });
 
@@ -223,10 +223,12 @@ async function updateAvatar() {
   }
 }
 
+const router = useRouter();
 async function createPersona() {
   if (!editLoading.value) {
     if (errorAll.value) return (invalidAttempt.value = true);
 
+    window.scrollTo(0, 0);
     editLoading.value = true;
     await api
       .get(`7099b242-11f3-4f0f-87f7-c1a8125cae9b`, {
@@ -242,18 +244,26 @@ async function createPersona() {
         },
       })
       .then(({ data }) => {
-        upsertStatus.value = true;
-        // currentPersona.value = {
-        //   id: data.avatar.id,
-        //   name: data.avatar.company_name,
-        //   slogan: data.avatar.slogan,
-        //   services: data.avatar.products_and_services,
-        //   departament: data.avatar.industry,
-        //   image: data.avatar.imagem,
-        // };
+        currentPersona.value = {
+          id: data.persona.id,
+          actions: data.persona.desired_action,
+          dores: data.persona.pain_points,
+          faixa: data.persona.age_range,
+          genero: data.persona.gender,
+          image: data.persona.imagem,
+          interess: data.persona.interest,
+          name: data.persona.name,
+        };
+
+        toast.success('Persona criada com sucesso!', {
+          action: {
+            label: 'Ir para persona',
+            onClick: () => router.push(`/personas/${currentPersona.value.id}`),
+          },
+        });
       })
       .catch(() => {
-        upsertStatus.value = false;
+        toast.error('Ops! Ocorreu um erro ao tentar criar.');
         return {};
       });
 
@@ -286,10 +296,15 @@ async function removePersona() {
         },
       })
       .then(() => {
-        upsertStatus.value = true;
+        toast.success('Persona deletada com sucesso!', {
+          action: {
+            label: 'Ir para início',
+            onClick: () => router.push('/'),
+          },
+        });
       })
       .catch(() => {
-        upsertStatus.value = false;
+        toast.error('Ops! Ocorreu um erro ao tentar remover.');
         return {};
       });
 
@@ -465,20 +480,6 @@ watch(
           </div>
         </div>
       </div>
-
-      <FeedbackModal
-        :show="showFeedbackModal"
-        :has-success="upsertStatus"
-        :remove="wasRemove"
-        @close="showFeedbackModal = false"
-        :entity-url="
-          PageType === 'creating'
-            ? `/personas/${currentPersona.id}`
-            : wasRemove
-              ? '/'
-              : ''
-        "
-      />
     </template>
   </main>
 </template>

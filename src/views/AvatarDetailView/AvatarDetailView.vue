@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
+import { toast } from 'vue-sonner';
 
 import type { Avatar } from './types';
 
@@ -12,11 +13,9 @@ import ResumeInfos from '@/components/Detail/ResumeInfos/ResumeInfos.vue';
 import FieldInput from '@/components/Detail/FieldInput/FieldInput.vue';
 import BaseSpinner from '@/components/Base/BaseSpinner/BaseSpinner.vue';
 import { useFileToBase64 } from '@/composables/useFileToBase64';
-import FeedbackModal from '@/components/Detail/FeedbackModal/FeedbackModal.vue';
 
 const { isMobile } = useDevice();
 
-// defineProps<Props>();
 const route = useRoute();
 
 const PageType = computed(() => {
@@ -100,7 +99,6 @@ const resumeInfos = computed(() => {
   ];
 });
 
-const upsertStatus = ref(false);
 const showFeedbackModal = ref(false);
 const editingAvatar = ref(false); // Está editando um avatar já existente!
 const editLoading = ref(false);
@@ -164,6 +162,7 @@ async function updateAvatar() {
   if (!editLoading.value) {
     if (errorAll.value) return (invalidAttempt.value = true);
 
+    window.scrollTo(0, 0);
     editLoading.value = true;
     await api
       .get(`bd8b92a6-d543-4cc3-8b18-35cbfc3f71d1`, {
@@ -177,7 +176,6 @@ async function updateAvatar() {
         },
       })
       .then(({ data }) => {
-        upsertStatus.value = true;
         currentAvatar.value = {
           id: data.avatar.id,
           name: data.avatar.company_name,
@@ -188,22 +186,24 @@ async function updateAvatar() {
         };
 
         avatarName.value = data.avatar.company_name;
+        toast.success('Avatar atualizado com sucesso!');
       })
       .catch(() => {
-        upsertStatus.value = false;
+        toast.error('Ops! Ocorreu um erro ao tentar atualizar.');
         return {};
       });
 
     editingAvatar.value = false;
     editLoading.value = false;
-    showFeedbackModal.value = true;
   }
 }
 
+const router = useRouter();
 async function createAvatar() {
   if (!editLoading.value) {
     if (errorAll.value) return (invalidAttempt.value = true);
 
+    window.scrollTo(0, 0);
     editLoading.value = true;
     await api
       .get(`f5792738-34da-4040-802a-b58b207c626a`, {
@@ -218,7 +218,6 @@ async function createAvatar() {
         },
       })
       .then(({ data }) => {
-        upsertStatus.value = true;
         currentAvatar.value = {
           id: data.avatar.id,
           name: data.avatar.company_name,
@@ -227,9 +226,16 @@ async function createAvatar() {
           departament: data.avatar.industry,
           image: data.avatar.imagem,
         };
+
+        toast.success('Avatar criado com sucesso!', {
+          action: {
+            label: 'Ir para avatar',
+            onClick: () => router.push(`/avatars/${currentAvatar.value.id}`),
+          },
+        });
       })
       .catch(() => {
-        upsertStatus.value = false;
+        toast.error('Ops! Ocorreu um erro ao tentar criar.');
         return {};
       });
 
@@ -260,10 +266,15 @@ async function removeAvatar() {
         },
       })
       .then(() => {
-        upsertStatus.value = true;
+        toast.success('Avatar deletado com sucesso!', {
+          action: {
+            label: 'Ir para início',
+            onClick: () => router.push('/'),
+          },
+        });
       })
       .catch(() => {
-        upsertStatus.value = false;
+        toast.error('Ops! Ocorreu um erro ao tentar remover.');
         return {};
       });
 
@@ -416,20 +427,6 @@ watch(
           </div>
         </div>
       </div>
-
-      <FeedbackModal
-        :show="showFeedbackModal"
-        :has-success="upsertStatus"
-        :remove="wasRemove"
-        @close="showFeedbackModal = false"
-        :entity-url="
-          PageType === 'creating'
-            ? `/avatars/${currentAvatar.id}`
-            : wasRemove
-              ? '/'
-              : ''
-        "
-      />
     </template>
   </main>
 </template>
