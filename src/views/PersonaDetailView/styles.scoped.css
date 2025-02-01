@@ -49,16 +49,16 @@
   z-index: 0;
 }
 
-.detail__container {
-  position: relative;
-  z-index: 0;
-}
 .detail__edit-loading {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  z-index: 0;
-  transform: translate(-50%, -50%);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
 }
 .detail__flex-container.edit-loading {
   opacity: 0.3;
