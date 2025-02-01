@@ -31,6 +31,9 @@
 .shelf-mate__create {
   width: 122px;
 }
+.shelf-mate__create a {
+  text-decoration: none;
+}
 .shelf-mate__item {
   border-radius: 8px;
   background-color: var(--gray-100);

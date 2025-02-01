@@ -43,7 +43,9 @@ async function listEntities(searchTerm: string = '') {
     urlByType = 'a60029ee-936b-4397-a81a-577d80b22f9f';
 
   entites.value = await api
-    .get(`${urlByType}`, { params: { user_id: 1, query: searchTerm } })
+    .get(`${urlByType}`, {
+      params: { user_id: 1, id_user: 1, query: searchTerm },
+    })
     .then(({ data }) => {
       if (listingType.value === 'avatar') return data?.avatars?.avatars || [];
 
