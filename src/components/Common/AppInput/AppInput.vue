@@ -3,14 +3,15 @@
     <input
       :type="inputType"
       :name="inputType"
-      autocomplete="on"
       :placeholder="props.placeholder"
       :value="props.value"
       :maxlength="props.maxLength"
       :minlength="props.minLength"
       @input="onInput"
       @focus="onFocus"
-      :class="{ error: props.error }"
+      @blur="onBlur"
+      :class="{ error: props.error, loading: props.loading }"
+      :autocomplete="props.autocomplete"
     />
 
     <div
@@ -33,7 +34,7 @@ import { ref, defineProps, defineEmits, computed } from 'vue';
 import type { Props } from './types';
 
 const props = defineProps<Props>();
-const emit = defineEmits(['update:value', 'focus']);
+const emit = defineEmits(['update:value', 'focus', 'blur']);
 
 const showPassword = ref(false);
 
@@ -48,6 +49,10 @@ const onInput = (event: Event) => {
 
 const onFocus = () => {
   emit('focus');
+};
+
+const onBlur = () => {
+  emit('blur');
 };
 
 const toggleShowPassword = () => {

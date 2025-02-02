@@ -11,6 +11,7 @@
   font: var(--text-sm-bold);
   text-transform: uppercase;
   min-height: 55px;
+  text-decoration: none;
 }
 
 .button--dark {

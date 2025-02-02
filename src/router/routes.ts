@@ -6,6 +6,7 @@ import LoginView from '@/views/LoginView/LoginView.vue';
 import ListingView from '@/views/ListingView/ListingView.vue';
 import AvatarDetailView from '@/views/AvatarDetailView/AvatarDetailView.vue';
 import PersonaDetailView from '@/views/PersonaDetailView/PersonaDetailView.vue';
+import ContentDetailView from '@/views/ContentDetailView/ContentDetailView.vue';
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -48,6 +49,18 @@ export const routes: Array<RouteRecordRaw> = [
     path: '/create/persona',
     name: 'savePersona',
     component: PersonaDetailView,
+    meta: { layout: 'DefaultLayout' },
+  },
+  {
+    path: '/content/:id',
+    name: 'contentDetail',
+    component: ContentDetailView,
+    meta: { layout: 'DefaultLayout' },
+  },
+  {
+    path: '/create/content',
+    name: 'saveContent',
+    component: ContentDetailView,
     meta: { layout: 'DefaultLayout' },
   },
   {

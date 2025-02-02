@@ -1,7 +1,11 @@
+export interface Item {
+  id: number;
+  label: string;
+}
+
 export interface Props {
-  type: 'text' | 'password' | 'email';
   placeholder: string;
-  value: string;
+  items: Item[];
   maxLength?: number;
   minLength?: number;
   error?: boolean;

@@ -1,10 +1,4 @@
 <script setup lang="ts">
-// import { computed } from 'vue';
-// import { useRouter } from 'vue-router';
-
-// const { currentRoute } = useRouter();
-// const layoutName = computed(() => currentRoute.value.meta.layout || 'DefaultLayout');
-
 import { computed } from 'vue';
 import { useUserStore } from '@/stores/userStore';
 import { useRouter } from 'vue-router';

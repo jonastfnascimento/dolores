@@ -1,0 +1,42 @@
+:deep(.base-modal__content-wrapper) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cc-modal {
+  background-color: var(--background);
+  padding: 30px 20px;
+  border-radius: 15px;
+  margin: 20px;
+  max-width: 570px;
+  width: 100%;
+}
+
+.cc-modal__title {
+  font: var(--text-xl-bold);
+  color: var(--gray-900);
+  max-width: 400px;
+  text-align: center;
+  margin: 0 auto 30px auto;
+}
+
+.cc-modal__input {
+  margin-bottom: 10px;
+}
+
+.cc-modal__combobox-container {
+  display: flex;
+  width: 100%;
+  gap: 15px;
+  flex-wrap: nowrap;
+  margin-bottom: 30px;
+}
+
+.cc-modal__combobox-item {
+  flex-grow: 1;
+}
+
+.cc-modal__btn {
+  width: 100%;
+}

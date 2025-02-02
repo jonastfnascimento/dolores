@@ -4,5 +4,6 @@ export interface Avatar {
   slogan: string;
   services: string;
   departament: string;
+  company_name: string;
   image: string;
 }

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
+import { useContentStore } from '@/stores/useContentStore';
 
 import type { Entity, EntityType } from './types';
 
@@ -10,8 +11,11 @@ import EntityGrid from '@/components/Listing/EntityGrid/EntityGrid.vue';
 import StartingBar from '@/components/Listing/StartingBar/StartingBar.vue';
 import SearchInput from '@/components/Base/SearchInput/SearchInput.vue';
 import NotfoundView from '../NotfoundView/NotfoundView.vue';
+import ContentCreationModal from '@/components/Content/ContentCreationModal/ContentCreationModal.vue';
 
 const route = useRoute();
+const contentStore = useContentStore();
+
 onMounted(() => {
   listEntities();
 });
@@ -57,6 +61,10 @@ async function listEntities(searchTerm: string = '') {
 
   loading.value = false;
 }
+
+const startContentCreation = () => {
+  contentStore.toggleModal(true);
+};
 </script>
 
 <template>
@@ -71,7 +79,11 @@ async function listEntities(searchTerm: string = '') {
           class="listing__search"
         />
 
-        <StartingBar :type="listingType" class="listing__starting-bar" />
+        <StartingBar
+          @start-content-creation="startContentCreation"
+          :type="listingType"
+          class="listing__starting-bar"
+        />
 
         <EntityGrid
           v-if="loading || entites.length"
@@ -80,6 +92,7 @@ async function listEntities(searchTerm: string = '') {
           :loading="loading"
           class="listing__items"
         />
+
         <div v-else class="listing__no-entites">
           Não foi encontrado
           {{
@@ -90,6 +103,8 @@ async function listEntities(searchTerm: string = '') {
                 : 'nenhum conteúdo'
           }}
         </div>
+
+        <ContentCreationModal />
       </template>
     </div>
   </main>

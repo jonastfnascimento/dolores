@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { RouterLink } from 'vue-router';
 
 import type { Props } from './types';
 
+import AppButton from '@/components/Common/AppButton/AppButton.vue';
+
 const props = defineProps<Props>();
+
+const emit = defineEmits(['start-content-creation']);
 
 const approachText = computed(() => {
   if (props.type === 'avatar') return 'Crie aqui um novo avatar.';
@@ -19,8 +22,14 @@ const urlType = computed(() => {
 
   if (props.type === 'persona') return '/create/persona';
 
-  return '/create/content';
+  return '';
 });
+
+const startContentCreationFlow = () => {
+  if (props.type !== 'avatar' && props.type !== 'persona') {
+    emit('start-content-creation');
+  }
+};
 </script>
 
 <template>
@@ -29,7 +38,9 @@ const urlType = computed(() => {
       {{ approachText }}
     </p>
 
-    <RouterLink :to="urlType" class="starting-bar--link"> Começar </RouterLink>
+    <AppButton :link="urlType" dark @click="startContentCreationFlow">
+      <template #label> Começar </template>
+    </AppButton>
   </div>
 </template>
 
