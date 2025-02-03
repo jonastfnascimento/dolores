@@ -8,3 +8,7 @@ export interface Persona {
   dores: string;
   actions: string;
 }
+export interface PersonaStore {
+  id: number;
+  label: string;
+}

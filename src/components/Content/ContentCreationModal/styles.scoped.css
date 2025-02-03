@@ -14,7 +14,7 @@
 }
 
 .cc-modal__title {
-  font: var(--text-xl-bold);
+  font: var(--text-lg-bold);
   color: var(--gray-900);
   max-width: 400px;
   text-align: center;
@@ -35,8 +35,16 @@
 
 .cc-modal__combobox-item {
   flex-grow: 1;
+  font: var(--text-sm);
+  color: var(--gray-900);
 }
 
 .cc-modal__btn {
   width: 100%;
+}
+
+@media (min-width: 1024px) {
+  .cc-modal__title {
+    font: var(--text-xl-bold);
+  }
 }

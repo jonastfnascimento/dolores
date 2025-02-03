@@ -7,3 +7,8 @@ export interface Avatar {
   company_name: string;
   image: string;
 }
+
+export interface AvatarStore {
+  id: number;
+  label: string;
+}

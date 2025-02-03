@@ -41,6 +41,7 @@
 
   /* gray scale */
   --gray-100: #fafafa;
+  --gray-200: #e7e7e7;
   --gray-300: #c1c1c1;
   --gray-400: #777777;
   --gray-500: #4b4b4d;
@@ -71,7 +72,7 @@
   --black: #000000;
 
   /* background */
-  --background: #e7e7e7;
+  --background: #f1f1f4;
 
   /* primary */
   --primary: #7433da;

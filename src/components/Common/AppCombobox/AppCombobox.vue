@@ -74,8 +74,6 @@ const onInput = (value: string) => {
 const select = (item: Item) => {
   searchTerm.value = item.label;
 
-  console.log(searchTerm.value);
-
   emit('update:value', item);
   showDropdown.value = false;
 };
@@ -99,8 +97,6 @@ const handleDown = (event: KeyboardEvent) => {
       emit('update:value', null);
       return;
     }
-
-    console.log(filteredItems.value[selectedIndex.value]);
 
     if (filteredItems.value[selectedIndex.value]) {
       select(filteredItems.value[selectedIndex.value]);
@@ -152,71 +148,4 @@ onUnmounted(() => {
 });
 </script>
 
-<style scoped>
-.combobox {
-  position: relative;
-}
-
-.combobox__arrow {
-  position: absolute;
-  right: 15px;
-  top: calc(50% - 5px);
-  transition: transform 0.3s ease;
-}
-
-.open {
-  transform: rotate(180deg);
-}
-
-.combobox__list {
-  position: absolute;
-  top: calc(100% + 5px);
-  left: 0;
-  right: 0;
-  background-color: var(--gray-100);
-  border-radius: 8px;
-  padding: 0;
-  margin: 0;
-  overflow: auto;
-  max-height: 300px;
-}
-.combobox__list::-webkit-scrollbar {
-  width: 8px;
-  border-radius: 15px;
-}
-
-.combobox__list::-webkit-scrollbar-thumb {
-  background: var(--gray-300);
-  border-radius: 15px;
-}
-
-.combobox__list::-webkit-scrollbar-track {
-  background: var(--gray-200);
-}
-
-.combobox__item {
-  padding: 16px;
-  cursor: pointer;
-  font: var(--text-base);
-}
-
-.combobox__item:hover {
-  background-color: var(--gray-300);
-}
-
-.combobox__item--selected {
-  background-color: var(--gray-300);
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition:
-    opacity 0.3s ease,
-    transform 0.3s ease;
-}
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
-  transform: translateY(-10px);
-}
-</style>
+<style scoped src="./styles.scoped.css" />

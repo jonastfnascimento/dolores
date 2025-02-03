@@ -1,0 +1,84 @@
+app-textarea {
+  position: relative;
+  width: 100%;
+}
+
+.app-textarea textarea {
+  padding: 15px;
+  border: 1px solid var(--gray-300);
+  color: var(--gray-900);
+  background-color: var(--white);
+  height: 372px;
+  border-radius: 8px;
+  transition:
+    border 0.3s ease-in-out,
+    background-color 0.3s ease-in-out,
+    outline 0.3s ease-in-out;
+  outline: 1px solid transparent;
+  width: 100%;
+  resize: none;
+}
+
+.app-textarea textarea::-webkit-scrollbar {
+  width: 8px;
+  border-radius: 15px;
+}
+
+.app-textarea textarea::-webkit-scrollbar-thumb {
+  background: var(--gray-300);
+  border-radius: 15px;
+}
+
+.app-textarea textarea::-webkit-scrollbar-track {
+  background: var(--gray-200);
+}
+
+.app-textarea textarea[placeholder] {
+  font: var(--text-sm);
+  color: var(--gray-900);
+}
+
+.app-textarea textarea:focus {
+  outline: none;
+  border: 1px solid var(--gray-500);
+  outline: 1px solid var(--gray-500);
+}
+
+.app-textarea textarea.error {
+  border: 1px solid var(--red-400);
+  outline: 1px solid transparent;
+}
+
+.app-textarea textarea.error:focus {
+  border: 1px solid var(--red-400);
+  outline: 1px solid var(--red-400);
+}
+
+.app-textarea textarea.loading {
+  background: linear-gradient(
+    90deg,
+    var(--background) 25%,
+    var(--white) 50%,
+    var(--background) 75%
+  );
+  background-size: 200% 100%;
+  animation: loading 3s linear infinite;
+  pointer-events: none;
+  user-select: none;
+  opacity: 0.5;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 100%;
+  }
+  100% {
+    background-position: -100%;
+  }
+}
+
+@media (min-width: 1024px) {
+  .app-textarea textarea {
+    resize: vertical;
+  }
+}

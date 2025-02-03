@@ -1,0 +1,39 @@
+.stepper__modal-content {
+  box-shadow: 2px 2px 9px 0px rgba(0, 0, 0, 0.15);
+  background-color: var(--white);
+  border-radius: 8px;
+  padding: 15px;
+  max-width: 378px;
+  font: var(--text-sm);
+  width: 100%;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.stepper__modal-content p {
+  font: var(--text-sm);
+  color: var(--gray-500);
+}
+
+.stepper__modal-content p strong {
+  font: var(--text-sm-semibold);
+  color: var(--gray-900);
+}
+
+@media (min-width: 1024px) {
+  .stepper__modal-content {
+    padding: 20px;
+    max-width: 467px;
+  }
+
+  .stepper__modal-content p {
+    font: var(--text-base);
+  }
+
+  .stepper__modal-content p strong {
+    font: var(--text-base-semibold);
+  }
+}

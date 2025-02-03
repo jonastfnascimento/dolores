@@ -1,17 +1,21 @@
 .button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   padding: 16px;
   border: none;
   border-radius: 8px;
-  gap: 5px;
+
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: opacity 0.2s ease;
   font: var(--text-sm-bold);
   text-transform: uppercase;
   min-height: 55px;
   text-decoration: none;
+}
+
+.button div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
 }
 
 .button--dark {
@@ -25,22 +29,17 @@
 }
 
 .button--dark:hover {
-  background-color: var(--gray-500);
+  opacity: 0.8;
 }
 
 .button--light:hover {
-  background-color: var(--gray-500);
-  color: var(--gray-100);
+  opacity: 0.8;
 }
 
 .button--disabled {
   pointer-events: none;
   background-color: var(--gray-300);
   color: var(--gray-100);
-}
-
-.button slot[name='icon'] {
-  margin-right: 8px;
 }
 
 /* LOADER */

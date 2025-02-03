@@ -69,8 +69,11 @@ const initContentCreationProcess = () => {
       selectedPersona.value,
       keyword.value
     );
+
     contentStore.toggleModal(false);
+
     router.push({ name: 'saveContent' });
+    return;
   }
 };
 </script>

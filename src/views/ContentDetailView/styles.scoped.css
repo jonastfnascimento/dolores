@@ -1,0 +1,9 @@
+.content-detail--fullscreen {
+  height: calc(100vh - 153px);
+}
+
+@media (min-width: 1024px) {
+  .content-detail--fullscreen {
+    height: calc(100vh - 147px);
+  }
+}
