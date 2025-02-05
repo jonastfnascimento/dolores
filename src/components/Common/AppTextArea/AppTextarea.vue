@@ -18,7 +18,6 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps, defineEmits } from 'vue';
 import type { TextAreaProps } from './types.ts';
 
 const props = defineProps<TextAreaProps>();

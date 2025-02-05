@@ -8,6 +8,10 @@ import HomeSkeleton from '@/components/Home/HomeSkeleton/HomeSkeleton.vue';
 import SearchInput from '@/components/Base/SearchInput/SearchInput.vue';
 import HomeAllSkeleton from '@/components/Home/HomeAllSkeleton/HomeAllSkeleton.vue';
 
+import { useUserStore } from '@/stores/userStore';
+
+const userStore = useUserStore();
+
 const loadingAll = ref<boolean>(false);
 const loadingShelves = ref<boolean>(false);
 const avatars = ref();
@@ -18,19 +22,25 @@ onMounted(async () => {
   loadingAll.value = true;
   await Promise.all([
     api
-      .get('a639000d-d2a8-44c0-be19-1b9fb7f272c2', { params: { id_user: 1 } })
+      .get('a639000d-d2a8-44c0-be19-1b9fb7f272c2', {
+        params: { id_user: userStore.getUser?.id },
+      })
       .then(({ data }) => {
         avatars.value = data.avatars.avatars;
       })
       .catch(() => ({})),
     api
-      .get('/a60029ee-936b-4397-a81a-577d80b22f9f', { params: { user_id: 1 } })
+      .get('/a60029ee-936b-4397-a81a-577d80b22f9f', {
+        params: { user_id: userStore.getUser?.id },
+      })
       .then(({ data }) => {
         personas.value = data.avatars.personas;
       })
       .catch(() => ({})),
     api
-      .get('/399b962f-dd3e-4ceb-828c-2e3ea26d8661', { params: { user_id: 1 } })
+      .get('/399b962f-dd3e-4ceb-828c-2e3ea26d8661', {
+        params: { user_id: userStore.getUser?.id },
+      })
       .then(({ data }) => {
         contents.value = data.contents;
       })

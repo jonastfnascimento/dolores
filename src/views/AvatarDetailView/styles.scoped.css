@@ -108,11 +108,6 @@
   .detail__steps {
     margin-bottom: 15px;
   }
-  .detail__resume {
-    margin-bottom: 15px;
-    padding-bottom: 0;
-    border-bottom: none;
-  }
 }
 
 .detail__form {

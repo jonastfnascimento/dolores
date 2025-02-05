@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import AppButton from '@/components/Common/AppButton/AppButton.vue';
 import AppTextarea from '@/components/Common/AppTextArea/AppTextarea.vue';
-import { ref, onMounted, computed, defineEmits } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import BottomCreationStepperSkeleton from '../BottomCreationStepperSkeleton/BottomCreationStepperSkeleton.vue';
 import BaseModal from '@/components/Base/BaseModal/BaseModal.vue';
 import { api } from '@/services/api';
@@ -177,7 +177,7 @@ const createContent = async (): Promise<void> => {
     }
 
     const params = {
-      user: userStore.user?.id,
+      user: userStore.getUser?.id,
       keyword: contentStore.keyword,
       avatar: contentStore.avatar.id,
       persona: contentStore.persona.id,
@@ -235,7 +235,7 @@ const fetchStepData = async (
     >(`${step.webhookRetrieve}`, {
       params: {
         id,
-        id_user: userStore.user?.id,
+        id_user: userStore.getUser?.id,
       },
     });
 

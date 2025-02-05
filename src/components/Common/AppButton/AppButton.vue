@@ -24,8 +24,6 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps, defineEmits } from 'vue';
-
 import type { Props } from './types';
 
 const props = defineProps<Props>();

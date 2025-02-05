@@ -20,7 +20,7 @@ const props = withDefaults(defineProps<Props>(), {
   <template v-else>
     <img
       v-if="props.type === 'avatar'"
-      src="./img/avatar.svg"
+      src="./img/avatar.png"
       :width="props.width"
       :height="props.height"
       :alt="props.alt"
