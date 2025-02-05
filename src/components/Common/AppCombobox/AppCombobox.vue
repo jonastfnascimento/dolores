@@ -39,14 +39,7 @@
 </template>
 
 <script lang="ts" setup>
-import {
-  ref,
-  computed,
-  defineProps,
-  defineEmits,
-  onMounted,
-  onUnmounted,
-} from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 import AppInput from '../AppInput/AppInput.vue';
 
 import type { Props, Item } from './types';

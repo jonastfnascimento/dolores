@@ -116,7 +116,7 @@ const saveUrl = computed(() => {
             <RouterLink :to="item.url" class="shelf-mate--item-img">
               <img
                 v-if="props.types === 'avatar'"
-                src="./img/avatar.svg"
+                src="./img/avatar.png"
                 :width="isMobile ? 54 : 70"
                 :height="isMobile ? 54 : 70"
               />

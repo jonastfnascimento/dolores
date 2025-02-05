@@ -13,6 +13,10 @@ import SearchInput from '@/components/Base/SearchInput/SearchInput.vue';
 import NotfoundView from '../NotfoundView/NotfoundView.vue';
 import ContentCreationModal from '@/components/Content/ContentCreationModal/ContentCreationModal.vue';
 
+import { useUserStore } from '@/stores/userStore';
+
+const userStore = useUserStore();
+
 const route = useRoute();
 const contentStore = useContentStore();
 
@@ -48,7 +52,11 @@ async function listEntities(searchTerm: string = '') {
 
   entites.value = await api
     .get(`${urlByType}`, {
-      params: { user_id: 1, id_user: 1, query: searchTerm },
+      params: {
+        user_id: userStore.getUser?.id,
+        id_user: userStore.getUser?.id,
+        query: searchTerm,
+      },
     })
     .then(({ data }) => {
       if (listingType.value === 'avatar') return data?.avatars?.avatars || [];
