@@ -7,8 +7,10 @@ export const useContentStore = defineStore('content', {
     avatar: null as AvatarStore | null,
     persona: null as PersonaStore | null,
     keyword: '',
+    // avatar: 'teste',
+    // persona: 'teste',
+    // keyword: 'teste',
     showModal: false,
-    currentContentId: 0,
   }),
   actions: {
     setContentData(
@@ -16,14 +18,9 @@ export const useContentStore = defineStore('content', {
       persona: PersonaStore,
       keyword: string
     ) {
-      console.log('setContentData', avatar, persona, keyword);
-
       this.avatar = avatar;
       this.persona = persona;
       this.keyword = keyword;
-    },
-    setCurrentContentId(id: number) {
-      this.currentContentId = id;
     },
     toggleModal(show: boolean) {
       this.showModal = show;

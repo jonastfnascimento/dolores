@@ -29,10 +29,10 @@ const entityData = computed(() => {
     entity.data = `${props.entity.related_publications || '0'} conteúdos`;
     entity.url = `/personas/${props.entity.id_target}`;
   } else {
-    entity.name = props.entity.keyword || '-';
-    entity.date = props.entity.created_at || '-';
+    entity.name = props.entity?.keyword || '-';
+    entity.date = props.entity?.created_at || '-';
     entity.data = `${props.entity.related_publications || '0'} palavras`;
-    entity.url = `/contents/{id}`;
+    entity.url = `/content/${props.entity.id}`;
   }
 
   return entity;

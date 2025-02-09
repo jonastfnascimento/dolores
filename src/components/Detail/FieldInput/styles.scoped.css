@@ -14,16 +14,32 @@ textarea {
   border-radius: 8px;
   font: var(--text-sm);
   color: var(--gray-500);
+  line-height: 1.6;
 }
 input::placeholder,
 textarea::placeholder {
   color: var(--gray-400);
+  line-height: 1.6;
 }
 input {
   height: 51px;
 }
 textarea {
   height: 108px;
+}
+
+textarea::-webkit-scrollbar {
+  width: 6px;
+  border-radius: 15px;
+}
+
+textarea::-webkit-scrollbar-thumb {
+  background: var(--gray-200);
+  border-radius: 15px;
+}
+
+textarea::-webkit-scrollbar-track {
+  background: var(--gray-100);
 }
 
 /* error */

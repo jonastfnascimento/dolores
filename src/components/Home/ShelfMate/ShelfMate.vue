@@ -49,7 +49,7 @@ const formattedItems = computed(() => {
       name = item.keyword;
       persona = item['Nome Persona'];
       avatar = item['Nome Avatar'];
-      url = `/contents/${item.id}`;
+      url = `/content/${item.id}`;
     }
 
     return {

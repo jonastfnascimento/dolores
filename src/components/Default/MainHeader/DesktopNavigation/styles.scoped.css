@@ -6,4 +6,9 @@
   font: var(--text-lg-semibold);
   color: var(--gray-900);
   text-decoration: none;
+  padding-bottom: 4px;
+}
+
+.desktop-navigation--link.router-link-exact-active {
+  border-bottom: 2px solid var(--gray-900);
 }

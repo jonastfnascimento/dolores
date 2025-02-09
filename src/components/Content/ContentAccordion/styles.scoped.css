@@ -1,0 +1,83 @@
+.accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.accordion-header {
+  cursor: pointer;
+  box-shadow: 2px 2px 9px 0px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  padding: 15px 20px;
+  user-select: none;
+  font: var(--text-lg-bold);
+  background-color: var(--white);
+  display: flex;
+  justify-content: space-between;
+  transition: all 0.3s ease;
+}
+
+.accordion-header.expanded {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  box-shadow: 2px -4px 9px 0px rgba(0, 0, 0, 0.15);
+}
+
+.accordion-header img {
+  transition: transform 0.3s ease;
+  width: 12px;
+}
+
+.accordion-header img.rotated {
+  transform: rotate(180deg);
+}
+
+.accordion-body {
+  overflow: hidden;
+  height: 0;
+  box-shadow: 2px 2px 9px -4px rgba(0, 0, 0, 0.15);
+  overflow: auto;
+  resize: vertical;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  background-color: var(--white);
+}
+
+.accordion-body::-webkit-scrollbar {
+  width: 6px;
+  border-radius: 15px;
+}
+
+.accordion-body::-webkit-scrollbar-thumb {
+  background: var(--gray-200);
+  border-radius: 15px;
+}
+
+.accordion-body::-webkit-scrollbar-track {
+  background: var(--gray-100);
+}
+
+.accordion-content {
+  padding: 15px;
+  color: var(--gray-500);
+  font: var(--text-sm);
+  line-height: 1.6;
+}
+
+@media (min-width: 1024px) {
+  .accordion {
+    gap: 30px;
+  }
+
+  .accordion-content {
+    padding: 20px;
+    color: var(--gray-500);
+    font: var(--text-base);
+    line-height: 1.6;
+  }
+
+  .accordion-header img {
+    transition: transform 0.3s ease;
+    width: 16px;
+  }
+}

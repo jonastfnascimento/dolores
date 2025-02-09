@@ -63,7 +63,7 @@ async function listEntities(searchTerm: string = '') {
 
       if (listingType.value === 'persona') return data?.avatars?.personas || [];
 
-      return data?.contents['Content List'] || [];
+      return data?.contents || [];
     })
     .catch(() => ({}));
 

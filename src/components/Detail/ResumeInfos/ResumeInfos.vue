@@ -7,11 +7,25 @@ import BaseModal from '@/components/Base/BaseModal/BaseModal.vue';
 
 const props = defineProps<Props>();
 const show = ref<boolean>(false);
+const resumeInfoText = ref<HTMLElement | null>(null);
+const isExpanded = ref(false);
+
+const showFullContent = () => {
+  if (resumeInfoText.value) {
+    if (isExpanded.value) {
+      resumeInfoText.value.style.height =
+        window.innerWidth <= 768 ? '167px' : '174px';
+    } else {
+      resumeInfoText.value.style.height = `${resumeInfoText.value.scrollHeight}px`;
+    }
+    isExpanded.value = !isExpanded.value;
+  }
+};
 </script>
 
 <template>
   <div class="resume-info">
-    <div class="resume-info__text">
+    <div class="resume-info__text" ref="resumeInfoText">
       <p class="resume-info__p">
         <template
           v-for="(info, infoIndex) in props.infos"
@@ -23,7 +37,7 @@ const show = ref<boolean>(false);
         </template>
       </p>
 
-      <button @click="show = true" class="resume-info--open-full-btn">
+      <button @click="showFullContent" class="resume-info--open-full-btn">
         <img
           src="./img/full-icon.svg"
           width="21"

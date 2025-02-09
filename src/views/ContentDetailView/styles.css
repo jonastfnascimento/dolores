@@ -16,6 +16,7 @@
 .stepper__modal-content p {
   font: var(--text-sm);
   color: var(--gray-500);
+  line-height: 1.6;
 }
 
 .stepper__modal-content p strong {
