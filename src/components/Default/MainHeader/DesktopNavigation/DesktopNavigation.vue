@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router';
+import UserNavigation from '../UserNavigation/UserNavigation.vue';
 </script>
 
 <template>
@@ -25,6 +26,8 @@ import { RouterLink } from 'vue-router';
     >
       Avatares
     </RouterLink>
+
+    <UserNavigation />
   </nav>
 </template>
 

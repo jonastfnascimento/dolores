@@ -10,7 +10,7 @@
   flex: 1 0;
   display: flex;
   justify-content: center;
-  padding-right: 15px;
+  padding-left: 24px;
   font: var(--text-3xl-bold);
   color: var(--gray-900);
   text-decoration: none;

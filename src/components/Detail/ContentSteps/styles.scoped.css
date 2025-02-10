@@ -4,6 +4,10 @@
   gap: 10px;
 }
 .steps__item {
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-user-drag: none;
+  user-select: none;
   padding: 8px;
   border-radius: 5px;
   font: var(--text-sm);

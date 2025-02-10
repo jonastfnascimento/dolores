@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import type { Props } from './types';
+import type { Emits, Props } from './types';
 
 const props = defineProps<Props>();
+const emit = defineEmits<Emits>();
 </script>
 
 <template>
@@ -10,6 +11,7 @@ const props = defineProps<Props>();
       v-for="(step, stepIndex) in props.steps"
       :key="`step${stepIndex}`"
       :class="['steps__item', { active: step.active }]"
+      @click="emit('scrollToElement', step.ancor)"
     >
       {{ step.label }}
     </div>
