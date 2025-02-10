@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, ref, watch, useTemplateRef } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { toast } from 'vue-sonner';
 
@@ -9,6 +9,7 @@ import { api } from '@/services/api';
 
 import { useDevice } from '@/composables/useDevice';
 import ContentSteps from '@/components/Detail/ContentSteps/ContentSteps.vue';
+import type { Props as ContentStepsProps } from '@/components/Detail/ContentSteps/types';
 import ResumeInfos from '@/components/Detail/ResumeInfos/ResumeInfos.vue';
 import FieldInput from '@/components/Detail/FieldInput/FieldInput.vue';
 import BaseSpinner from '@/components/Base/BaseSpinner/BaseSpinner.vue';
@@ -58,23 +59,27 @@ async function getAvatar() {
   loading.value = false;
 }
 
-const steps = computed(() => {
+const steps = computed<ContentStepsProps['steps']>(() => {
   return [
     {
       label: 'Nome da Empresa',
       active: !!currentAvatar.value?.name?.length,
+      ancor: 'name',
     },
     {
       label: 'Slogan',
       active: !!currentAvatar.value?.slogan?.length,
+      ancor: 'slogan',
     },
     {
       label: 'Produtos e Serviços',
       active: !!currentAvatar.value?.services?.length,
+      ancor: 'service',
     },
     {
       label: 'Setor da Empresa',
       active: !!currentAvatar.value?.departament?.length,
+      ancor: 'departament',
     },
   ];
 });
@@ -291,6 +296,46 @@ watch(
   },
   { immediate: true }
 );
+
+const nameField = useTemplateRef('name-field');
+const sloganField = useTemplateRef('slogan-field');
+const serviceField = useTemplateRef('service-field');
+const departamentField = useTemplateRef('departament-field');
+function scrollToElement(element: string) {
+  if (element === 'name') {
+    nameField.value?.$el.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center',
+    });
+    nameField.value?.$el.querySelector('input')?.focus();
+
+    return;
+  }
+  if (element === 'slogan') {
+    sloganField.value?.$el.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center',
+    });
+    sloganField.value?.$el.querySelector('input')?.focus();
+    return;
+  }
+  if (element === 'service') {
+    serviceField.value?.$el.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center',
+    });
+    serviceField.value?.$el.querySelector('textarea')?.focus();
+    return;
+  }
+  if (element === 'departament') {
+    departamentField.value?.$el.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center',
+    });
+    departamentField.value?.$el.querySelector('textarea')?.focus();
+    return;
+  }
+}
 </script>
 
 <template>
@@ -349,7 +394,11 @@ watch(
             <p class="detail__name">
               {{ PageType === 'creating' ? 'Criando novo Avatar' : avatarName }}
             </p>
-            <ContentSteps class="detail__steps" :steps="steps" />
+            <ContentSteps
+              class="detail__steps"
+              :steps="steps"
+              @scroll-to-element="scrollToElement"
+            />
             <ResumeInfos class="detail__resume" :infos="resumeInfos" />
 
             <form
@@ -358,27 +407,33 @@ watch(
               class="detail__form"
             >
               <FieldInput
+                ref="name-field"
                 for="name"
                 :error="errorName && invalidAttempt"
                 label="Nome da Empresa*"
+                id="name"
                 :disabled="editLoading"
                 :value="currentAvatar.name"
                 @change="(newName) => (currentAvatar.name = newName)"
                 placeholder="Qual o nome da sua empresa?"
               />
               <FieldInput
+                ref="slogan-field"
                 for="slogan"
                 :error="errorSlogan && invalidAttempt"
                 label="Slogan*"
+                id="slogan"
                 :value="currentAvatar.slogan"
                 :disabled="editLoading"
                 @change="(newSlogan) => (currentAvatar.slogan = newSlogan)"
                 placeholder="Qual o slogan da sua empresa?"
               />
               <FieldInput
+                ref="service-field"
                 for="product"
                 :error="errorServices && invalidAttempt"
                 type="textarea"
+                id="service"
                 :disabled="editLoading"
                 label="Produtos e Serviços*"
                 :value="currentAvatar.services"
@@ -386,9 +441,11 @@ watch(
                 placeholder="Quais produtos e serviços?"
               />
               <FieldInput
+                ref="departament-field"
                 for="departament"
                 :error="errorDepartament && invalidAttempt"
                 type="textarea"
+                id="departament"
                 :disabled="editLoading"
                 label="Setor da Empresa"
                 :value="currentAvatar.departament"

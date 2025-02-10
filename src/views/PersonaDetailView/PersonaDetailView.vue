@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, ref, watch, useTemplateRef } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { toast } from 'vue-sonner';
 
@@ -9,6 +9,7 @@ import { api } from '@/services/api';
 
 import { useDevice } from '@/composables/useDevice';
 import ContentSteps from '@/components/Detail/ContentSteps/ContentSteps.vue';
+import type { Props as ContentStepsProps } from '@/components/Detail/ContentSteps/types';
 import ResumeInfos from '@/components/Detail/ResumeInfos/ResumeInfos.vue';
 import FieldInput from '@/components/Detail/FieldInput/FieldInput.vue';
 import BaseSpinner from '@/components/Base/BaseSpinner/BaseSpinner.vue';
@@ -63,31 +64,37 @@ async function getPersona() {
   loading.value = false;
 }
 
-const steps = computed(() => {
+const steps = computed<ContentStepsProps['steps']>(() => {
   return [
     {
       label: 'Nome Persona',
       active: !!currentPersona.value?.name?.length,
+      ancor: 'name',
     },
     {
       label: 'Gênero da Persona',
       active: !!currentPersona.value?.genero?.length,
+      ancor: 'gender',
     },
     {
       label: 'Faixa Etária',
       active: !!currentPersona.value?.faixa?.length,
+      ancor: 'range',
     },
     {
       label: 'Interesses',
       active: !!currentPersona.value?.interess?.length,
+      ancor: 'interest',
     },
     {
       label: 'Dores',
       active: !!currentPersona.value?.dores?.length,
+      ancor: 'pain',
     },
     {
       label: 'Ação Desejada',
       active: !!currentPersona.value?.actions?.length,
+      ancor: 'action',
     },
   ];
 });
@@ -321,6 +328,64 @@ watch(
   },
   { immediate: true }
 );
+
+const nameField = useTemplateRef('name-field'); //in
+const genderField = useTemplateRef('gender-field'); //in
+const rangeFeld = useTemplateRef('range-field'); //tx
+const interstField = useTemplateRef('interst-field'); //tx
+const painField = useTemplateRef('pain-field'); //tx
+const actionField = useTemplateRef('action-field'); //tx
+function scrollToElement(element: string) {
+  if (element === 'name') {
+    nameField.value?.$el.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center',
+    });
+    nameField.value?.$el.querySelector('input')?.focus();
+
+    return;
+  }
+  if (element === 'gender') {
+    genderField.value?.$el.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center',
+    });
+    genderField.value?.$el.querySelector('input')?.focus();
+    return;
+  }
+  if (element === 'range') {
+    rangeFeld.value?.$el.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center',
+    });
+    rangeFeld.value?.$el.querySelector('textarea')?.focus();
+    return;
+  }
+  if (element === 'interest') {
+    interstField.value?.$el.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center',
+    });
+    interstField.value?.$el.querySelector('textarea')?.focus();
+    return;
+  }
+  if (element === 'pain') {
+    painField.value?.$el.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center',
+    });
+    painField.value?.$el.querySelector('textarea')?.focus();
+    return;
+  }
+  if (element === 'action') {
+    actionField.value?.$el.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center',
+    });
+    actionField.value?.$el.querySelector('textarea')?.focus();
+    return;
+  }
+}
 </script>
 
 <template>
@@ -381,7 +446,11 @@ watch(
                 PageType === 'creating' ? 'Criando nova Persona' : personaName
               }}
             </p>
-            <ContentSteps class="detail__steps" :steps="steps" />
+            <ContentSteps
+              class="detail__steps"
+              :steps="steps"
+              @scroll-to-element="scrollToElement"
+            />
             <ResumeInfos class="detail__resume" :infos="resumeInfos" />
 
             <form
@@ -390,6 +459,7 @@ watch(
               class="detail__form"
             >
               <FieldInput
+                ref="name-field"
                 for="name"
                 :error="errorName && invalidAttempt"
                 label="Nome Persona*"
@@ -399,6 +469,7 @@ watch(
                 placeholder="Qual o nome da persona?"
               />
               <FieldInput
+                ref="gender-field"
                 for="genero"
                 :error="errorGenero && invalidAttempt"
                 label="Gênero da Persona*"
@@ -408,6 +479,7 @@ watch(
                 placeholder="Feminino e Masculino."
               />
               <FieldInput
+                ref="range-field"
                 for="faixa"
                 :error="errorFaixa && invalidAttempt"
                 type="textarea"
@@ -418,6 +490,7 @@ watch(
                 placeholder="Qual é a idade da persona? Ex: 19 à 39 anos."
               />
               <FieldInput
+                ref="interst-field"
                 for="interesse"
                 :error="errorInterest && invalidAttempt"
                 type="textarea"
@@ -431,6 +504,7 @@ watch(
               />
 
               <FieldInput
+                ref="pain-field"
                 for="dores"
                 :error="errorDores && invalidAttempt"
                 type="textarea"
@@ -442,6 +516,7 @@ watch(
               />
 
               <FieldInput
+                ref="action-field"
                 for="actions"
                 :error="false"
                 type="textarea"

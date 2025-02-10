@@ -10,9 +10,9 @@ export const useUserStore = defineStore('user', () => {
     return user.value;
   });
 
-  const setUser = (userData: User) => {
+  const setUser = (userData: User | null) => {
     user.value = userData;
-    isAuthenticated.value = true;
+    isAuthenticated.value = userData ? true : false;
 
     localStorage.setItem('current_user', JSON.stringify(userData));
   };
@@ -28,7 +28,6 @@ export const useUserStore = defineStore('user', () => {
     if (!currentUser) return;
 
     setUser(JSON.parse(currentUser));
-    isAuthenticated.value = true;
   }
 
   return { getUser, isAuthenticated, setUser, logout, authorization };

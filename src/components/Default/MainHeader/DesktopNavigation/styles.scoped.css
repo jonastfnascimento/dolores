@@ -1,6 +1,7 @@
 .desktop-navigation {
   display: flex;
-  gap: 39px;
+  align-items: center;
+  gap: 40px;
 }
 .desktop-navigation--link {
   font: var(--text-lg-semibold);

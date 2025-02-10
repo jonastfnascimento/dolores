@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, defineProps, useTemplateRef, onMounted } from 'vue';
+import { ref, useTemplateRef, onMounted } from 'vue';
 
 type AccordionItem = {
   id: number;
