@@ -14,6 +14,8 @@ import AppTextarea from '@/components/Common/AppTextArea/AppTextarea.vue';
 import BottomCreationStepperSkeleton from '@/components/Content/BottomCreationStepperSkeleton/BottomCreationStepperSkeleton.vue';
 import BaseModal from '@/components/Base/BaseModal/BaseModal.vue';
 
+import { WEBHOOKS } from './constants.ts';
+
 import type {
   StepInterface,
   ContentItem,
@@ -32,38 +34,14 @@ const showFinishedContent = ref(false);
 
 const currentContentId = ref<number | null>(null);
 const contentIntervalId = ref<number | null>(null);
-const steps = ref<Array<StepInterface>>([
-  {
-    webhookRetrieve: 'cef66e1d-b973-40b0-9704-72478b4670cd',
-    webhookUpdate: 'b2e5bc6e-db0e-4b53-aac7-a7c76e42d1dd',
-    webhookExport: 'dolores-exportar-conteudo-s1',
+const steps = ref<Array<StepInterface>>(
+  WEBHOOKS.STEPS.map((step) => ({
+    webhookRetrieve: step.retrieve,
+    webhookUpdate: step.update,
+    webhookExport: step.export,
     generated_content: null,
-  },
-  {
-    webhookRetrieve: 'a5fa5a00-2839-4ce2-83a1-26bd7cfd8587',
-    webhookUpdate: 'e3f73bed-f4bd-47a3-9dc2-29ff00243fe0',
-    webhookExport: 'dolores-exportar-conteudo-s2',
-    generated_content: null,
-  },
-  {
-    webhookRetrieve: 'eed10b3b-891e-41f5-b167-7d15a16bb96f',
-    webhookUpdate: '204dbbf6-d76a-4b61-b8f6-19629412a621',
-    webhookExport: 'dolores-exportar-conteudo-s3',
-    generated_content: null,
-  },
-  {
-    webhookRetrieve: '7c9730cf-0742-4e84-83b0-55fa4de466a2',
-    webhookUpdate: 'dolores-step-S4-new-outline-update',
-    webhookExport: 'dolores-exportar-conteudo-s4',
-    generated_content: null,
-  },
-  {
-    webhookRetrieve: 'dolores-step-S5-blog-post-retrieve',
-    webhookUpdate: 'dolores-step-S5-blog-post-update',
-    webhookExport: 'dolores-exportar-conteudo-s5',
-    generated_content: null,
-  },
-]);
+  }))
+);
 
 const avatar = computed(() => contentStore.avatar);
 const persona = computed(() => contentStore.persona);
@@ -117,7 +95,7 @@ const createContent = async (): Promise<void> => {
     };
 
     const { data } = await api.get<CreateContentResponse>(
-      'de204e88-fd1a-4c4a-bae3-1973a1a43857',
+      WEBHOOKS.CREATE_CONTENT,
       { params }
     );
 
@@ -158,12 +136,9 @@ const getContentStatus = async (): Promise<string | null> => {
   }
 
   try {
-    const { data } = await api.get<{ status: string }>(
-      'dolores-status-pedido',
-      {
-        params: { id_pedido: currentContentId.value },
-      }
-    );
+    const { data } = await api.get<{ status: string }>(WEBHOOKS.STATUS_PEDIDO, {
+      params: { id_pedido: currentContentId.value },
+    });
 
     return data.status;
   } catch {
@@ -272,9 +247,7 @@ const handleDeleteContent = async (): Promise<void> => {
   }
 
   try {
-    await api.get(
-      `a31011c9-b1d2-4eee-a883-146db4e2ce6f/${currentContentId.value}`
-    );
+    await api.get(`${WEBHOOKS.DELETE_CONTENT}/${currentContentId.value}`);
 
     toast.success('Conteúdo excluído com sucesso!');
 
@@ -309,7 +282,7 @@ const handleExportContent = async (): Promise<void> => {
     const downloadLink = await fetchExportLink(step.webhookExport);
     if (downloadLink) {
       initiateDownload(downloadLink);
-      toast.success('Iniciando o download do conteúdo!');
+      toast.info('Iniciando o download do conteúdo!');
     } else {
       toast.error(
         'Erro ao exportar conteúdo: Link de download não encontrado!'
@@ -351,14 +324,6 @@ const initiateDownload = (downloadLink: string): void => {
   document.body.removeChild(a);
 };
 
-// COOMING SOON
-const handleRegenerateContent = async (): Promise<void> => {
-  toast.info('Disponível em breve!');
-};
-const handleStopProduction = (): void => {
-  toast.info('Disponível em breve!');
-};
-
 onMounted(async () => {
   loading.value = true;
 
@@ -379,6 +344,14 @@ onUnmounted(() => {
     clearInterval(contentIntervalId.value);
   }
 });
+
+// COOMING SOON
+const handleRegenerateContent = async (): Promise<void> => {
+  toast.info('Disponível em breve!');
+};
+const handleStopProduction = (): void => {
+  toast.info('Disponível em breve!');
+};
 </script>
 
 <template>
