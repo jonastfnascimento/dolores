@@ -1,6 +1,6 @@
 export interface TextAreaProps {
   name?: string;
-  placeholder: string;
+  placeholder?: string;
   value: string;
   maxLength?: number;
   minLength?: number;

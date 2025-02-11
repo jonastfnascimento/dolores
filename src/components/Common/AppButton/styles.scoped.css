@@ -66,3 +66,7 @@
     transform: rotate(360deg);
   }
 }
+
+.button--light .loader {
+  border-top-color: var(--gray-500);
+}

@@ -14,84 +14,63 @@ import AppTextarea from '@/components/Common/AppTextArea/AppTextarea.vue';
 import BottomCreationStepperSkeleton from '@/components/Content/BottomCreationStepperSkeleton/BottomCreationStepperSkeleton.vue';
 import BaseModal from '@/components/Base/BaseModal/BaseModal.vue';
 
-// INTERFACES AND TYPES ================ 🔥🔥
-interface CreateContentResponse {
-  id: number;
-  message: string;
-  keyword: string;
-  avatar: string;
-  persona: string;
-  id_avatar: string;
-  id_persona: string;
-  status: string;
-}
+import type {
+  StepInterface,
+  ContentItem,
+  CreateContentResponse,
+} from './types.ts';
 
-type ContentItem = {
-  title: string;
-  description: string;
-  content: string;
-};
-
-interface StepInterface {
-  title?: string;
-  selected?: boolean;
-  webhookRetrieve?: string;
-  webhookUpdate?: string;
-  generated_content?: Array<ContentItem> | null;
-}
-
-type getContentResponse = {
-  content: Array<ContentItem>;
-};
-
-// ROUTERS AND STORES ========= 🔥🔥
 const contentStore = useContentStore();
 const userStore = useUserStore();
 const router = useRouter();
 const route = useRoute();
 
-// STATES ===================== 🔥🔥
 const currentStep = ref(0);
 const loading = ref(false);
+
 const showFinishedContent = ref(false);
-const showShortExplanationModal = ref(false);
-const explanationModalContent = ref('');
-const contentStatus = ref('');
+
+const currentContentId = ref<number | null>(null);
 const contentIntervalId = ref<number | null>(null);
 const steps = ref<Array<StepInterface>>([
   {
     webhookRetrieve: 'cef66e1d-b973-40b0-9704-72478b4670cd',
     webhookUpdate: 'b2e5bc6e-db0e-4b53-aac7-a7c76e42d1dd',
+    webhookExport: 'dolores-exportar-conteudo-s1',
     generated_content: null,
   },
   {
     webhookRetrieve: 'a5fa5a00-2839-4ce2-83a1-26bd7cfd8587',
     webhookUpdate: 'e3f73bed-f4bd-47a3-9dc2-29ff00243fe0',
+    webhookExport: 'dolores-exportar-conteudo-s2',
     generated_content: null,
   },
   {
     webhookRetrieve: 'eed10b3b-891e-41f5-b167-7d15a16bb96f',
     webhookUpdate: '204dbbf6-d76a-4b61-b8f6-19629412a621',
+    webhookExport: 'dolores-exportar-conteudo-s3',
     generated_content: null,
   },
   {
     webhookRetrieve: '7c9730cf-0742-4e84-83b0-55fa4de466a2',
     webhookUpdate: 'dolores-step-S4-new-outline-update',
+    webhookExport: 'dolores-exportar-conteudo-s4',
     generated_content: null,
   },
   {
     webhookRetrieve: 'dolores-step-S5-blog-post-retrieve',
     webhookUpdate: 'dolores-step-S5-blog-post-update',
+    webhookExport: 'dolores-exportar-conteudo-s5',
     generated_content: null,
   },
 ]);
 
-// COMPUTEDS ================== 🔥🔥
 const avatar = computed(() => contentStore.avatar);
 const persona = computed(() => contentStore.persona);
 const keyword = computed(() => contentStore.keyword);
+const currentUserId = computed(() => userStore.getUser?.id);
 const isDataValid = computed(() => contentStore.isDataValid);
-const currentContentId = ref<number | null>(null);
+
 const progress = computed(() => {
   if (steps.value.length === 0) {
     return '0%';
@@ -104,147 +83,161 @@ const progress = computed(() => {
 
   return `${(stepIndex / steps.value.length) * 100}%`;
 });
-const isFirstStep = computed(() => currentStep.value === 0);
-const isLastStep = computed(() => currentStep.value === steps.value.length);
+
 const accordionItems = computed(() => {
-  const result = [];
-  const validsSteps = steps.value.filter((step) => step.generated_content);
-
-  validsSteps.forEach((item) => {
-    item.generated_content.forEach((contentItem, index) => {
-      result.push({
-        id: index,
-        title: contentItem.title,
-        content: contentItem.content,
-      });
-    });
-  });
-
-  return result;
+  return steps.value
+    .filter((step) => step.generated_content)
+    .flatMap((step) =>
+      step.generated_content
+        ? step.generated_content.map((contentItem, index) => ({
+            id: index,
+            title: contentItem.title,
+            content: contentItem.content,
+          }))
+        : []
+    );
 });
 
-// FUCTIONS ================== 🔥🔥
 const createContent = async (): Promise<void> => {
   try {
     if (!contentStore?.avatar?.id || !contentStore?.persona?.id) {
       toast.error(
-        'Erro ao criar conteúdo! Uma persona e um avatar devem ser selecionados'
+        'Erro ao criar conteúdo! Uma persona e um avatar devem ser selecionados.'
       );
       contentStore.toggleModal(true);
       return;
     }
 
     const params = {
-      user: userStore.getUser?.id,
+      user: currentUserId.value,
       keyword: contentStore.keyword,
       avatar: contentStore.avatar.id,
       persona: contentStore.persona.id,
       status: 'pesquisar',
     };
 
-    const response = await api.get<CreateContentResponse>(
+    const { data } = await api.get<CreateContentResponse>(
       'de204e88-fd1a-4c4a-bae3-1973a1a43857',
-      {
-        params,
-      }
+      { params }
     );
 
-    currentContentId.value = response.data.id;
+    currentContentId.value = data.id;
 
     toast.success(
-      'Conteúdo criado com sucesso! Vamos iniciar o processo da criação do conteúdo.'
+      'Conteúdo criado com sucesso! Vamos iniciar o processo da criação do SEO Outline.'
     );
 
-    const intervalId = setInterval(async () => {
-      await getContentStatus();
-
-      if (contentStatus.value === 'SEO Outline Done') {
-        clearInterval(intervalId);
-        await getStepContent(0);
-        await getStepContent(1);
-        await getStepContent(2);
-      }
-    }, 10000);
-
-    contentIntervalId.value = intervalId;
+    startContentStatusCheck();
   } catch (error) {
-    toast.error(`Erro ao criar conteúdo: ${error}`);
+    console.error('Erro ao criar conteúdo:', error);
+    toast.error('Erro ao criar conteúdo. Tente novamente.');
   }
 };
 
-const getContentStatus = async (): Promise<void> => {
-  const params = {
-    id_pedido: 3,
-  };
+const startContentStatusCheck = () => {
+  const intervalId = setInterval(async () => {
+    const status = await getContentStatus();
 
-  const response = await api.get(`dolores-status-pedido`, {
-    params,
-  });
+    if (status === 'SEO Outline Done') {
+      clearInterval(intervalId);
+      await fetchInitialSteps();
+    }
+  }, 10000);
 
-  contentStatus.value = response.data.status;
+  contentIntervalId.value = intervalId;
+};
+
+const fetchInitialSteps = async () => {
+  await Promise.all([getContentStep(0), getContentStep(1), getContentStep(2)]);
+};
+
+const getContentStatus = async (): Promise<string | null> => {
+  if (!currentContentId.value) {
+    toast.error('Erro ao criar conteúdo: ID não encontrado.');
+    return null;
+  }
+
+  try {
+    const { data } = await api.get<{ status: string }>(
+      'dolores-status-pedido',
+      {
+        params: { id_pedido: currentContentId.value },
+      }
+    );
+
+    return data.status;
+  } catch {
+    toast.error('Erro ao obter status do conteúdo.');
+    return null;
+  }
 };
 
 const getContent = async (): Promise<void> => {
+  currentContentId.value = Number(route.params.id);
+
+  const stepsToLoad: Record<string, number[]> = {
+    'BlogPost concluido': [0, 1, 2, 3, 4],
+    'New Outline Generated': [0, 1, 2, 3],
+    'SEO Outline Done': [0, 1, 2],
+    'Gerar BlogPost': [0, 1, 2],
+  };
+
   try {
-    const response = await api.get<getContentResponse>(
-      'de204e88-fd1a-4c4a-bae3-1973a1a43857',
-      {
-        params: {
-          id: currentContentId.value,
-          user: userStore.getUser?.id,
-        },
-      }
-    );
-  } catch (error) {
-    toast.error(`Erro ao carregar conteúdo: ${error}`);
+    const status = await getContentStatus();
+    if (status && status.length) {
+      const steps = stepsToLoad[status] || [];
+      await Promise.all(steps.map(getContentStep));
+    }
+  } catch {
+    toast.error('Erro ao carregar conteúdo!');
   }
 };
 
-const getStepContent = async (stepIndex: number): Promise<void> => {
+const getContentStep = async (stepIndex: number): Promise<void> => {
   loading.value = true;
-  const step = steps.value[stepIndex];
 
+  const step = steps.value[stepIndex];
   if (!step || !step.webhookRetrieve) {
     loading.value = false;
+    toast.error('Erro ao carregar conteúdo: Webhook inválido!');
     return;
   }
 
   try {
-    const response = await api.get(`${step.webhookRetrieve}`, {
+    const { data } = await api.get(step.webhookRetrieve, {
       params: {
-        id: 3,
-        id_user: userStore.getUser?.id,
+        id: currentContentId.value,
+        id_user: currentUserId.value,
       },
     });
 
-    const filteredGeneratedContent = response.data.generated_content.filter(
-      (item: ContentItem) =>
-        !['Keyword', 'Avatar', 'Persona'].includes(item.title)
-    );
+    if (!data.generated_content || !Array.isArray(data.generated_content)) {
+      toast.error('Erro ao carregar conteúdo!');
+    }
 
-    console.log(filteredGeneratedContent);
+    const filteredContent = filteredContentStepReponse(data.generated_content);
 
-    steps.value[stepIndex].generated_content = [...filteredGeneratedContent];
-    steps.value[stepIndex].generated_content.forEach((item: ContentItem) => {
-      toast.success(`O passo ${item.title} foi gerado com sucesso!`);
+    steps.value[stepIndex] = {
+      ...step,
+      generated_content: filteredContent,
+    };
+
+    filteredContent.forEach((item) => {
+      toast.success(
+        `O conteúdo da etapa ${item.title} foi carregado com sucesso!`
+      );
     });
-  } catch (error) {
-    toast.error(`Erro ao carregar ${step.generated_content} ${error}`);
+  } catch {
+    toast.error('Erro ao carregar conteúdo!');
   } finally {
     loading.value = false;
   }
 };
 
-const moveToStep = async (stepIndex: number): Promise<void> => {
-  currentStep.value = stepIndex;
-};
-
-const backToSteps = (): void => {
-  showFinishedContent.value = false;
-};
-
-const moveToFinishedContent = (): void => {
-  showFinishedContent.value = true;
+const filteredContentStepReponse = (content: ContentItem[]): ContentItem[] => {
+  return content.filter(
+    (item) => !['Keyword', 'Avatar', 'Persona'].includes(item.title)
+  );
 };
 
 const handleSaveContent = (): void => {
@@ -256,46 +249,22 @@ const handleSaveContent = (): void => {
   });
 };
 
-const handleExportContent = async (): Promise<void> => {
-  if (!currentContentId.value) {
-    toast.error('Erro ao exportar conteúdo: ID não encontrado.');
+// STEPS NAVIGATION
+const moveToStep = async (stepIndex: number): Promise<void> => {
+  if (stepIndex < 0 || stepIndex >= steps.value.length) {
+    toast.error('Etapa inválida!');
     return;
   }
-
-  const exportUrl = `https://n8n.agcinza.com/webhook/dolores-exportar-conteudo?origem=/content/Exportar Conteudo&id=${currentContentId.value}&id_user=${userStore.getUser?.id}`;
-
-  try {
-    const { data, headers } = await api.get(exportUrl, {
-      responseType: 'blob',
-    });
-
-    const blob = new Blob([data], { type: headers['content-type'] });
-    const url = window.URL.createObjectURL(blob);
-
-    const a = Object.assign(document.createElement('a'), {
-      href: url,
-      download: `conteudo_${currentContentId.value}`,
-    });
-
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    window.URL.revokeObjectURL(url);
-
-    toast.success('Exportação concluída com sucesso!');
-  } catch (error) {
-    toast.error(`Erro ao exportar conteúdo: ${error}`);
-  }
+  currentStep.value = stepIndex;
+};
+const backToSteps = (): void => {
+  showFinishedContent.value = false;
+};
+const moveToFinishedContent = (): void => {
+  showFinishedContent.value = true;
 };
 
-const handleRegenerateContent = async (): Promise<void> => {
-  toast.info('Disponível em breve!');
-};
-
-const handleStopProduction = (): void => {
-  toast.info('Disponível em breve!');
-};
-
+// DELETE
 const handleDeleteContent = async (): Promise<void> => {
   if (!currentContentId.value) {
     toast.error('Erro ao excluir conteúdo: ID não encontrado.');
@@ -303,15 +272,21 @@ const handleDeleteContent = async (): Promise<void> => {
   }
 
   try {
-    await api.delete(`/content/delete/${currentContentId.value}`);
+    await api.get(
+      `a31011c9-b1d2-4eee-a883-146db4e2ce6f/${currentContentId.value}`
+    );
+
     toast.success('Conteúdo excluído com sucesso!');
 
     router.push({ name: 'listing', params: { slug: 'contents' } });
-  } catch (error) {
-    toast.error(`Erro ao excluir conteúdo: ${error}`);
+  } catch {
+    toast.error('Erro ao excluir conteúdo!');
   }
 };
 
+// EXPLANATION MODAL
+const showShortExplanationModal = ref(false);
+const explanationModalContent = ref('');
 const handleOpenShortExplanation = (step: ContentItem) => {
   if (step?.description.length) {
     explanationModalContent.value = step.description;
@@ -319,11 +294,75 @@ const handleOpenShortExplanation = (step: ContentItem) => {
   }
 };
 
-// LIFECYCLE ================== 🔥🔥
+// EXPORT CONTENT
+const loadingExport = ref(false);
+const handleExportContent = async (): Promise<void> => {
+  loadingExport.value = true;
+
+  try {
+    const step = getCurrentExportStep();
+    if (!step?.webhookExport) {
+      toast.error('Erro ao exportar conteúdo: Webhook inválido!');
+      return;
+    }
+
+    const downloadLink = await fetchExportLink(step.webhookExport);
+    if (downloadLink) {
+      initiateDownload(downloadLink);
+      toast.success('Iniciando o download do conteúdo!');
+    } else {
+      toast.error(
+        'Erro ao exportar conteúdo: Link de download não encontrado!'
+      );
+    }
+  } catch (error) {
+    console.error('Erro ao exportar conteúdo:', error);
+    toast.error('Erro ao exportar conteúdo. Tente novamente.');
+  } finally {
+    loadingExport.value = false;
+  }
+};
+const getCurrentExportStep = () => {
+  return currentStep.value === 4 || showFinishedContent.value
+    ? steps.value[4]
+    : steps.value[currentStep.value];
+};
+const fetchExportLink = async (webhookUrl: string): Promise<string | null> => {
+  try {
+    const { data } = await api.get<{ 'Link Download'?: string }>(webhookUrl, {
+      params: {
+        id: currentContentId.value,
+        id_user: currentUserId.value,
+      },
+    });
+
+    return data['Link Download'] ?? null;
+  } catch (error) {
+    console.error('Erro ao buscar link de download:', error);
+    return null;
+  }
+};
+const initiateDownload = (downloadLink: string): void => {
+  const a = document.createElement('a');
+  a.href = downloadLink;
+  a.download = 'conteudo_exportado';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+};
+
+// COOMING SOON
+const handleRegenerateContent = async (): Promise<void> => {
+  toast.info('Disponível em breve!');
+};
+const handleStopProduction = (): void => {
+  toast.info('Disponível em breve!');
+};
+
 onMounted(async () => {
   loading.value = true;
 
-  if (route.name !== 'saveContent') {
+  if (route.name && route.name === 'contentDetail') {
     await getContent();
     return;
   }
@@ -335,7 +374,6 @@ onMounted(async () => {
 
   await createContent();
 });
-
 onUnmounted(() => {
   if (contentIntervalId.value) {
     clearInterval(contentIntervalId.value);
@@ -428,7 +466,7 @@ onUnmounted(() => {
                         title="Clique para voltar"
                         width="21"
                         class="finished__back-arrow"
-                        :class="{ disabled: isFirstStep }"
+                        :class="{ disabled: currentStep === 0 }"
                         @click="moveToStep(currentStep - 1)"
                       />
 
@@ -568,7 +606,7 @@ onUnmounted(() => {
           </div>
 
           <p
-            v-if="isLastStep"
+            v-if="showFinishedContent"
             class="stepper__delete-content"
             @click="handleDeleteContent"
           >
