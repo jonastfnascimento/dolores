@@ -2,6 +2,7 @@ export const WEBHOOKS = {
   CREATE_CONTENT: 'de204e88-fd1a-4c4a-bae3-1973a1a43857',
   STATUS_PEDIDO: 'dolores-status-pedido',
   DELETE_CONTENT: 'a31011c9-b1d2-4eee-a883-146db4e2ce6f',
+  GET_CONTENT_DETAIL: 'dolores-content-detail',
 
   STEPS: [
     {

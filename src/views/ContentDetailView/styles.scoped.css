@@ -18,6 +18,11 @@
   margin: 0 auto 30px;
 }
 
+.stepper__progress-container.loading {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
 .stepper__progress {
   position: absolute;
   top: 50%;

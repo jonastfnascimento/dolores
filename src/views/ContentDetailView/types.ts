@@ -24,4 +24,11 @@ export interface CreateContentResponse {
   status: string;
 }
 
+export interface ContentDetailResponse {
+  Keyword: string;
+  Avatar: string;
+  Persona: string;
+  Título: string;
+}
+
 export type StepsToLoad = Record<string, number[]>;

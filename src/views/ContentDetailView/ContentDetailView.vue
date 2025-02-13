@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { ref, computed, onMounted, onBeforeMount } from 'vue';
 import { useContentStore } from '@/stores/useContentStore';
 import { useUserStore } from '@/stores/userStore';
 import { api } from '@/services/api';
@@ -20,6 +20,7 @@ import type {
   StepInterface,
   ContentItem,
   CreateContentResponse,
+  ContentDetailResponse,
 } from './types.ts';
 
 const contentStore = useContentStore();
@@ -27,11 +28,12 @@ const userStore = useUserStore();
 const router = useRouter();
 const route = useRoute();
 
-const currentStep = ref(0);
+const currentStepIndex = ref(0);
 const loading = ref(false);
 
 const showFinishedContent = ref(false);
 
+const contentTitle = ref('');
 const currentContentId = ref<number | null>(null);
 const contentIntervalId = ref<number | null>(null);
 const steps = ref<Array<StepInterface>>(
@@ -48,6 +50,11 @@ const persona = computed(() => contentStore.persona);
 const keyword = computed(() => contentStore.keyword);
 const currentUserId = computed(() => userStore.getUser?.id);
 const isDataValid = computed(() => contentStore.isDataValid);
+const formattedContentTitle = computed(() =>
+  contentTitle.value
+    ? contentTitle.value
+    : 'Título não definido (blogpost não concluído)'
+);
 
 const progress = computed(() => {
   if (steps.value.length === 0) {
@@ -55,7 +62,7 @@ const progress = computed(() => {
   }
 
   const stepIndex = Math.min(
-    Math.max(currentStep.value, 0),
+    Math.max(currentStepIndex.value, 0),
     steps.value.length
   );
 
@@ -102,53 +109,42 @@ const createContent = async (): Promise<void> => {
     currentContentId.value = data.id;
 
     toast.success(
-      'Conteúdo criado com sucesso! Vamos iniciar o processo da criação do SEO Outline.'
+      'Conteúdo criado com sucesso! Vamos iniciar o processo de pesquisa!'
     );
 
-    startContentStatusCheck();
-  } catch (error) {
-    console.error('Erro ao criar conteúdo:', error);
+    const status = await checkContentStatus('SEO Outline Done');
+    if (status) {
+      await Promise.all([
+        getContentStep(0),
+        getContentStep(1),
+        getContentStep(2),
+      ]);
+    }
+  } catch {
     toast.error('Erro ao criar conteúdo. Tente novamente.');
   }
 };
 
-const startContentStatusCheck = () => {
-  const intervalId = setInterval(async () => {
-    const status = await getContentStatus();
-
-    if (status === 'SEO Outline Done') {
-      clearInterval(intervalId);
-      await fetchInitialSteps();
-    }
-  }, 10000);
-
-  contentIntervalId.value = intervalId;
-};
-
-const fetchInitialSteps = async () => {
-  await Promise.all([getContentStep(0), getContentStep(1), getContentStep(2)]);
-};
-
-const getContentStatus = async (): Promise<string | null> => {
-  if (!currentContentId.value) {
-    toast.error('Erro ao criar conteúdo: ID não encontrado.');
-    return null;
-  }
-
-  try {
-    const { data } = await api.get<{ status: string }>(WEBHOOKS.STATUS_PEDIDO, {
-      params: { id_pedido: currentContentId.value },
-    });
-
-    return data.status;
-  } catch {
-    toast.error('Erro ao obter status do conteúdo.');
-    return null;
-  }
-};
-
-const getContent = async (): Promise<void> => {
+const getContentDetail = async (): Promise<void> => {
   currentContentId.value = Number(route.params.id);
+
+  const contentDetailResponse = await api.get<ContentDetailResponse>(
+    WEBHOOKS.GET_CONTENT_DETAIL,
+    {
+      params: {
+        id: currentContentId.value,
+      },
+    }
+  );
+
+  const { Keyword, Avatar, Persona, Título } = contentDetailResponse.data;
+  contentTitle.value = Título;
+
+  contentStore.setContentData(
+    { label: Avatar, id: 0 },
+    { label: Persona, id: 0 },
+    Keyword
+  );
 
   const stepsToLoad: Record<string, number[]> = {
     'BlogPost concluido': [0, 1, 2, 3, 4],
@@ -168,13 +164,60 @@ const getContent = async (): Promise<void> => {
   }
 };
 
+const checkContentStatus = async (payload: string): Promise<boolean> => {
+  if (contentIntervalId.value !== null) {
+    clearInterval(contentIntervalId.value);
+    contentIntervalId.value = null;
+  }
+
+  return new Promise((resolve) => {
+    const newIntervalId = setInterval(async () => {
+      try {
+        const status = await getContentStatus();
+        if (status === payload) {
+          clearInterval(newIntervalId);
+          if (contentIntervalId.value === newIntervalId) {
+            contentIntervalId.value = null;
+          }
+          resolve(true);
+        }
+      } catch (error) {
+        console.error('Erro na verificação de status:', error);
+        clearInterval(newIntervalId);
+        contentIntervalId.value = null;
+        resolve(false);
+      }
+    }, 30000);
+
+    contentIntervalId.value = newIntervalId;
+  });
+};
+
+const getContentStatus = async (): Promise<string | null> => {
+  if (!currentContentId.value) {
+    toast.error('Erro ao criar conteúdo, ID não encontrado.');
+    return null;
+  }
+
+  try {
+    const { data } = await api.get<{ status: string }>(WEBHOOKS.STATUS_PEDIDO, {
+      params: { id_pedido: currentContentId.value },
+    });
+
+    return data.status;
+  } catch {
+    toast.error('Erro ao obter status do conteúdo.');
+    return null;
+  }
+};
+
 const getContentStep = async (stepIndex: number): Promise<void> => {
   loading.value = true;
 
   const step = steps.value[stepIndex];
   if (!step || !step.webhookRetrieve) {
     loading.value = false;
-    toast.error('Erro ao carregar conteúdo: Webhook inválido!');
+    toast.error('Erro ao carregar conteúdo, webhook inválido!');
     return;
   }
 
@@ -190,14 +233,12 @@ const getContentStep = async (stepIndex: number): Promise<void> => {
       toast.error('Erro ao carregar conteúdo!');
     }
 
-    const filteredContent = filteredContentStepReponse(data.generated_content);
-
     steps.value[stepIndex] = {
       ...step,
-      generated_content: filteredContent,
+      generated_content: data.generated_content,
     };
 
-    filteredContent.forEach((item) => {
+    data.generated_content.forEach((item: ContentItem) => {
       toast.success(
         `O conteúdo da etapa ${item.title} foi carregado com sucesso!`
       );
@@ -209,12 +250,85 @@ const getContentStep = async (stepIndex: number): Promise<void> => {
   }
 };
 
-const filteredContentStepReponse = (content: ContentItem[]): ContentItem[] => {
-  return content.filter(
-    (item) => !['Keyword', 'Avatar', 'Persona'].includes(item.title)
-  );
+const updateStep = async (
+  currentStepIndex: number,
+  nextStepIndex: number
+): Promise<void> => {
+  const currentStep = steps.value[currentStepIndex];
+  const nextStep = steps.value[nextStepIndex];
+  const updateWebhook = currentStep.webhookUpdate;
+  const contentToSend = currentStep.generated_content?.[0]?.content;
+
+  if (!updateWebhook || !nextStep) {
+    toast.error('Erro ao atualizar conteúdo: webhook inválido!');
+    return;
+  }
+
+  if (!contentToSend || !contentToSend.length) {
+    toast.error('Ao menos algum conteúdo deve ser preenchido!');
+    return;
+  }
+
+  const params: Record<string, unknown> = {
+    id: currentContentId.value,
+    id_user: currentUserId.value,
+  };
+
+  switch (currentStepIndex) {
+    case 0:
+      params.intencao_de_busca = String(contentToSend);
+      break;
+    case 1:
+      params.keywords = String(contentToSend);
+      break;
+    case 2:
+      params.entidades = String(contentToSend);
+      break;
+    case 3:
+      params.outline = String(contentToSend);
+      break;
+    case 4:
+      params.secoes = String(contentToSend);
+      break;
+  }
+
+  try {
+    await api.get(updateWebhook, { params });
+
+    if (nextStepIndex === 3) {
+      const status = await checkContentStatus('New Outline Generated');
+      if (status) await getContentStep(3);
+    }
+
+    if (nextStepIndex === 4) {
+      const status = await checkContentStatus('BlogPost concluido');
+      if (status) await getContentStep(4);
+    }
+  } catch {
+    toast.error(`Erro ao atualizar conteudo da etapa ${currentStepIndex + 1}`);
+  }
 };
 
+// STEPS NAVIGATION
+const moveToStep = async (nextStepIndex: number): Promise<void> => {
+  loading.value = true;
+
+  if (nextStepIndex < 0 || nextStepIndex >= steps.value.length) {
+    toast.error('Etapa inválida!');
+    return;
+  }
+
+  await updateStep(currentStepIndex.value, nextStepIndex);
+
+  currentStepIndex.value = nextStepIndex;
+  loading.value = false;
+};
+const backToSteps = (): void => {
+  showFinishedContent.value = false;
+};
+const moveToFinishedContent = (): void => {
+  showFinishedContent.value = true;
+};
 const handleSaveContent = (): void => {
   toast.success('Conteúdo Salvo com sucesso!');
 
@@ -224,25 +338,10 @@ const handleSaveContent = (): void => {
   });
 };
 
-// STEPS NAVIGATION
-const moveToStep = async (stepIndex: number): Promise<void> => {
-  if (stepIndex < 0 || stepIndex >= steps.value.length) {
-    toast.error('Etapa inválida!');
-    return;
-  }
-  currentStep.value = stepIndex;
-};
-const backToSteps = (): void => {
-  showFinishedContent.value = false;
-};
-const moveToFinishedContent = (): void => {
-  showFinishedContent.value = true;
-};
-
 // DELETE
 const handleDeleteContent = async (): Promise<void> => {
   if (!currentContentId.value) {
-    toast.error('Erro ao excluir conteúdo: ID não encontrado.');
+    toast.error('Erro ao excluir conteúdo, ID não encontrado.');
     return;
   }
 
@@ -275,7 +374,7 @@ const handleExportContent = async (): Promise<void> => {
   try {
     const step = getCurrentExportStep();
     if (!step?.webhookExport) {
-      toast.error('Erro ao exportar conteúdo: Webhook inválido!');
+      toast.error('Erro ao exportar conteúdo, webhook inválido!');
       return;
     }
 
@@ -288,17 +387,17 @@ const handleExportContent = async (): Promise<void> => {
         'Erro ao exportar conteúdo: Link de download não encontrado!'
       );
     }
-  } catch (error) {
-    console.error('Erro ao exportar conteúdo:', error);
+  } catch {
+    console.error('Erro ao exportar conteúdo');
     toast.error('Erro ao exportar conteúdo. Tente novamente.');
   } finally {
     loadingExport.value = false;
   }
 };
 const getCurrentExportStep = () => {
-  return currentStep.value === 4 || showFinishedContent.value
+  return currentStepIndex.value === 4 || showFinishedContent.value
     ? steps.value[4]
-    : steps.value[currentStep.value];
+    : steps.value[currentStepIndex.value];
 };
 const fetchExportLink = async (webhookUrl: string): Promise<string | null> => {
   try {
@@ -328,7 +427,7 @@ onMounted(async () => {
   loading.value = true;
 
   if (route.name && route.name === 'contentDetail') {
-    await getContent();
+    await getContentDetail();
     return;
   }
 
@@ -338,8 +437,10 @@ onMounted(async () => {
   }
 
   await createContent();
+
+  loading.value = false;
 });
-onUnmounted(() => {
+onBeforeMount(() => {
   if (contentIntervalId.value) {
     clearInterval(contentIntervalId.value);
   }
@@ -371,7 +472,7 @@ const handleStopProduction = (): void => {
       <div v-if="isDataValid">
         <Transition name="fade" mode="out-in">
           <div class="stepper" v-if="!showFinishedContent">
-            <div class="stepper__progress-container">
+            <div class="stepper__progress-container" :class="{ loading }">
               <div class="stepper__progress">
                 <div
                   class="stepper__progress-bar"
@@ -384,10 +485,9 @@ const handleStopProduction = (): void => {
                 v-for="(step, i) in steps"
                 :key="i"
                 :class="{
-                  'stepper__step--done': i < currentStep,
-                  'stepper__step--current': i === currentStep,
-                  'stepper__step--last': currentStep === steps.length - 1,
-                  'stepper__step--disabled': !step.generated_content,
+                  'stepper__step--done': i < currentStepIndex,
+                  'stepper__step--current': i === currentStepIndex,
+                  'stepper__step--last': currentStepIndex === steps.length - 1,
                 }"
               >
                 <div
@@ -418,11 +518,12 @@ const handleStopProduction = (): void => {
               <div v-if="!loading" class="stepper__content-wrapper">
                 <div
                   class="stepper__content-container"
-                  v-for="(content, i) in steps[currentStep].generated_content"
+                  v-for="(content, i) in steps[currentStepIndex]
+                    .generated_content"
                   :key="i"
                 >
                   <div class="stepper__content-top">
-                    <p class="stepper__title">{{ content.title }}</p>
+                    <p class="stepper__title">{{ contentTitle }}</p>
                     <img
                       src="./img/question-icon.svg"
                       alt="Botão com ícone de interrogação"
@@ -439,8 +540,8 @@ const handleStopProduction = (): void => {
                         title="Clique para voltar"
                         width="21"
                         class="finished__back-arrow"
-                        :class="{ disabled: currentStep === 0 }"
-                        @click="moveToStep(currentStep - 1)"
+                        :class="{ disabled: currentStepIndex === 0 }"
+                        @click="moveToStep(currentStepIndex - 1)"
                       />
 
                       <AppButton
@@ -491,7 +592,7 @@ const handleStopProduction = (): void => {
 
           <div class="finished" v-else>
             <h2 class="finished__title">
-              Plataforma de ensino EaD é boa opção para você?
+              {{ formattedContentTitle }}
             </h2>
 
             <img
@@ -549,9 +650,9 @@ const handleStopProduction = (): void => {
 
             <Transition mode="out-in" name="fade" v-if="!showFinishedContent">
               <AppButton
-                @click="moveToStep(currentStep)"
-                v-if="currentStep < steps.length - 1"
-                :disabled="!(currentStep < steps.length)"
+                @click="moveToStep(currentStepIndex + 1)"
+                v-if="currentStepIndex < steps.length - 1"
+                :disabled="!(currentStepIndex < steps.length)"
                 dark
                 class="stepper__button--next"
               >
@@ -560,8 +661,7 @@ const handleStopProduction = (): void => {
 
               <AppButton
                 dark
-                v-else-if="currentStep === steps.length - 1"
-                @click="moveToStep(currentStep)"
+                v-else-if="currentStepIndex === steps.length - 1"
                 class="stepper__button--save"
               >
                 <template #label> Salvar </template>
