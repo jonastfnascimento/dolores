@@ -6,17 +6,17 @@ onMounted(() => {
   new TypeIt('#description', {
     speed: 45,
     startDelay: 1000,
-    deleteSpeed: 14,
+    deleteSpeed: 50,
     cursor: true,
     lifeLike: true,
   })
     .type('Reinventando o jeito de criar conteúdo, ')
     .pause(1000)
-    .type('combinando inovação e inspiração...')
-    .pause(1000)
-    .delete(35)
+    .type('com tecnologia e inovação.')
     .pause(500)
-    .type('com tecnologia e criatividade.')
+    .delete(9)
+    .pause(500)
+    .type('criatividade.')
     .go();
 });
 </script>

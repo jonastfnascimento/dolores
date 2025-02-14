@@ -23,25 +23,48 @@ const proxyText = computed({
   set: (value) => emit('update:modelValue', value),
 });
 
-const language = 'pt-BR';
-const toolbars = [
-  'bold',
-  'underline',
-  'sup',
-  'title',
-  'quote',
-  'unorderedList',
-  'orderedList',
-  'code',
-  'link',
-  'table',
-  'revoke',
-  'next',
-  '=',
-  'fullscreen',
-  'markdownTotal',
-  'previewOnly',
-];
+const toolbars = computed(() => {
+  if (isMobile.value) {
+    return [
+      'previewOnly',
+      'bold',
+      'underline',
+      'sup',
+      'title',
+      'quote',
+      'unorderedList',
+      'orderedList',
+      'code',
+      'link',
+      'table',
+      'revoke',
+      'next',
+      '=',
+      'markdownTotal',
+    ];
+  }
+
+  return [
+    'bold',
+    'underline',
+    'sup',
+    'title',
+    'quote',
+    'unorderedList',
+    'orderedList',
+    'code',
+    'link',
+    'table',
+    'revoke',
+    'next',
+    '=',
+    'fullscreen',
+    'preview',
+    'previewOnly',
+    'markdownTotal',
+  ];
+});
+
 const footers = ['markdownTotal', '=', 'scrollSwitch'];
 const toolbarsExclude = [
   'italic',
@@ -66,6 +89,8 @@ const editorOptions = {
   noUploadImg: true,
   noHighlight: true,
   noSuperScript: true,
+  previewOnly: isMobile.value,
+  preview: !isMobile.value,
 };
 </script>
 
@@ -73,11 +98,12 @@ const editorOptions = {
   <MdEditor
     id="text-editor"
     v-model="proxyText"
-    :language="language"
+    :previewOnly="isMobile"
     :toolbars="toolbars"
     :footers="footers"
     :toolbarsExclude="toolbarsExclude"
     v-bind="editorOptions"
+    language="pt-BR"
   />
 </template>
 
