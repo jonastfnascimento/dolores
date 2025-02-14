@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { MdEditor, config } from 'md-editor-v3';
+import {
+  MdEditor,
+  config,
+  type ToolbarNames,
+  type Footers,
+} from 'md-editor-v3';
 import 'md-editor-v3/lib/style.css';
 import PT_BR from '@vavt/cm-extension/dist/locale/pt-BR';
 
@@ -25,7 +30,8 @@ const proxyText = computed<string>({
   set: (value) => emit('update:modelValue', value),
 });
 
-const toolbars = computed<string[]>(() =>
+// Corrigindo a tipagem dos toolbars
+const toolbars = computed<ToolbarNames[]>(() =>
   isMobile.value
     ? ([
         'bold',
@@ -42,7 +48,7 @@ const toolbars = computed<string[]>(() =>
         'next',
         '=',
         'markdownTotal',
-      ] as string[])
+      ] as ToolbarNames[])
     : ([
         'bold',
         'underline',
@@ -60,32 +66,36 @@ const toolbars = computed<string[]>(() =>
         'fullscreen',
         'preview',
         'markdownTotal',
-      ] as string[])
+      ] as ToolbarNames[])
 );
 
-const footers = computed<string[]>(() => [
-  'markdownTotal',
-  '=',
-  'scrollSwitch',
-]);
+// Corrigindo a tipagem dos footers
+const footers = computed<Footers[]>(
+  () => ['markdownTotal', '=', 'scrollSwitch'] as Footers[]
+);
 
-const toolbarsExclude = computed<string[]>(() => [
-  'italic',
-  'strikeThrough',
-  'sub',
-  'task',
-  'codeRow',
-  'image',
-  'mermaid',
-  'katex',
-  'save',
-  'prettier',
-  'pageFullscreen',
-  'htmlPreview',
-  'catalog',
-  'github',
-]);
+// Corrigindo a tipagem dos toolbars a serem excluídos
+const toolbarsExclude = computed<ToolbarNames[]>(
+  () =>
+    [
+      'italic',
+      'strikeThrough',
+      'sub',
+      'task',
+      'codeRow',
+      'image',
+      'mermaid',
+      'katex',
+      'save',
+      'prettier',
+      'pageFullscreen',
+      'htmlPreview',
+      'catalog',
+      'github',
+    ] as ToolbarNames[]
+);
 
+// Mantendo a tipagem do editorOptions correta
 const editorOptions = computed<Record<string, boolean>>(() => ({
   noMermaid: true,
   noKatex: true,
