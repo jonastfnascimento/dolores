@@ -36,12 +36,14 @@ const handleSubmit = async () => {
   if (!userEmail.value || !isValidEmail(userEmail.value)) {
     errorEmail.value = true;
     toast.error('Endereço de email inválido!');
+    console.error('Endereço de email inválido!');
     return;
   }
 
   if (!userPassword.value) {
     errorPassword.value = true;
     toast.error('A senha deve ser preenchida!');
+    console.error('A senha deve ser preenchida!');
     return;
   }
 
@@ -60,6 +62,7 @@ const handleSubmit = async () => {
 
     if (data.message === 'Login Not Allowed') {
       toast.error('Usuário não encontrado, verifique as credenciais!');
+      console.error('Usuário não encontrado, verifique as credenciais!');
       errorEmail.value = true;
       errorPassword.value = true;
       setTimeout(() => {
@@ -80,6 +83,9 @@ const handleSubmit = async () => {
   } catch (error) {
     console.error(error);
     toast.error('Ocorreu um erro inesperado! Entre em contato com o suporte.');
+    console.error(
+      'Ocorreu um erro inesperado! Entre em contato com o suporte.'
+    );
     isLoading.value = false;
   }
 };

@@ -38,9 +38,11 @@ const fetchAvatarsAndPersonas = async (searchTerm: string = '') => {
 
     if (!avatars.value.length && !personas.value.length) {
       toast.error('Nenhum dado encontrado.');
+      console.error('Nenhum dado encontrado.');
     }
   } catch (error) {
     toast.error(`Erro ao buscar dados: ${error}`);
+    console.error(`Erro ao buscar dados: ${error}`);
   } finally {
     loading.value = false;
   }

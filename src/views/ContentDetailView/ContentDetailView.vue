@@ -89,6 +89,9 @@ const createContent = async (): Promise<void> => {
       toast.error(
         'Erro ao criar conteúdo! Uma persona e um avatar devem ser selecionados.'
       );
+      console.error(
+        'Erro ao criar conteúdo! Uma persona e um avatar devem ser selecionados.'
+      );
       contentStore.toggleModal(true);
       return;
     }
@@ -120,8 +123,9 @@ const createContent = async (): Promise<void> => {
         getContentStep(2),
       ]);
     }
-  } catch {
+  } catch (error) {
     toast.error('Erro ao criar conteúdo. Tente novamente.');
+    console.error('Erro ao criar conteúdo. Tente novamente.', error);
   }
 };
 
@@ -159,8 +163,9 @@ const getContentDetail = async (): Promise<void> => {
       const steps = stepsToLoad[status] || [];
       await Promise.all(steps.map(getContentStep));
     }
-  } catch {
+  } catch (error) {
     toast.error('Erro ao carregar conteúdo!');
+    console.error('Erro ao carregar conteúdo!', error);
   }
 };
 
@@ -196,6 +201,7 @@ const checkContentStatus = async (payload: string): Promise<boolean> => {
 const getContentStatus = async (): Promise<string | null> => {
   if (!currentContentId.value) {
     toast.error('Erro ao criar conteúdo, ID não encontrado.');
+    console.error('Erro ao criar conteúdo, ID não encontrado.');
     return null;
   }
 
@@ -205,8 +211,9 @@ const getContentStatus = async (): Promise<string | null> => {
     });
 
     return data.status;
-  } catch {
+  } catch (error) {
     toast.error('Erro ao obter status do conteúdo.');
+    console.error('Erro ao obter status do conteúdo.', error);
     return null;
   }
 };
@@ -218,6 +225,7 @@ const getContentStep = async (stepIndex: number): Promise<void> => {
   if (!step || !step.webhookRetrieve) {
     loading.value = false;
     toast.error('Erro ao carregar conteúdo, webhook inválido!');
+    console.error('Erro ao carregar conteúdo, webhook inválido!');
     return;
   }
 
@@ -231,6 +239,7 @@ const getContentStep = async (stepIndex: number): Promise<void> => {
 
     if (!data.generated_content || !Array.isArray(data.generated_content)) {
       toast.error('Erro ao carregar conteúdo!');
+      console.error('Erro ao carregar conteúdo!');
     }
 
     steps.value[stepIndex] = {
@@ -243,8 +252,9 @@ const getContentStep = async (stepIndex: number): Promise<void> => {
         `O conteúdo da etapa ${item.title} foi carregado com sucesso!`
       );
     });
-  } catch {
+  } catch (error) {
     toast.error('Erro ao carregar conteúdo!');
+    console.error('Erro ao carregar conteúdo!', error);
   } finally {
     loading.value = false;
   }
@@ -261,11 +271,13 @@ const updateStep = async (
 
   if (!updateWebhook || !nextStep) {
     toast.error('Erro ao atualizar conteúdo: webhook inválido!');
+    console.error('Erro ao atualizar conteúdo: webhook inválido!');
     return;
   }
 
   if (!contentToSend || !contentToSend.length) {
     toast.error('Ao menos algum conteúdo deve ser preenchido!');
+    console.error('Ao menos algum conteúdo deve ser preenchido!');
     return;
   }
 
@@ -304,8 +316,12 @@ const updateStep = async (
       const status = await checkContentStatus('BlogPost concluido');
       if (status) await getContentStep(4);
     }
-  } catch {
+  } catch (error) {
     toast.error(`Erro ao atualizar conteudo da etapa ${currentStepIndex + 1}`);
+    console.error(
+      `Erro ao atualizar conteudo da etapa ${currentStepIndex + 1}`,
+      error
+    );
   }
 };
 
@@ -329,6 +345,7 @@ const moveToStep = async (nextStepIndex: number): Promise<void> => {
   }
   if (nextStepIndex < 0 || nextStepIndex >= steps.value.length) {
     toast.error('Etapa inválida!');
+    console.error('Etapa inválida!');
     return;
   }
 
@@ -356,6 +373,7 @@ const handleSaveContent = (): void => {
 const handleDeleteContent = async (): Promise<void> => {
   if (!currentContentId.value) {
     toast.error('Erro ao excluir conteúdo, ID não encontrado.');
+    console.error('Erro ao excluir conteúdo, ID não encontrado.');
     return;
   }
 
@@ -367,6 +385,7 @@ const handleDeleteContent = async (): Promise<void> => {
     router.push({ name: 'listing', params: { slug: 'contents' } });
   } catch {
     toast.error('Erro ao excluir conteúdo!');
+    console.error('Erro ao excluir conteúdo!');
   }
 };
 
@@ -389,6 +408,7 @@ const handleExportContent = async (): Promise<void> => {
     const step = getCurrentExportStep();
     if (!step?.webhookExport) {
       toast.error('Erro ao exportar conteúdo, webhook inválido!');
+      console.error('Erro ao exportar conteúdo, webhook inválido!');
       return;
     }
 
@@ -400,10 +420,13 @@ const handleExportContent = async (): Promise<void> => {
       toast.error(
         'Erro ao exportar conteúdo: Link de download não encontrado!'
       );
+      console.error(
+        'Erro ao exportar conteúdo: Link de download não encontrado!'
+      );
     }
-  } catch {
+  } catch (error) {
     console.error('Erro ao exportar conteúdo');
-    toast.error('Erro ao exportar conteúdo. Tente novamente.');
+    toast.error('Erro ao exportar conteúdo. Tente novamente.', error);
   } finally {
     loadingExport.value = false;
   }

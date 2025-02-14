@@ -59,7 +59,9 @@ async function getPersona() {
         interess: data.Persona.interest,
       };
     })
-    .catch(() => ({}));
+    .catch((error) => {
+      console.error(error);
+    });
 
   loading.value = false;
 }
@@ -170,7 +172,8 @@ async function onFileUpload(event: Event) {
 
   if (target.files?.length && target.files[0].type.includes('image')) {
     const file = target.files[0];
-    newProfileImage.value = await useFileToBase64(file).catch(() => {
+    newProfileImage.value = await useFileToBase64(file).catch((error) => {
+      console.error(error);
       alert(
         'Ops! Ocorreu um erro ao tentar subir esse arquivo. Tente novamente mais tarde'
       );
@@ -219,7 +222,8 @@ async function updateAvatar() {
         personaName.value = data.avatar.name;
         toast.success('Persona atualizada com sucesso!');
       })
-      .catch(() => {
+      .catch((error) => {
+        console.error(error);
         toast.error('Ops! Ocorreu um erro ao tentar atualizar.');
         return {};
       });
@@ -269,7 +273,8 @@ async function createPersona() {
           },
         });
       })
-      .catch(() => {
+      .catch((error) => {
+        console.error(error);
         toast.error('Ops! Ocorreu um erro ao tentar criar.');
         return {};
       });
@@ -310,7 +315,8 @@ async function removePersona() {
           },
         });
       })
-      .catch(() => {
+      .catch((error) => {
+        console.error(error);
         toast.error('Ops! Ocorreu um erro ao tentar remover.');
         return {};
       });

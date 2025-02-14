@@ -193,8 +193,9 @@ async function updateAvatar() {
         avatarName.value = data.avatar.company_name;
         toast.success('Avatar atualizado com sucesso!');
       })
-      .catch(() => {
+      .catch((error) => {
         toast.error('Ops! Ocorreu um erro ao tentar atualizar.');
+        console.error('Ops! Ocorreu um erro ao tentar atualizar.', error);
         return {};
       });
 
@@ -239,8 +240,9 @@ async function createAvatar() {
           },
         });
       })
-      .catch(() => {
+      .catch((error) => {
         toast.error('Ops! Ocorreu um erro ao tentar criar.');
+        console.error('Ops! Ocorreu um erro ao tentar criar.', error);
         return {};
       });
 
@@ -280,6 +282,7 @@ async function removeAvatar() {
       })
       .catch(() => {
         toast.error('Ops! Ocorreu um erro ao tentar remover.');
+        console.error('Ops! Ocorreu um erro ao tentar remover.');
         return {};
       });
 
