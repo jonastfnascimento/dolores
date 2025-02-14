@@ -16,55 +16,60 @@ config({
 });
 
 const props = defineProps<{ modelValue: string }>();
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits<{
+  (e: 'update:modelValue', value: string): void;
+}>();
 
-const proxyText = computed({
+const proxyText = computed<string>({
   get: () => props.modelValue,
   set: (value) => emit('update:modelValue', value),
 });
 
-const toolbars = computed(() => {
-  if (isMobile.value) {
-    return [
-      'bold',
-      'underline',
-      'sup',
-      'title',
-      'quote',
-      'unorderedList',
-      'orderedList',
-      'code',
-      'link',
-      'table',
-      'revoke',
-      'next',
-      '=',
-      'markdownTotal',
-    ];
-  }
+const toolbars = computed<string[]>(() =>
+  isMobile.value
+    ? ([
+        'bold',
+        'underline',
+        'sup',
+        'title',
+        'quote',
+        'unorderedList',
+        'orderedList',
+        'code',
+        'link',
+        'table',
+        'revoke',
+        'next',
+        '=',
+        'markdownTotal',
+      ] as string[])
+    : ([
+        'bold',
+        'underline',
+        'sup',
+        'title',
+        'quote',
+        'unorderedList',
+        'orderedList',
+        'code',
+        'link',
+        'table',
+        'revoke',
+        'next',
+        '=',
+        'fullscreen',
+        'preview',
+        'markdownTotal',
+      ] as string[])
+);
 
-  return [
-    'bold',
-    'underline',
-    'sup',
-    'title',
-    'quote',
-    'unorderedList',
-    'orderedList',
-    'code',
-    'link',
-    'table',
-    'revoke',
-    'next',
-    '=',
-    'fullscreen',
-    'preview',
-    'markdownTotal',
-  ];
-});
+const footers = computed<string[]>(() => [
+  'markdownTotal',
+  '=',
+  'scrollSwitch',
+]);
 
-const footers = ['markdownTotal', '=', 'scrollSwitch'];
-const toolbarsExclude = [
+const toolbarsExclude = computed<string[]>(() => [
   'italic',
   'strikeThrough',
   'sub',
@@ -79,9 +84,9 @@ const toolbarsExclude = [
   'htmlPreview',
   'catalog',
   'github',
-];
+]);
 
-const editorOptions = {
+const editorOptions = computed<Record<string, boolean>>(() => ({
   noMermaid: true,
   noKatex: true,
   noUploadImg: true,
@@ -89,7 +94,7 @@ const editorOptions = {
   noSuperScript: true,
   previewOnly: isMobile.value,
   preview: !isMobile.value,
-};
+}));
 </script>
 
 <template>
