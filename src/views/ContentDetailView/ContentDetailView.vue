@@ -10,8 +10,8 @@ import FixedInfos from '@/components/Content/FixedInfos/FixedInfos.vue';
 import ContentCreationModal from '@/components/Content/ContentCreationModal/ContentCreationModal.vue';
 import AppAccordion from '@/components/Content/ContentAccordion/ContentAccordion.vue';
 import AppButton from '@/components/Common/AppButton/AppButton.vue';
-import AppTextarea from '@/components/Common/AppTextArea/AppTextarea.vue';
 import BottomCreationStepperSkeleton from '@/components/Content/BottomCreationStepperSkeleton/BottomCreationStepperSkeleton.vue';
+import TextEditor from '@/components/Content/TextEditor/TextEditor.vue';
 import BaseModal from '@/components/Base/BaseModal/BaseModal.vue';
 
 import { WEBHOOKS } from './constants.ts';
@@ -313,6 +313,20 @@ const updateStep = async (
 const moveToStep = async (nextStepIndex: number): Promise<void> => {
   loading.value = true;
 
+  if (nextStepIndex < currentStepIndex.value) {
+    currentStepIndex.value = nextStepIndex;
+    loading.value = false;
+    return;
+  }
+
+  if (
+    nextStepIndex !== currentStepIndex.value + 1 &&
+    nextStepIndex !== currentStepIndex.value - 1
+  ) {
+    loading.value = false;
+    toast.info('Etapa inválida! Não é possível pular etapas.');
+    return;
+  }
   if (nextStepIndex < 0 || nextStepIndex >= steps.value.length) {
     toast.error('Etapa inválida!');
     return;
@@ -487,6 +501,9 @@ const handleStopProduction = (): void => {
                 :class="{
                   'stepper__step--done': i < currentStepIndex,
                   'stepper__step--current': i === currentStepIndex,
+                  'stepper__step--disabled':
+                    i !== currentStepIndex + 1 && i !== currentStepIndex - 1,
+
                   'stepper__step--last': currentStepIndex === steps.length - 1,
                 }"
               >
@@ -523,7 +540,7 @@ const handleStopProduction = (): void => {
                   :key="i"
                 >
                   <div class="stepper__content-top">
-                    <p class="stepper__title">{{ contentTitle }}</p>
+                    <p class="stepper__title">{{ content.title }}</p>
                     <img
                       src="./img/question-icon.svg"
                       alt="Botão com ícone de interrogação"
@@ -560,11 +577,8 @@ const handleStopProduction = (): void => {
                       </AppButton>
                     </div>
 
-                    <AppTextarea
-                      :placeholder="content.title"
-                      :rows="4"
-                      :value="content.content"
-                      @input="content.content = $event.target.value"
+                    <TextEditor
+                      v-model="content.content"
                       class="stepper__textarea"
                     />
                   </div>

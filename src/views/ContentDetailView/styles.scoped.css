@@ -81,13 +81,13 @@
 }
 
 .stepper__step--disabled {
-  pointer-events: none;
+  cursor: not-allowed;
 }
 
-.stepper__step--disabled.stepper__step--done .stepper__step-number {
+/* .stepper__step--disabled.stepper__step--done .stepper__step-number {
   background-color: var(--gray-200);
   color: var(--gray-900);
-}
+} */
 
 .stepper__content-container {
   margin-top: 20px;

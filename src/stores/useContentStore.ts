@@ -4,18 +4,9 @@ import type { PersonaStore } from '@/views/PersonaDetailView/types';
 
 export const useContentStore = defineStore('content', {
   state: () => ({
-    // avatar: null as AvatarStore | null,
-    // persona: null as PersonaStore | null,
-    // keyword: '',
-    avatar: {
-      id: '1',
-      label: 'Avatar Teste enquanto o chat está fora do ar',
-    },
-    persona: {
-      id: '1',
-      label: 'Persona Teste enquanto o chat está fora do ar',
-    },
-    keyword: 'keyword teste enquanto o chat está fora do ar',
+    avatar: null as AvatarStore | null,
+    persona: null as PersonaStore | null,
+    keyword: '',
     showModal: false,
   }),
   actions: {

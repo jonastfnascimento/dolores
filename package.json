@@ -16,10 +16,9 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
-    "@milkdown/core": "^7.6.2",
-    "@milkdown/theme-nord": "^7.6.2",
-    "@milkdown/vue": "^7.6.2",
+    "@vavt/cm-extension": "^1.8.0",
     "axios": "^1.7.9",
+    "md-editor-v3": "^5.2.2",
     "pinia": "^2.3.0",
     "pinia-plugin-persistedstate": "^4.2.0",
     "swiper": "^11.2.1",

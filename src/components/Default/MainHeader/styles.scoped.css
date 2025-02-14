@@ -20,7 +20,7 @@
   .header {
     position: sticky;
     top: 0;
-    z-index: 2;
+    z-index: 10;
     background-color: var(--gray-100);
     border-bottom: 1px solid var(--gray-300);
   }
