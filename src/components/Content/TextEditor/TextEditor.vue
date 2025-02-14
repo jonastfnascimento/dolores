@@ -26,7 +26,6 @@ const proxyText = computed({
 const toolbars = computed(() => {
   if (isMobile.value) {
     return [
-      'previewOnly',
       'bold',
       'underline',
       'sup',
@@ -60,7 +59,6 @@ const toolbars = computed(() => {
     '=',
     'fullscreen',
     'preview',
-    'previewOnly',
     'markdownTotal',
   ];
 });
@@ -98,7 +96,7 @@ const editorOptions = {
   <MdEditor
     id="text-editor"
     v-model="proxyText"
-    :previewOnly="isMobile"
+    :previewOnly="isMobile.value"
     :toolbars="toolbars"
     :footers="footers"
     :toolbarsExclude="toolbarsExclude"

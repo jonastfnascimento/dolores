@@ -8,7 +8,7 @@ type AccordionItem = {
 };
 
 const props = defineProps<{ items: AccordionItem[] }>();
-const accordionBody = useTemplateRef('accordionBody');
+const accordionBody = useTemplateRef<HTMLElement[]>('accordionBody');
 
 const internalItems = ref(
   props.items.map((item) => ({
