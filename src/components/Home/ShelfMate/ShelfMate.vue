@@ -141,7 +141,7 @@ const saveUrl = computed(() => {
 
           <div class="shelf-mate__container-texts">
             <template v-if="props.types !== 'content'">
-              <p v-if="item?.date.length" class="shelf-mate__item-date">
+              <p v-if="item?.date?.length" class="shelf-mate__item-date">
                 <img src="./img/calendar.svg" />
                 {{ useDate(item?.date) }}
               </p>

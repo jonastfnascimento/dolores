@@ -425,8 +425,8 @@ const handleExportContent = async (): Promise<void> => {
       );
     }
   } catch (error) {
-    console.error('Erro ao exportar conteúdo');
-    toast.error('Erro ao exportar conteúdo. Tente novamente.', error);
+    toast.error('Erro ao exportar conteúdo. Tente novamente.');
+    console.error('Erro ao exportar conteúdo', error);
   } finally {
     loadingExport.value = false;
   }
@@ -465,6 +465,10 @@ onMounted(async () => {
 
   if (route.name && route.name === 'contentDetail') {
     await getContentDetail();
+    if (!isDataValid.value) {
+      contentStore.toggleModal(true);
+      return;
+    }
     return;
   }
 
@@ -499,8 +503,10 @@ const handleStopProduction = (): void => {
   >
     <FixedInfos
       class="content-detail__fixed-infos"
-      :avatarLabel="avatar?.label ?? 'Avatar não selecionado'"
-      :personaLabel="persona?.label ?? 'Persona não selecionada'"
+      :avatarLabel="
+        avatar?.label.length ? avatar.label : 'Avatar não selecionado'
+      "
+      :personaLabel="persona?.label ? persona.label : 'Persona não selecionada'"
       :keyword="keyword || 'Keyword não escolhida'"
       :isDataValid="isDataValid"
     />
@@ -572,7 +578,7 @@ const handleStopProduction = (): void => {
                     />
                   </div>
 
-                  <div>
+                  <div v-if="i === 0">
                     <div class="stepper__top-buttons">
                       <img
                         src="./img/back-arrow.svg"
@@ -587,6 +593,7 @@ const handleStopProduction = (): void => {
                       <AppButton
                         @click="handleExportContent"
                         class="stepper__button--export"
+                        :loading="loadingExport"
                       >
                         <template #label> Exportar </template>
                         <template #icon>

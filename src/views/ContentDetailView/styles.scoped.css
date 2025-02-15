@@ -84,11 +84,6 @@
   cursor: not-allowed;
 }
 
-/* .stepper__step--disabled.stepper__step--done .stepper__step-number {
-  background-color: var(--gray-200);
-  color: var(--gray-900);
-} */
-
 .stepper__content-container {
   margin-top: 20px;
 }
@@ -120,6 +115,11 @@
 
 .stepper__textarea {
   margin-top: 15px;
+}
+
+.stepper__bottom-container.loading {
+  pointer-events: none;
+  opacity: 0.5;
 }
 
 .stepper__bottom-buttons {
