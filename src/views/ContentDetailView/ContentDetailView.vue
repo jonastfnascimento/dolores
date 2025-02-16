@@ -304,13 +304,16 @@ const updateStep = async (
 };
 
 const moveToStep = async (nextStepIndex: number): Promise<void> => {
+  if (nextStepIndex === currentStepIndex.value) {
+    toast.info('Você já está nessa etapa!');
+    return;
+  }
+
   if (
-    !(
-      nextStepIndex !== currentStepIndex.value + 1 ||
-      nextStepIndex !== currentStepIndex.value - 1
-    )
+    nextStepIndex !== currentStepIndex.value + 1 &&
+    nextStepIndex !== currentStepIndex.value - 1
   ) {
-    toast.error('Etapa inválida! Você só pode avançar ou voltar uma etapa.');
+    toast.info('Etapa inválida! Você só pode avançar ou voltar uma etapa.');
     return;
   }
 
@@ -350,7 +353,7 @@ const validateStepChange = async (nextStepIndex: number) => {
         item.content === currentStep.original_content[index]
     );
 
-  // 3. Verifica o status atual e se a próxima etapa já deve existir
+  // 3. Verifica a partir do status atual se a próxima etapa já deve existir
   const currentStatus = await getContentStatus();
   const isNextStepAvailable =
     currentStatus && STATUS_TO_STEPS[currentStatus]?.includes(nextStepIndex);
