@@ -34,6 +34,8 @@ const proxyText = computed<string>({
 const toolbars = computed<ToolbarNames[]>(() =>
   isMobile.value
     ? ([
+        'previewOnly',
+        'italic',
         'bold',
         'underline',
         'sup',
@@ -50,6 +52,7 @@ const toolbars = computed<ToolbarNames[]>(() =>
         'markdownTotal',
       ] as ToolbarNames[])
     : ([
+        'italic',
         'bold',
         'underline',
         'sup',
@@ -78,7 +81,6 @@ const footers = computed<Footers[]>(
 const toolbarsExclude = computed<ToolbarNames[]>(
   () =>
     [
-      'italic',
       'strikeThrough',
       'sub',
       'task',
@@ -111,8 +113,9 @@ const editorOptions = computed<Record<string, boolean>>(() => ({
   <MdEditor
     id="text-editor"
     v-model="proxyText"
-    :previewOnly="isMobile.value"
+    :previewOnly="isMobile"
     :toolbars="toolbars"
+    theme="dark"
     :footers="footers"
     :toolbarsExclude="toolbarsExclude"
     v-bind="editorOptions"

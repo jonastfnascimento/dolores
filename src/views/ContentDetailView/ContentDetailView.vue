@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onBeforeMount } from 'vue';
+import { ref, computed, onMounted, onBeforeMount, onBeforeUnmount } from 'vue';
 import { useContentStore } from '@/stores/useContentStore';
 import { useUserStore } from '@/stores/userStore';
 import { api } from '@/services/api';
@@ -30,18 +30,25 @@ const route = useRoute();
 
 const currentStepIndex = ref(0);
 const loading = ref(false);
-
 const showFinishedContent = ref(false);
-
 const contentTitle = ref('');
 const currentContentId = ref<number | null>(null);
 const contentIntervalId = ref<number | null>(null);
-const steps = ref<Array<StepInterface>>(
+
+const STATUS_TO_STEPS: Record<string, number[]> = {
+  'BlogPost concluido': [0, 1, 2, 3, 4],
+  'New Outline Generated': [0, 1, 2, 3],
+  'SEO Outline Done': [0, 1, 2],
+  'Gerar BlogPost': [0, 1, 2],
+};
+
+const steps = ref<StepInterface[]>(
   WEBHOOKS.STEPS.map((step) => ({
     webhookRetrieve: step.retrieve,
     webhookUpdate: step.update,
     webhookExport: step.export,
     generated_content: null,
+    original_content: null,
   }))
 );
 
@@ -57,56 +64,45 @@ const formattedContentTitle = computed(() =>
 );
 
 const progress = computed(() => {
-  if (steps.value.length === 0) {
-    return '0%';
-  }
-
   const stepIndex = Math.min(
     Math.max(currentStepIndex.value, 0),
     steps.value.length
   );
-
   return `${(stepIndex / steps.value.length) * 100}%`;
 });
 
 const accordionItems = computed(() => {
   return steps.value
     .filter((step) => step.generated_content)
-    .flatMap((step) =>
-      step.generated_content
-        ? step.generated_content.map((contentItem, index) => ({
-            id: index,
-            title: contentItem.title,
-            content: contentItem.content,
-          }))
-        : []
+    .flatMap(
+      (step) =>
+        step.generated_content?.map((contentItem, index) => ({
+          id: index,
+          title: contentItem.title,
+          content: contentItem.content,
+        })) || []
     );
 });
 
 const createContent = async (): Promise<void> => {
   try {
-    if (!contentStore?.avatar?.id || !contentStore?.persona?.id) {
-      toast.error(
-        'Erro ao criar conteúdo! Uma persona e um avatar devem ser selecionados.'
-      );
-      console.error(
-        'Erro ao criar conteúdo! Uma persona e um avatar devem ser selecionados.'
-      );
+    if (!contentStore.avatar?.id || !contentStore.persona?.id) {
       contentStore.toggleModal(true);
+      toast.error('Persona e avatar devem ser selecionados');
       return;
     }
 
-    const params = {
-      user: currentUserId.value,
-      keyword: contentStore.keyword,
-      avatar: contentStore.avatar.id,
-      persona: contentStore.persona.id,
-      status: 'pesquisar',
-    };
-
     const { data } = await api.get<CreateContentResponse>(
       WEBHOOKS.CREATE_CONTENT,
-      { params }
+      {
+        params: {
+          user: currentUserId.value,
+          keyword: contentStore.keyword,
+          avatar: contentStore.avatar?.id ?? 0,
+          persona: contentStore.persona?.id ?? 0,
+          status: 'pesquisar',
+        },
+      }
     );
 
     currentContentId.value = data.id;
@@ -117,146 +113,123 @@ const createContent = async (): Promise<void> => {
 
     const status = await checkContentStatus('SEO Outline Done');
     if (status) {
-      await Promise.all([
-        getContentStep(0),
-        getContentStep(1),
-        getContentStep(2),
-      ]);
+      await Promise.all([0, 1, 2].map(getContentStep));
     }
   } catch (error) {
-    toast.error('Erro ao criar conteúdo. Tente novamente.');
-    console.error('Erro ao criar conteúdo. Tente novamente.', error);
+    toast.error('Erro ao criar conteúdo');
+    console.error('Erro ao criar conteúdo', error);
   }
 };
 
 const getContentDetail = async (): Promise<void> => {
-  currentContentId.value = Number(route.params.id);
-
-  const contentDetailResponse = await api.get<ContentDetailResponse>(
-    WEBHOOKS.GET_CONTENT_DETAIL,
-    {
-      params: {
-        id: currentContentId.value,
-      },
-    }
-  );
-
-  const { Keyword, Avatar, Persona, Título } = contentDetailResponse.data;
-  contentTitle.value = Título;
-
-  contentStore.setContentData(
-    { label: Avatar, id: 0 },
-    { label: Persona, id: 0 },
-    Keyword
-  );
-
-  const stepsToLoad: Record<string, number[]> = {
-    'BlogPost concluido': [0, 1, 2, 3, 4],
-    'New Outline Generated': [0, 1, 2, 3],
-    'SEO Outline Done': [0, 1, 2],
-    'Gerar BlogPost': [0, 1, 2],
-  };
-
   try {
+    currentContentId.value = Number(route.params.id);
+
+    const { data } = await api.get<ContentDetailResponse>(
+      WEBHOOKS.GET_CONTENT_DETAIL,
+      {
+        params: { id: currentContentId.value },
+      }
+    );
+
+    contentTitle.value = data.Título;
+    contentStore.setContentData(
+      { label: data.Avatar, id: 0 },
+      { label: data.Persona, id: 0 },
+      data.Keyword
+    );
+
     const status = await getContentStatus();
-    if (status && status.length) {
-      const steps = stepsToLoad[status] || [];
-      await Promise.all(steps.map(getContentStep));
+    if (status) {
+      const stepsToLoad = STATUS_TO_STEPS[status] || [];
+      await Promise.all(stepsToLoad.map(getContentStep));
     }
   } catch (error) {
-    toast.error('Erro ao carregar conteúdo!');
-    console.error('Erro ao carregar conteúdo!', error);
+    toast.error('Erro ao carregar dados');
+    console.error('Erro ao carregar dados', error);
   }
 };
 
-const checkContentStatus = async (payload: string): Promise<boolean> => {
-  if (contentIntervalId.value !== null) {
-    clearInterval(contentIntervalId.value);
-    contentIntervalId.value = null;
-  }
-
+// setTimeout de forma recursiva para evitar sobreposição de requisições
+const checkContentStatus = async (targetStatus: string): Promise<boolean> => {
   return new Promise((resolve) => {
-    const newIntervalId = setInterval(async () => {
+    const check = async () => {
       try {
         const status = await getContentStatus();
-        if (status === payload) {
-          clearInterval(newIntervalId);
-          if (contentIntervalId.value === newIntervalId) {
+        if (status === targetStatus) {
+          if (contentIntervalId.value) {
+            clearTimeout(contentIntervalId.value);
             contentIntervalId.value = null;
           }
           resolve(true);
+        } else if (!contentIntervalId.value) {
+          resolve(false);
+        } else {
+          contentIntervalId.value = window.setTimeout(check, 30000);
         }
       } catch (error) {
-        console.error('Erro na verificação de status:', error);
-        clearInterval(newIntervalId);
-        contentIntervalId.value = null;
+        if (contentIntervalId.value) {
+          clearTimeout(contentIntervalId.value);
+          contentIntervalId.value = null;
+        }
+        toast.error('Erro ao verificar status do conteúdo');
+        console.error('Erro ao verificar status:', error);
         resolve(false);
       }
-    }, 30000);
+    };
 
-    contentIntervalId.value = newIntervalId;
+    contentIntervalId.value = window.setTimeout(check, 30000);
   });
 };
 
-const getContentStatus = async (): Promise<string | null> => {
+const getContentStatus = async (): Promise<string | undefined> => {
   if (!currentContentId.value) {
-    toast.error('Erro ao criar conteúdo, ID não encontrado.');
-    console.error('Erro ao criar conteúdo, ID não encontrado.');
-    return null;
+    toast.error('Erro ao obter status: ID não encontrado.');
+    return;
   }
 
   try {
     const { data } = await api.get<{ status: string }>(WEBHOOKS.STATUS_PEDIDO, {
       params: { id_pedido: currentContentId.value },
     });
-
     return data.status;
   } catch (error) {
-    toast.error('Erro ao obter status do conteúdo.');
-    console.error('Erro ao obter status do conteúdo.', error);
-    return null;
+    toast.error('Erro ao obter status');
+    console.error('Erro ao obter status', error);
+    return;
   }
 };
 
 const getContentStep = async (stepIndex: number): Promise<void> => {
-  loading.value = true;
-
-  const step = steps.value[stepIndex];
-  if (!step || !step.webhookRetrieve) {
-    loading.value = false;
-    toast.error('Erro ao carregar conteúdo, webhook inválido!');
-    console.error('Erro ao carregar conteúdo, webhook inválido!');
-    return;
-  }
-
   try {
+    const step = steps.value[stepIndex];
+
+    if (!step.webhookRetrieve) {
+      toast.error('Erro ao atualizar etapa: webhook inválido!');
+      return;
+    }
+
     const { data } = await api.get(step.webhookRetrieve, {
-      params: {
-        id: currentContentId.value,
-        id_user: currentUserId.value,
-      },
+      params: { id: currentContentId.value, id_user: currentUserId.value },
     });
 
-    if (!data.generated_content || !Array.isArray(data.generated_content)) {
-      toast.error('Erro ao carregar conteúdo!');
-      console.error('Erro ao carregar conteúdo!');
-    }
+    loading.value = false;
 
     steps.value[stepIndex] = {
       ...step,
       generated_content: data.generated_content,
+      original_content:
+        data.generated_content?.map((item: ContentItem) => item.content) ||
+        null,
     };
-
-    data.generated_content.forEach((item: ContentItem) => {
+    if (data?.generated_content) {
       toast.success(
-        `O conteúdo da etapa ${item.title} foi carregado com sucesso!`
+        `Etapa ${data?.generated_content[0]?.title} carregada com sucesso!`
       );
-    });
+    }
   } catch (error) {
-    toast.error('Erro ao carregar conteúdo!');
-    console.error('Erro ao carregar conteúdo!', error);
-  } finally {
-    loading.value = false;
+    toast.error('Erro ao carregar etapa');
+    console.error('Erro ao carregar etapa', error);
   }
 };
 
@@ -306,14 +279,19 @@ const updateStep = async (
 
   try {
     await api.get(updateWebhook, { params });
+    toast.success(
+      `Conteúdo da etapa ${currentStepIndex + 1} atualizado com sucesso!`
+    );
 
     if (nextStepIndex === 3) {
       const status = await checkContentStatus('New Outline Generated');
+      toast.success('Iniciando o processo de pesquisa da etapa 4...');
       if (status) await getContentStep(3);
     }
 
     if (nextStepIndex === 4) {
       const status = await checkContentStatus('BlogPost concluido');
+      toast.success('Iniciando o processo de pesquisa da etapa 5...');
       if (status) await getContentStep(4);
     }
   } catch (error) {
@@ -325,35 +303,65 @@ const updateStep = async (
   }
 };
 
-// STEPS NAVIGATION
 const moveToStep = async (nextStepIndex: number): Promise<void> => {
+  if (
+    !(
+      nextStepIndex !== currentStepIndex.value + 1 ||
+      nextStepIndex !== currentStepIndex.value - 1
+    )
+  ) {
+    toast.error('Etapa inválida! Você só pode avançar ou voltar uma etapa.');
+    return;
+  }
+
+  if (nextStepIndex < 0 || nextStepIndex >= steps.value.length) {
+    toast.error('Etapa inválida! Índice inexiste.');
+    return;
+  }
+
   loading.value = true;
 
-  if (nextStepIndex < currentStepIndex.value) {
-    currentStepIndex.value = nextStepIndex;
-    loading.value = false;
-    return;
-  }
+  const { canSkip } = await validateStepChange(nextStepIndex);
 
-  if (
-    nextStepIndex !== currentStepIndex.value + 1 &&
-    nextStepIndex !== currentStepIndex.value - 1
-  ) {
-    loading.value = false;
-    toast.info('Etapa inválida! Não é possível pular etapas.');
-    return;
+  if (!canSkip) {
+    await updateStep(currentStepIndex.value, nextStepIndex);
   }
-  if (nextStepIndex < 0 || nextStepIndex >= steps.value.length) {
-    toast.error('Etapa inválida!');
-    console.error('Etapa inválida!');
-    return;
-  }
-
-  await updateStep(currentStepIndex.value, nextStepIndex);
 
   currentStepIndex.value = nextStepIndex;
   loading.value = false;
 };
+
+const validateStepChange = async (nextStepIndex: number) => {
+  // 1. Se for voltar uma etapa, pode pular a verificação
+  if (nextStepIndex === currentStepIndex.value - 1) {
+    return { canSkip: true };
+  }
+
+  // 2. Verifica se o conteúdo da etapa atual foi modificado
+  const currentStep = steps.value[currentStepIndex.value];
+  const isContentUnchanged =
+    Array.isArray(currentStep.original_content) &&
+    Array.isArray(currentStep.generated_content) &&
+    currentStep.generated_content.length ===
+      currentStep.original_content.length &&
+    currentStep.generated_content.every(
+      (item, index) =>
+        currentStep.original_content &&
+        item.content === currentStep.original_content[index]
+    );
+
+  // 3. Verifica o status atual e se a próxima etapa já deve existir
+  const currentStatus = await getContentStatus();
+  const isNextStepAvailable =
+    currentStatus && STATUS_TO_STEPS[currentStatus]?.includes(nextStepIndex);
+
+  // 4. Retorna se pode pular a atualização
+  return {
+    canSkip: isContentUnchanged && isNextStepAvailable,
+  };
+};
+
+// NAVIGATION
 const backToSteps = (): void => {
   showFinishedContent.value = false;
 };
@@ -393,7 +401,7 @@ const handleDeleteContent = async (): Promise<void> => {
 const showShortExplanationModal = ref(false);
 const explanationModalContent = ref('');
 const handleOpenShortExplanation = (step: ContentItem) => {
-  if (step?.description.length) {
+  if (step?.description?.length) {
     explanationModalContent.value = step.description;
     showShortExplanationModal.value = true;
   }
@@ -460,30 +468,38 @@ const initiateDownload = (downloadLink: string): void => {
   document.body.removeChild(a);
 };
 
+// LIFECYCLE
 onMounted(async () => {
-  loading.value = true;
+  try {
+    loading.value = true;
 
-  if (route.name && route.name === 'contentDetail') {
-    await getContentDetail();
+    if (route.name === 'contentDetail') {
+      await getContentDetail();
+      if (!isDataValid.value) contentStore.toggleModal(true);
+      return;
+    }
+
     if (!isDataValid.value) {
       contentStore.toggleModal(true);
       return;
     }
-    return;
+
+    await createContent();
+  } finally {
+    loading.value = false;
   }
-
-  if (!isDataValid.value) {
-    contentStore.toggleModal(true);
-    return;
-  }
-
-  await createContent();
-
-  loading.value = false;
 });
+
 onBeforeMount(() => {
   if (contentIntervalId.value) {
     clearInterval(contentIntervalId.value);
+  }
+});
+
+onBeforeUnmount(() => {
+  if (contentIntervalId.value) {
+    clearTimeout(contentIntervalId.value);
+    contentIntervalId.value = null;
   }
 });
 

@@ -106,15 +106,12 @@
   align-items: center;
   justify-content: space-between;
   margin-top: 20px;
+  margin-bottom: 15px;
   gap: 20px;
 }
 
 .stepper__top-buttons button {
   width: calc(50% - 20px);
-}
-
-.stepper__textarea {
-  margin-top: 15px;
 }
 
 .stepper__bottom-container.loading {

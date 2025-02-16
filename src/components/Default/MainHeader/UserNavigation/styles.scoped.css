@@ -63,3 +63,7 @@ button.user-navigation__item {
   padding-left: 0;
   padding-right: 0;
 }
+
+button.user-navigation__item:hover {
+  text-decoration: underline;
+}

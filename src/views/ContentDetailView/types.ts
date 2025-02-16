@@ -6,11 +6,11 @@ export interface ContentItem {
 
 export interface StepInterface {
   title?: string;
-  selected?: boolean;
   webhookRetrieve?: string;
   webhookUpdate?: string;
   webhookExport?: string;
-  generated_content?: Array<ContentItem> | null;
+  generated_content: ContentItem[] | null;
+  original_content: string[] | null;
 }
 
 export interface CreateContentResponse {

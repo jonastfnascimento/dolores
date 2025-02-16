@@ -14,6 +14,7 @@ const { isMobile } = useDevice();
 
       <Toaster
         :position="isMobile ? 'bottom-center' : 'bottom-right'"
+        :expand="true"
         rich-colors
       />
     </RouterView>
