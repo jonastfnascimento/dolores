@@ -115,7 +115,6 @@ const editorOptions = computed<Record<string, boolean>>(() => ({
     v-model="proxyText"
     :previewOnly="isMobile"
     :toolbars="toolbars"
-    theme="dark"
     :footers="footers"
     :toolbarsExclude="toolbarsExclude"
     v-bind="editorOptions"
