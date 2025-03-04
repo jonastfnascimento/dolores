@@ -14,6 +14,9 @@ import ResumeInfos from '@/components/Detail/ResumeInfos/ResumeInfos.vue';
 import FieldInput from '@/components/Detail/FieldInput/FieldInput.vue';
 import BaseSpinner from '@/components/Base/BaseSpinner/BaseSpinner.vue';
 import { useFileToBase64 } from '@/composables/useFileToBase64';
+import { useUserStore } from '@/stores/userStore';
+
+const userStore = useUserStore();
 
 const { isMobile } = useDevice();
 
@@ -244,7 +247,7 @@ async function createPersona() {
     await api
       .get(`7099b242-11f3-4f0f-87f7-c1a8125cae9b`, {
         params: {
-          id_user: 1,
+          id_user: userStore.getUser?.id,
           name: currentPersona.value?.name,
           gender: currentPersona.value.genero,
           age_range: currentPersona.value.faixa,

@@ -14,6 +14,9 @@ import ResumeInfos from '@/components/Detail/ResumeInfos/ResumeInfos.vue';
 import FieldInput from '@/components/Detail/FieldInput/FieldInput.vue';
 import BaseSpinner from '@/components/Base/BaseSpinner/BaseSpinner.vue';
 import { useFileToBase64 } from '@/composables/useFileToBase64';
+import { useUserStore } from '@/stores/userStore';
+
+const userStore = useUserStore();
 
 const { isMobile } = useDevice();
 
@@ -214,7 +217,7 @@ async function createAvatar() {
     await api
       .get(`f5792738-34da-4040-802a-b58b207c626a`, {
         params: {
-          id_user: 1,
+          id_user: userStore.getUser?.id,
           company_name: currentAvatar.value?.name,
           slogan: currentAvatar.value?.slogan,
           products_and_services: currentAvatar.value?.services,

@@ -7,6 +7,7 @@ import ShelfMate from '@/components/Home/ShelfMate/ShelfMate.vue';
 import HomeSkeleton from '@/components/Home/HomeSkeleton/HomeSkeleton.vue';
 import SearchInput from '@/components/Base/SearchInput/SearchInput.vue';
 import HomeAllSkeleton from '@/components/Home/HomeAllSkeleton/HomeAllSkeleton.vue';
+import ContentCreationModal from '@/components/Content/ContentCreationModal/ContentCreationModal.vue';
 
 import { useUserStore } from '@/stores/userStore';
 
@@ -110,6 +111,8 @@ async function onSearch(term: string) {
         />
       </template>
     </template>
+
+    <ContentCreationModal />
   </main>
 </template>
 

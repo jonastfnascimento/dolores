@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { api } from '@/services/api';
 import type { Avatar } from './types';
 import type { Persona } from './types';
@@ -10,6 +10,10 @@ import AppCombobox from '@/components/Common/AppCombobox/AppCombobox.vue';
 import { useContentStore } from '@/stores/useContentStore';
 import { useRouter } from 'vue-router';
 import { toast } from 'vue-sonner';
+
+import { useUserStore } from '@/stores/userStore';
+
+const userStore = useUserStore();
 
 const router = useRouter();
 const contentStore = useContentStore();
@@ -26,10 +30,18 @@ const fetchAvatarsAndPersonas = async (searchTerm: string = '') => {
   try {
     const [avatarsResponse, personasResponse] = await Promise.all([
       api.get('a639000d-d2a8-44c0-be19-1b9fb7f272c2', {
-        params: { user_id: 1, id_user: 1, query: searchTerm },
+        params: {
+          user_id: userStore.getUser?.id,
+          id_user: userStore.getUser?.id,
+          query: searchTerm,
+        },
       }),
       api.get('a60029ee-936b-4397-a81a-577d80b22f9f', {
-        params: { user_id: 1, id_user: 1, query: searchTerm },
+        params: {
+          user_id: userStore.getUser?.id,
+          id_user: userStore.getUser?.id,
+          query: searchTerm,
+        },
       }),
     ]);
 
@@ -60,9 +72,14 @@ const invalidCreationContentData = computed(
   () => !selectedAvatar.value || !selectedPersona.value || !keyword.value
 );
 
-onMounted(() => {
-  fetchAvatarsAndPersonas();
-});
+watch(
+  () => contentStore.showModal,
+  (newValue) => {
+    if (newValue) {
+      fetchAvatarsAndPersonas();
+    }
+  }
+);
 
 const initContentCreationProcess = () => {
   if (selectedAvatar.value && selectedPersona.value && keyword.value) {

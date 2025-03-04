@@ -6,12 +6,14 @@ import type { Props } from './types';
 
 import { useDevice } from '@/composables/useDevice';
 import { useDate } from '@/composables/useDate';
+import { useContentStore } from '@/stores/useContentStore';
 
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/css';
 
 import CreateCard from '@/components/Common/CreateCard/CreateCard.vue';
 import EmptyPlace from './EmptyPlace/EmptyPlace.vue';
+const contentStore = useContentStore();
 
 const props = defineProps<Props>();
 
@@ -75,6 +77,10 @@ const saveUrl = computed(() => {
   if (props.types === 'persona') return '/create/persona';
   return '/create/content';
 });
+
+const startContentCreation = () => {
+  contentStore.toggleModal(true);
+};
 </script>
 
 <template>
@@ -101,9 +107,12 @@ const saveUrl = computed(() => {
       class="shelf-mate__slide"
     >
       <SwiperSlide class="slide-item shelf-mate__create">
-        <RouterLink :to="saveUrl">
+        <RouterLink :to="saveUrl" v-if="saveUrl !== '/create/content'">
           <CreateCard :type="props.types" />
         </RouterLink>
+        <template v-else>
+          <CreateCard @click="startContentCreation" :type="props.types" />
+        </template>
       </SwiperSlide>
 
       <SwiperSlide

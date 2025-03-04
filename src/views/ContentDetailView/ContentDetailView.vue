@@ -34,6 +34,7 @@ const showFinishedContent = ref(false);
 const contentTitle = ref('');
 const currentContentId = ref<number | null>(null);
 const contentIntervalId = ref<number | null>(null);
+const blogPostId = ref<number | null>(null);
 
 const STATUS_TO_STEPS: Record<string, number[]> = {
   'BlogPost concluido': [0, 1, 2, 3, 4],
@@ -215,13 +216,30 @@ const getContentStep = async (stepIndex: number): Promise<void> => {
 
     loading.value = false;
 
-    steps.value[stepIndex] = {
-      ...step,
-      generated_content: data.generated_content,
-      original_content:
-        data.generated_content?.map((item: ContentItem) => item.content) ||
-        null,
-    };
+    if (stepIndex === 4) {
+      blogPostId.value = data.generated_content.shift().content;
+      contentTitle.value =
+        (data.generated_content.find(
+          (item: ContentItem) => item.title === 'Título do Blogpost'
+        )?.content as string) || null;
+
+      steps.value[stepIndex] = {
+        ...step,
+        generated_content: data.generated_content,
+        original_content:
+          data.generated_content?.map((item: ContentItem) => item.content) ||
+          null,
+      };
+    } else {
+      steps.value[stepIndex] = {
+        ...step,
+        generated_content: data.generated_content,
+        original_content:
+          data.generated_content?.map((item: ContentItem) => item.content) ||
+          null,
+      };
+    }
+
     if (data?.generated_content) {
       toast.success(
         `Etapa ${data?.generated_content[0]?.title} carregada com sucesso!`
@@ -272,9 +290,6 @@ const updateStep = async (
     case 3:
       params.outline = String(contentToSend);
       break;
-    case 4:
-      params.secoes = String(contentToSend);
-      break;
   }
 
   try {
@@ -284,14 +299,14 @@ const updateStep = async (
     );
 
     if (nextStepIndex === 3) {
-      const status = await checkContentStatus('New Outline Generated');
       toast.success('Iniciando o processo de pesquisa da etapa 4...');
+      const status = await checkContentStatus('New Outline Generated');
       if (status) await getContentStep(3);
     }
 
     if (nextStepIndex === 4) {
-      const status = await checkContentStatus('BlogPost concluido');
       toast.success('Iniciando o processo de pesquisa da etapa 5...');
+      const status = await checkContentStatus('BlogPost concluido');
       if (status) await getContentStep(4);
     }
   } catch (error) {
@@ -353,6 +368,12 @@ const validateStepChange = async (nextStepIndex: number) => {
         item.content === currentStep.original_content[index]
     );
 
+  //
+
+  if (currentStepIndex.value === 4 && !isContentUnchanged) {
+    return { canSkip: false };
+  }
+
   // 3. Verifica a partir do status atual se a próxima etapa já deve existir
   const currentStatus = await getContentStatus();
   const isNextStepAvailable =
@@ -368,20 +389,68 @@ const validateStepChange = async (nextStepIndex: number) => {
 const backToSteps = (): void => {
   showFinishedContent.value = false;
 };
-const moveToFinishedContent = (): void => {
+
+const moveToFinishedContent = async (): Promise<void> => {
+  if (currentStepIndex.value === 4) {
+    const currentStep = steps.value[currentStepIndex.value];
+
+    const isContentUnchanged =
+      Array.isArray(currentStep.original_content) &&
+      Array.isArray(currentStep.generated_content) &&
+      currentStep.generated_content.length ===
+        currentStep.original_content.length &&
+      currentStep.generated_content.every(
+        (item, index) =>
+          currentStep.original_content &&
+          item.content === currentStep.original_content[index]
+      );
+
+    if (isContentUnchanged) {
+      showFinishedContent.value = true;
+      return;
+    }
+
+    const updateWebhook = currentStep.webhookUpdate;
+
+    const params: Record<string, unknown> = {
+      id: currentContentId.value,
+      id_user: currentUserId.value,
+      id_blogpost: blogPostId.value,
+      Titulo: String(currentStep.generated_content?.[0]?.content), // titulo
+      introducao: String(currentStep.generated_content?.[1]?.content), // introducao
+      tldr: String(currentStep.generated_content?.[2]?.content), // resumo do conteúdo
+      secoes: String(currentStep.generated_content?.[3]?.content), // Seções do conteúdo
+      conclusao: String(currentStep.generated_content?.[4]?.content), // Conclusão
+      ['meta description']: String(currentStep.generated_content?.[5]?.content), // Meta Description
+      ['nome da pagina']: String(currentStep.generated_content?.[6]?.content), // Nome da página
+      slug: String(currentStep.generated_content?.[7]?.content), // URL Amigável
+    };
+
+    if (!updateWebhook) {
+      toast.error('Erro ao atualizar conteudo da etapa 5');
+      console.error('Erro ao atualizar conteudo da etapa 5');
+      return;
+    }
+
+    await api.get(updateWebhook, { params });
+    toast.success(`Conteúdo da etapa 5 atualizado com sucesso!`);
+  }
+
   showFinishedContent.value = true;
 };
 const handleSaveContent = (): void => {
   toast.success('Conteúdo Salvo com sucesso!');
 
-  router.push({
-    name: 'listing',
-    params: { slug: 'contents' },
-  });
+  setTimeout(() => {
+    router.push({ name: 'listing', params: { slug: 'contents' } });
+  }, 1000);
 };
 
 // DELETE
+const loadingDelete = ref(false);
 const handleDeleteContent = async (): Promise<void> => {
+  loadingDelete.value = true;
+
   if (!currentContentId.value) {
     toast.error('Erro ao excluir conteúdo, ID não encontrado.');
     console.error('Erro ao excluir conteúdo, ID não encontrado.');
@@ -389,15 +458,19 @@ const handleDeleteContent = async (): Promise<void> => {
   }
 
   try {
-    await api.get(`${WEBHOOKS.DELETE_CONTENT}/${currentContentId.value}`);
+    await api.get(`${WEBHOOKS.DELETE_CONTENT}?id=${currentContentId.value}`);
 
-    toast.success('Conteúdo excluído com sucesso!');
+    toast.success('Conteúdo excluído com sucesso! Redirecionando...');
 
-    router.push({ name: 'listing', params: { slug: 'contents' } });
+    setTimeout(() => {
+      router.push({ name: 'listing', params: { slug: 'contents' } });
+    }, 1000);
   } catch {
     toast.error('Erro ao excluir conteúdo!');
     console.error('Erro ao excluir conteúdo!');
   }
+
+  loadingDelete.value = false;
 };
 
 // EXPLANATION MODAL
@@ -471,6 +544,41 @@ const initiateDownload = (downloadLink: string): void => {
   document.body.removeChild(a);
 };
 
+// STOP PRODUCTION
+const showStopProductionModal = ref(false);
+const savingAfterLeave = ref(false);
+
+const handleSaveAfterLeave = async (): Promise<void> => {
+  savingAfterLeave.value = true;
+
+  try {
+    if (currentStepIndex.value === 4) {
+      await moveToFinishedContent();
+      toast.success('Conteúdo salvo com sucesso!');
+      return;
+    }
+    await updateStep(currentStepIndex.value, currentStepIndex.value);
+    toast.success('Conteúdo salvo com sucesso!');
+  } catch (error) {
+    console.error('Erro ao salvar conteúdo', error);
+  } finally {
+    setTimeout(() => {
+      router.push({ name: 'listing', params: { slug: 'contents' } });
+    }, 1000);
+    savingAfterLeave.value = false;
+  }
+};
+
+const handleConfirmLeave = async (): Promise<void> => {
+  setTimeout(() => {
+    router.push({ name: 'listing', params: { slug: 'contents' } });
+  }, 1000);
+};
+
+const handleStopProduction = (): void => {
+  showStopProductionModal.value = true;
+};
+
 // LIFECYCLE
 onMounted(async () => {
   try {
@@ -506,11 +614,8 @@ onBeforeUnmount(() => {
   }
 });
 
-// COOMING SOON
+// COMING SOON
 const handleRegenerateContent = async (): Promise<void> => {
-  toast.info('Disponível em breve!');
-};
-const handleStopProduction = (): void => {
   toast.info('Disponível em breve!');
 };
 </script>
@@ -597,8 +702,8 @@ const handleStopProduction = (): void => {
                     />
                   </div>
 
-                  <div v-if="i === 0">
-                    <div class="stepper__top-buttons">
+                  <div>
+                    <div class="stepper__top-buttons" v-if="i === 0">
                       <img
                         src="./img/back-arrow.svg"
                         alt="Seta de voltar"
@@ -629,6 +734,10 @@ const handleStopProduction = (): void => {
                     <TextEditor
                       v-model="content.content"
                       class="stepper__textarea"
+                      :class="{
+                        ['stepper__editor--last']:
+                          currentStepIndex === steps.length - 1,
+                      }"
                     />
                   </div>
                 </div>
@@ -648,6 +757,32 @@ const handleStopProduction = (): void => {
                     class="stepper__modal-text"
                     v-html="explanationModalContent"
                   />
+                </div>
+              </BaseModal>
+
+              <BaseModal
+                :show="showStopProductionModal"
+                @close="showStopProductionModal = false"
+                class="stopProductionModal"
+              >
+                <div class="stopProductionModal__modal-content">
+                  <p class="stopProductionModal__modal-text">
+                    Deseja salvar o conteúdo da etapa atual antes de encerrar?
+                  </p>
+
+                  <div class="stopProductionModal__modal-buttons">
+                    <AppButton @click="handleConfirmLeave">
+                      <template #label> Encerrar </template>
+                    </AppButton>
+                    <AppButton
+                      @click="handleSaveAfterLeave"
+                      class="stopProductionModal__button--export"
+                      :loading="savingAfterLeave"
+                      dark
+                    >
+                      <template #label> Salvar </template>
+                    </AppButton>
+                  </div>
                 </div>
               </BaseModal>
             </Teleport>
@@ -726,6 +861,7 @@ const handleStopProduction = (): void => {
                 dark
                 v-else-if="currentStepIndex === steps.length - 1"
                 class="stepper__button--save"
+                @click="moveToFinishedContent"
               >
                 <template #label> Salvar </template>
               </AppButton>
@@ -747,6 +883,8 @@ const handleStopProduction = (): void => {
             @click="handleDeleteContent"
           >
             Excluir Conteúdo
+
+            <span v-if="loadingDelete" class="loader"></span>
           </p>
 
           <p

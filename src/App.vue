@@ -16,6 +16,7 @@ const { isMobile } = useDevice();
         :position="isMobile ? 'bottom-center' : 'bottom-right'"
         :expand="true"
         rich-colors
+        :limit="5"
       />
     </RouterView>
   </LayoutView>

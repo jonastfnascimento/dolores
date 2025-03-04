@@ -1,3 +1,5 @@
+/* MODAL DE EXPLICAÇÃO DA ETAPA */
+
 .stepper__modal-content {
   box-shadow: 2px 2px 9px 0px rgba(0, 0, 0, 0.15);
   background-color: var(--white);
@@ -32,9 +34,53 @@
 
   .stepper__modal-content p {
     font: var(--text-base);
+    line-height: 1.6;
   }
 
   .stepper__modal-content p strong {
     font: var(--text-base-semibold);
+  }
+}
+
+/* MODAL DE ENCERRAR PRODUÇÃO */
+
+.stopProductionModal__modal-content {
+  box-shadow: 2px 2px 9px 0px rgba(0, 0, 0, 0.15);
+  background-color: var(--white);
+  border-radius: 8px;
+  padding: 15px;
+  max-width: 378px;
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.stopProductionModal__modal-text {
+  font: var(--text-base);
+  text-align: center;
+  margin-bottom: 50px;
+  color: var(--gray-900);
+}
+
+.stopProductionModal__modal-buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+.stopProductionModal__modal-buttons button {
+  flex: 1;
+}
+
+@media (min-width: 1024px) {
+  .stopProductionModal__modal-content {
+    padding: 20px;
+    max-width: 467px;
+  }
+
+  .stopProductionModal__modal-text {
+    font: var(--text-xl-bold);
   }
 }

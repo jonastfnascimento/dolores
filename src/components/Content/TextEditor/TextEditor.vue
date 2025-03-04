@@ -119,6 +119,7 @@ const editorOptions = computed<Record<string, boolean>>(() => ({
     :toolbarsExclude="toolbarsExclude"
     v-bind="editorOptions"
     language="pt-BR"
+    height="138"
   />
 </template>
 

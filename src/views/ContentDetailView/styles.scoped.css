@@ -1,5 +1,9 @@
-.content-detail--fullscreen {
-  height: calc(100vh - 153px);
+/* .content-detail--fullscreen {
+  height:;
+} */
+
+.content-detail {
+  min-height: calc(100vh - 153px);
 }
 
 @media (min-width: 1024px) {
@@ -146,6 +150,12 @@
   color: var(--red-400);
 }
 
+.stepper__delete-content {
+  position: relative;
+  width: fit-content;
+  margin: 30px auto;
+}
+
 .fade-enter-active,
 .fade-leave-active {
   transition:
@@ -156,6 +166,54 @@
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
+}
+
+.stepper__content-wrapper
+  .stepper__content-container:nth-child(1)
+  .stepper__editor--last {
+  max-height: 160px;
+}
+
+.stepper__content-wrapper
+  .stepper__content-container:nth-child(2)
+  .stepper__editor--last {
+  max-height: 350px;
+}
+
+.stepper__content-wrapper
+  .stepper__content-container:nth-child(3)
+  .stepper__editor--last {
+  max-height: 350px;
+}
+
+.stepper__content-wrapper
+  .stepper__content-container:nth-child(4)
+  .stepper__editor--last {
+  max-height: 350px;
+}
+
+.stepper__content-wrapper
+  .stepper__content-container:nth-child(5)
+  .stepper__editor--last {
+  max-height: 350px;
+}
+
+.stepper__content-wrapper
+  .stepper__content-container:nth-child(6)
+  .stepper__editor--last {
+  max-height: 160px;
+}
+
+.stepper__content-wrapper
+  .stepper__content-container:nth-child(7)
+  .stepper__editor--last {
+  max-height: 160px;
+}
+
+.stepper__content-wrapper
+  .stepper__content-container:nth-child(8)
+  .stepper__editor--last {
+  max-height: 160px;
 }
 
 @media (min-width: 1024px) {
@@ -210,4 +268,32 @@
     font: var(--text-2xl-bold);
     color: var(--gray-900);
   }
+}
+
+/* LOADER */
+.loader {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: inline-block;
+  border-top: 3px solid var(--red-400);
+  border-right: 3px solid transparent;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+  position: absolute;
+  top: -4px;
+  right: -30px;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.button--light .loader {
+  border-top-color: var(--gray-500);
 }
