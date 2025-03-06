@@ -180,7 +180,9 @@ async function updateAvatar() {
           Slogan: currentAvatar.value?.slogan,
           'Produtos e serviços': currentAvatar.value?.services,
           Setor: currentAvatar.value?.departament,
-          imagem: newProfileImage.value || '',
+          imagem:
+            newProfileImage?.value?.replace(/^data:image\/\w+;base64,/, '') ||
+            '',
         },
       })
       .then(({ data }) => {
@@ -222,7 +224,9 @@ async function createAvatar() {
           slogan: currentAvatar.value?.slogan,
           products_and_services: currentAvatar.value?.services,
           industry: currentAvatar.value?.departament,
-          imagem: newProfileImage.value || '',
+          imagem:
+            newProfileImage?.value?.replace(/^data:image\/\w+;base64,/, '') ||
+            '',
           related_publications: 0,
         },
       })

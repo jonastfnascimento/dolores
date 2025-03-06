@@ -207,7 +207,10 @@ async function updateAvatar() {
           interest: currentPersona.value?.interess,
           pain: currentPersona.value.dores,
           action: currentPersona.value.actions,
-          imagem: newProfileImage.value || '',
+          'desired action': currentPersona.value.actions,
+          imagem:
+            newProfileImage?.value?.replace(/^data:image\/\w+;base64,/, '') ||
+            '',
         },
       })
       .then(({ data }) => {
@@ -254,7 +257,10 @@ async function createPersona() {
           interest: currentPersona.value.interess,
           pain_points: currentPersona.value.dores,
           desired_action: currentPersona.value.actions,
-          imagem: newProfileImage.value,
+          imagem: newProfileImage?.value?.replace(
+            /^data:image\/\w+;base64,/,
+            ''
+          ),
         },
       })
       .then(({ data }) => {
