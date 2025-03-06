@@ -27,7 +27,9 @@ onMounted(async () => {
         params: { id_user: userStore.getUser?.id },
       })
       .then(({ data }) => {
-        avatars.value = data.avatars.avatars;
+        avatars.value = data.avatars.avatars.filter(
+          (d: never) => Object.keys(d).length
+        );
       })
       .catch(() => ({})),
     api
@@ -35,7 +37,10 @@ onMounted(async () => {
         params: { user_id: userStore.getUser?.id },
       })
       .then(({ data }) => {
-        personas.value = data.avatars.personas;
+        const personaList = data?.personas?.Personas || data?.avatars?.personas;
+        personas.value = personaList.filter(
+          (d: never) => Object.keys(d).length
+        );
       })
       .catch(() => ({})),
     api
@@ -43,7 +48,10 @@ onMounted(async () => {
         params: { user_id: userStore.getUser?.id },
       })
       .then(({ data }) => {
-        contents.value = data.contents;
+        const contentList = data?.content?.content || data.contents;
+        contents.value = contentList.filter(
+          (d: never) => Object.keys(d).length
+        );
       })
       .catch(() => ({})),
   ]);
