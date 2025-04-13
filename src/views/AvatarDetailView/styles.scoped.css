@@ -73,6 +73,8 @@
   .detail__img-wrapper {
     flex-shrink: 0;
     width: 371px;
+    position: sticky;
+    top: 122px;
   }
   .detail__img-container {
     width: 303px;
