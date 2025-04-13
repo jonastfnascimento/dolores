@@ -121,6 +121,14 @@ const resumeInfos = computed(() => {
       label: 'Interesses',
       value: currentPersona.value?.interess || '',
     },
+    {
+      label: 'Dores',
+      value: currentPersona.value?.dores || '',
+    },
+    {
+      label: 'Ação Desejada',
+      value: currentPersona.value?.actions || '',
+    },
   ];
 });
 
