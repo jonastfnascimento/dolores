@@ -170,49 +170,34 @@
 
 .stepper__content-wrapper
   .stepper__content-container:nth-child(1)
-  .stepper__editor--last {
+  .stepper__editor--last:not(.md-editor-fullscreen) {
   max-height: 160px;
 }
 
 .stepper__content-wrapper
   .stepper__content-container:nth-child(2)
-  .stepper__editor--last {
-  max-height: 350px;
-}
-
+  .stepper__editor--last:not(.md-editor-fullscreen),
 .stepper__content-wrapper
   .stepper__content-container:nth-child(3)
-  .stepper__editor--last {
-  max-height: 350px;
-}
-
+  .stepper__editor--last:not(.md-editor-fullscreen),
 .stepper__content-wrapper
   .stepper__content-container:nth-child(4)
-  .stepper__editor--last {
-  max-height: 350px;
-}
-
+  .stepper__editor--last:not(.md-editor-fullscreen),
 .stepper__content-wrapper
   .stepper__content-container:nth-child(5)
-  .stepper__editor--last {
+  .stepper__editor--last:not(.md-editor-fullscreen) {
   max-height: 350px;
 }
 
 .stepper__content-wrapper
   .stepper__content-container:nth-child(6)
-  .stepper__editor--last {
-  max-height: 160px;
-}
-
+  .stepper__editor--last:not(.md-editor-fullscreen),
 .stepper__content-wrapper
   .stepper__content-container:nth-child(7)
-  .stepper__editor--last {
-  max-height: 160px;
-}
-
+  .stepper__editor--last:not(.md-editor-fullscreen),
 .stepper__content-wrapper
   .stepper__content-container:nth-child(8)
-  .stepper__editor--last {
+  .stepper__editor--last:not(.md-editor-fullscreen) {
   max-height: 160px;
 }
 
