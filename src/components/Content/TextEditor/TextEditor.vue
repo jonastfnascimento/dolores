@@ -20,7 +20,7 @@ config({
   },
 });
 
-const props = defineProps<{ modelValue: string }>();
+const props = defineProps<{ modelValue: string; id: string }>();
 const emit = defineEmits<{
   (e: 'update:modelValue', value: string): void;
 }>();
@@ -30,7 +30,6 @@ const proxyText = computed<string>({
   set: (value) => emit('update:modelValue', value),
 });
 
-// Corrigindo a tipagem dos toolbars
 const toolbars = computed<ToolbarNames[]>(() =>
   isMobile.value
     ? ([
@@ -72,12 +71,10 @@ const toolbars = computed<ToolbarNames[]>(() =>
       ] as ToolbarNames[])
 );
 
-// Corrigindo a tipagem dos footers
 const footers = computed<Footers[]>(
   () => ['markdownTotal', '=', 'scrollSwitch'] as Footers[]
 );
 
-// Corrigindo a tipagem dos toolbars a serem excluídos
 const toolbarsExclude = computed<ToolbarNames[]>(
   () =>
     [
@@ -97,7 +94,6 @@ const toolbarsExclude = computed<ToolbarNames[]>(
     ] as ToolbarNames[]
 );
 
-// Mantendo a tipagem do editorOptions correta
 const editorOptions = computed<Record<string, boolean>>(() => ({
   noMermaid: true,
   noKatex: true,
@@ -111,47 +107,48 @@ const editorOptions = computed<Record<string, boolean>>(() => ({
 
 <template>
   <MdEditor
-    id="text-editor"
     v-model="proxyText"
     :previewOnly="isMobile"
     :toolbars="toolbars"
     :footers="footers"
     :toolbarsExclude="toolbarsExclude"
+    :id="props.id"
     v-bind="editorOptions"
     language="pt-BR"
     height="138"
+    class="text-editor"
   />
 </template>
 
 <style>
-#text-editor {
+.text-editor {
   border-radius: 8px;
 }
-#text-editor svg.md-editor-icon {
+.text-editor svg.md-editor-icon {
   width: 24px !important;
   height: 24px !important;
 }
 
-#text-editor ul {
+.text-editor ul {
   list-style: disc !important;
 }
 
-#text-editor ol {
+.text-editor ol {
   list-style: decimal !important;
 }
 
-#text-editor strong,
-#text-editor b {
+.text-editor strong,
+.text-editor b {
   font-weight: bold !important;
 }
 
-#text-editor .md-editor-toolbar,
-#text-editor .md-editor-footer {
+.text-editor .md-editor-toolbar,
+.text-editor .md-editor-footer {
   padding: 10px !important;
   height: unset;
 }
 
-#text-editor .md-editor-footer-item span {
+.text-editor .md-editor-footer-item span {
   font-weight: bold !important;
 }
 </style>

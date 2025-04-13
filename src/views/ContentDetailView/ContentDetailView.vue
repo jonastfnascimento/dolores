@@ -734,6 +734,8 @@ const handleRegenerateContent = async (): Promise<void> => {
                     <TextEditor
                       v-model="content.content"
                       class="stepper__textarea"
+                      :id="`editor-${currentStepIndex}-${i}`"
+                      :key="i"
                       :class="{
                         ['stepper__editor--last']:
                           currentStepIndex === steps.length - 1,
