@@ -465,9 +465,17 @@ function scrollToElement(element: string) {
 
           <div class="detail__content">
             <p class="detail__name">
-              {{
-                PageType === 'creating' ? 'Criando nova Persona' : personaName
-              }}
+              <img
+                src="./img/star.svg"
+                alt="Estrela vermelha"
+                width="28"
+                height="29"
+              />
+              <span>
+                {{
+                  PageType === 'creating' ? 'Criando nova Persona' : personaName
+                }}
+              </span>
             </p>
             <ContentSteps
               class="detail__steps"

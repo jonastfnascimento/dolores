@@ -1,6 +1,6 @@
 .fade-bottom-to-top-enter-active,
 .fade-bottom-to-top-leave-active {
-  transition: all 0.7s ease;
+  transition: all 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .fade-bottom-to-top-enter-from,
 .fade-bottom-to-top-leave-to {
@@ -9,7 +9,7 @@
 
 .fade-bottom-to-top-enter-active .mobile-navigation--link,
 .fade-bottom-to-top-leave-active .mobile-navigation--link {
-  transition: all 0.7s ease;
+  transition: all 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .fade-bottom-to-top-enter-to .mobile-navigation--link:nth-child(1),

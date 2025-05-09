@@ -12,7 +12,9 @@
 .auth-form__forgot-password {
   margin-bottom: 30px;
   color: var(--gray-500);
-  font: var(--text-sm-semibold);
+  font-size: 12px;
+  font-weight: 400;
+  font-family: 'eurostile-extended', sans-serif;
   text-decoration: underline;
   cursor: pointer;
   transition: all 0.3s;

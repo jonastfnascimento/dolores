@@ -16,6 +16,8 @@ watch(
     show.value = false;
   }
 );
+
+const isActiveRoute = (path: string) => route.path === path;
 </script>
 
 <template>
@@ -50,19 +52,31 @@ watch(
         <RouterLink to="/contents" class="mobile-navigation--link">
           Conteúdos
           <div class="mobile-navigation_icon">
-            <img src="./img/content.svg" />
+            <img
+              v-if="isActiveRoute('/contents')"
+              src="./img/content-active.svg"
+            />
+            <img v-else src="./img/content.svg" />
           </div>
         </RouterLink>
         <RouterLink to="/personas" class="mobile-navigation--link">
           Personas
           <div class="mobile-navigation_icon">
-            <img src="./img/persona.svg" />
+            <img
+              v-if="isActiveRoute('/personas')"
+              src="./img/persona-active.svg"
+            />
+            <img v-else src="./img/persona.svg" />
           </div>
         </RouterLink>
         <RouterLink to="/avatars" class="mobile-navigation--link">
           Avatares
           <div class="mobile-navigation_icon">
-            <img src="./img/avatar.svg" />
+            <img
+              v-if="isActiveRoute('/avatars')"
+              src="./img/avatar-active.svg"
+            />
+            <img v-else src="./img/avatar.svg" />
           </div>
         </RouterLink>
         <button class="mobile-navigation--close" @click="show = false">

@@ -1,43 +1,43 @@
 :root {
   /* light */
-  --text-xxs-light: 300 0.625rem / 1 'Open Sans'; /* 10px */
-  --text-xs-light: 300 0.75rem / 1 'Open Sans'; /* 12px */
-  --text-sm-light: 300 0.875rem / 1 'Open Sans'; /* 14px */
-  --text-base-light: 300 1rem / 1 'Open Sans'; /* 16px */
-  --text-lg-light: 300 1.125rem / 1 'Open Sans'; /* 18px */
-  --text-xl-light: 300 1.5rem / 1 'Open Sans'; /* 24px */
-  --text-2xl-light: 300 2rem / 1 'Open Sans'; /* 32px */
-  --text-3xl-light: 300 2.25rem / 1 'Open Sans'; /* 36px */
+  --text-xxs-light: 300 0.625rem / 1 'Georama'; /* 10px */
+  --text-xs-light: 300 0.75rem / 1 'Georama'; /* 12px */
+  --text-sm-light: 300 0.875rem / 1 'Georama'; /* 14px */
+  --text-base-light: 300 1rem / 1 'Georama'; /* 16px */
+  --text-lg-light: 300 1.125rem / 1 'Georama'; /* 18px */
+  --text-xl-light: 300 1.5rem / 1 'Georama'; /* 24px */
+  --text-2xl-light: 300 2rem / 1 'Georama'; /* 32px */
+  --text-3xl-light: 300 2.25rem / 1 'Georama'; /* 36px */
 
   /* regular */
-  --text-xxs: 400 0.625rem / 1 'Open Sans'; /* 10px */
-  --text-xs: 400 0.75rem / 1 'Open Sans'; /* 12px */
-  --text-sm: 400 0.875rem / 1 'Open Sans'; /* 14px */
-  --text-base: 400 1rem / 1 'Open Sans'; /* 16px */
-  --text-lg: 400 1.125rem / 1 'Open Sans'; /* 18px */
-  --text-xl: 400 1.5rem / 1 'Open Sans'; /* 24px */
-  --text-2xl: 400 2rem / 1 'Open Sans'; /* 32px */
-  --text-3xl: 400 2.25rem / 1 'Open Sans'; /* 36px */
+  --text-xxs: 400 0.625rem / 1 'Georama'; /* 10px */
+  --text-xs: 400 0.75rem / 1 'Georama'; /* 12px */
+  --text-sm: 400 0.875rem / 1 'Georama'; /* 14px */
+  --text-base: 400 1rem / 1 'Georama'; /* 16px */
+  --text-lg: 400 1.125rem / 1 'Georama'; /* 18px */
+  --text-xl: 400 1.5rem / 1 'Georama'; /* 24px */
+  --text-2xl: 400 2rem / 1 'Georama'; /* 32px */
+  --text-3xl: 400 2.25rem / 1 'Georama'; /* 36px */
 
   /* semi-bold */
-  --text-xxs-semibold: 600 0.625rem / 1 'Open Sans'; /* 10px */
-  --text-xs-semibold: 600 0.75rem / 1 'Open Sans'; /* 12px */
-  --text-sm-semibold: 600 0.875rem / 1 'Open Sans'; /* 14px */
-  --text-base-semibold: 600 1rem / 1 'Open Sans'; /* 16px */
-  --text-lg-semibold: 600 1.125rem / 1 'Open Sans'; /* 18px */
-  --text-xl-semibold: 600 1.5rem / 1 'Open Sans'; /* 24px */
-  --text-2xl-semibold: 600 2rem / 1 'Open Sans'; /* 32px */
-  --text-3xl-semibold: 600 2.25rem / 1 'Open Sans'; /* 36px */
+  --text-xxs-semibold: 600 0.625rem / 1 'Georama'; /* 10px */
+  --text-xs-semibold: 600 0.75rem / 1 'Georama'; /* 12px */
+  --text-sm-semibold: 600 0.875rem / 1 'Georama'; /* 14px */
+  --text-base-semibold: 600 1rem / 1 'Georama'; /* 16px */
+  --text-lg-semibold: 600 1.125rem / 1 'Georama'; /* 18px */
+  --text-xl-semibold: 600 1.5rem / 1 'Georama'; /* 24px */
+  --text-2xl-semibold: 600 2rem / 1 'Georama'; /* 32px */
+  --text-3xl-semibold: 600 2.25rem / 1 'Georama'; /* 36px */
 
   /* bold */
-  --text-xxs-bold: 700 0.625rem / 1 'Open Sans'; /* 10px */
-  --text-xs-bold: 700 0.75rem / 1 'Open Sans'; /* 12px */
-  --text-sm-bold: 700 0.875rem / 1 'Open Sans'; /* 14px */
-  --text-base-bold: 700 1rem / 1 'Open Sans'; /* 16px */
-  --text-lg-bold: 700 1.125rem / 1 'Open Sans'; /* 18px */
-  --text-xl-bold: 700 1.5rem / 1 'Open Sans'; /* 24px */
-  --text-2xl-bold: 700 2rem / 1 'Open Sans'; /* 32px */
-  --text-3xl-bold: 700 2.25rem / 1 'Open Sans'; /* 36px */
+  --text-xxs-bold: 700 0.625rem / 1 'Georama'; /* 10px */
+  --text-xs-bold: 700 0.75rem / 1 'Georama'; /* 12px */
+  --text-sm-bold: 700 0.875rem / 1 'Georama'; /* 14px */
+  --text-base-bold: 700 1rem / 1 'Georama'; /* 16px */
+  --text-lg-bold: 700 1.125rem / 1 'Georama'; /* 18px */
+  --text-xl-bold: 700 1.5rem / 1 'Georama'; /* 24px */
+  --text-2xl-bold: 700 2rem / 1 'Georama'; /* 32px */
+  --text-3xl-bold: 700 2.25rem / 1 'Georama'; /* 36px */
 
   /* gray scale */
   --gray-100: #fafafa;
@@ -75,9 +75,14 @@
   --background: #f1f1f4;
 
   /* primary */
-  --primary: #7433da;
-  --primary-hover: #6229b3;
-  --primary-disabled: #d0a9f5;
+  --primary: #13bdba;
+  --primary-hover: #146a67;
+  --primary-disabled: #cdfffe;
+  --primary-grayish: #a3c1bf;
+
+  /* secondary */
+  --secondary: #ea272d;
+  --secondary-hover: #8c2425;
 
   /* skeleton */
   --skeleton-color: #ced6da;

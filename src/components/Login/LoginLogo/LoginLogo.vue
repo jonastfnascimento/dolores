@@ -2,12 +2,19 @@
 
 <template>
   <div class="login-logo">
-    <!-- <img
-      src="https://images.unsplash.com/photo-1532517308734-0565178471d2?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-      alt="Dolores Logo"
-    /> -->
+    <img
+      src="./img/star-circle.svg"
+      alt="Círculo com estrela dentro "
+      width="74"
+      height="74"
+    />
 
-    <h2 class="login-logo__text-type">Logo</h2>
+    <img
+      src="./img/logo-large.svg"
+      alt="Dolores Logo"
+      width="401px"
+      height="64px"
+    />
   </div>
 </template>
 

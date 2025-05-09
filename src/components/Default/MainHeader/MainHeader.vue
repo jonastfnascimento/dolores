@@ -15,7 +15,17 @@ const { isMobile, isDesktop } = useDevice();
     <div class="row column">
       <div class="header__flex">
         <GoToBackButton v-if="isMobile" />
-        <RouterLink to="/" class="header--logo-link"> Dolores </RouterLink>
+
+        <RouterLink to="/">
+          <img
+            src="./img/logo.svg"
+            alt="Dolores"
+            title="Dolores"
+            width="143"
+            height="23"
+          />
+        </RouterLink>
+
         <UserNavigation v-if="isMobile" />
         <DesktopNavigation v-if="isDesktop" />
       </div>

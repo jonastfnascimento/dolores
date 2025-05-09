@@ -5,7 +5,7 @@
 
 .app-input input {
   padding: 15px 30px 15px 15px;
-  border: 1px solid var(--gray-300);
+  border: 1px solid var(--primary-grayish);
   color: var(--gray-900);
   border-radius: 8px;
   transition: all 0.3s ease-in-out;
@@ -16,12 +16,12 @@
 
 .app-input input[placeholder] {
   font: var(--text-sm);
+  color: var(--gray-400);
 }
 
 .app-input input:focus {
-  outline: none;
-  border: 1px solid var(--gray-500);
-  outline: 1px solid var(--gray-500);
+  border: 1px solid var(--primary-grayish);
+  outline: 1px solid var(--primary-grayish);
 }
 
 .app-input__eye-container {
@@ -48,7 +48,7 @@
   width: 18px;
   height: 2px;
   border-radius: 100%;
-  background-color: var(--gray-300);
+  background-color: var(--primary-hover);
   transition: all 0.2s ease-in-out;
   transform: rotate(45deg);
   bottom: 44%;

@@ -39,7 +39,7 @@
 
 .stepper__progress-bar {
   height: 100%;
-  background-color: var(--gray-900);
+  background-color: var(--primary);
   transition: width 0.5s ease-in-out;
 }
 
@@ -72,15 +72,16 @@
 }
 
 .stepper__step--current .stepper__step-number {
-  background-color: var(--gray-900);
+  background-color: var(--primary);
   color: var(--white);
   text-shadow:
     0 0 80px var(--gray-100),
     0 0 3px var(--gray-100);
+  box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.30000001192092896);
 }
 
 .stepper__step--done .stepper__step-number {
-  background-color: var(--gray-900);
+  background-color: var(--primary);
   color: var(--white);
 }
 
@@ -98,6 +99,12 @@
   justify-content: space-between;
   gap: 20px;
   margin-bottom: 15px;
+}
+
+.stepper__content-top > div {
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .stepper__title {
@@ -137,8 +144,11 @@
 .stepper__stop-production,
 .stepper__delete-content {
   margin: 30px 0;
-  color: var(--gray-500);
-  font: var(--text-sm-semibold);
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--primary-hover);
+  font-family: 'eurostile-extended', sans-serif;
+  background-color: transparent;
   text-decoration: underline;
   cursor: pointer;
   transition: all 0.3s;
@@ -228,6 +238,9 @@
   font: var(--text-xl-bold);
   color: var(--gray-900);
   margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .finished__back-arrow {

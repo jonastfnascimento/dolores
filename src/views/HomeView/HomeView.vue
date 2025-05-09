@@ -86,7 +86,7 @@ async function onSearch(term: string) {
     <template v-else>
       <div class="row column">
         <SearchInput
-          placeholder="Pesquise: avatar, persona, ou conteudo...."
+          placeholder="Pesquisar"
           class="home__search"
           @change="onSearch"
         />

@@ -2,15 +2,16 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: var(--gray-400);
+  background-color: var(--gray-100);
   border-radius: 8px;
+  border: 1px solid var(--primary-hover);
   width: 100%;
   padding: 10px 15px;
 }
 .starting-bar__approach {
   max-width: 165px;
-  font: var(--text-sm-semibold);
-  color: var(--gray-100);
+  font: var(--text-sm);
+  color: var(--gray-400);
 }
 .starting-bar--link {
   display: flex;
@@ -32,7 +33,7 @@
   }
   .starting-bar__approach {
     max-width: 100%;
-    font: var(--text-lg-semibold);
+    font: var(--text-lg);
   }
   .starting-bar--link {
     max-width: 157px;

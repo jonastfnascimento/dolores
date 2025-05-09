@@ -139,3 +139,12 @@ table {
 body {
   background-color: var(--background);
 }
+
+.swiper {
+  padding: 10px 10px 10px 10px !important;
+}
+
+:focus {
+  outline: transparent;
+  box-shadow: 0 0 0 2px var(--primary-hover);
+}

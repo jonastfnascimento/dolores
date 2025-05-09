@@ -22,9 +22,22 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="project-infos">
-    <h1 id="title" class="project-infos__title">Dolores</h1>
-    <p id="description" class="project-infos__description"></p>
+  <div class="typeit">
+    <div class="typeit__wrapper">
+      <img
+        src="./img/desktop-contector.svg"
+        alt="Linha que conecta as duas imagens"
+        class="typeit__line"
+      />
+
+      <img
+        src="./img/mobile-bars.svg"
+        alt="Barras vermelhas na vertical"
+        class="typeit__bars"
+      />
+
+      <p id="description" class="typeit__description"></p>
+    </div>
   </div>
 </template>
 

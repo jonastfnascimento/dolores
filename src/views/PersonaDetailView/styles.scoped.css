@@ -94,6 +94,10 @@
   margin-bottom: 15px;
   font: var(--text-xl-bold);
   color: var(--gray-900);
+
+  display: flex;
+  align-items: center;
+  gap: 2px;
 }
 .detail__steps {
   margin-bottom: 10px;
@@ -130,20 +134,24 @@
   cursor: pointer;
 }
 .detail--btn.save.disabled {
-  background-color: var(--gray-300);
+  opacity: 0.5;
 }
 .detail--btn.remove.disabled {
-  opacity: 0.2;
+  opacity: 0.5;
 }
 .detail--btn.remove {
-  font: var(--text-sm-semibold);
-  color: var(--gray-500);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--primary-hover);
+  font-family: 'eurostile-extended', sans-serif;
   background-color: transparent;
   text-decoration: underline;
 }
 .detail--btn.save {
-  font: var(--text-sm-bold);
+  font-size: 14px;
+  font-weight: 900;
+  font-family: 'eurostile-extended', sans-serif;
   color: var(--gray-100);
-  background-color: var(--gray-900);
+  background-color: var(--primary);
   text-transform: uppercase;
 }

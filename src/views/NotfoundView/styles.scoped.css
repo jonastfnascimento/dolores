@@ -11,17 +11,30 @@
   );
 }
 .nofound__404 {
-  margin-bottom: 8px;
-  font: var(--text-3xl-bold);
-  color: var(--gray-900);
-  text-align: center;
+  max-width: 100%;
 }
+
+.nofound__404 {
+  display: block;
+  margin-bottom: 40px;
+}
+
 .notfound__title {
-  margin-bottom: 10px;
-  font: var(--text-lg);
-  color: var(--gray-900);
+  margin-bottom: 35px;
+  font: var(--text-base);
+  color: var(--gray-500);
+  max-width: 385px;
   text-align: center;
 }
+
+.notfound__countdown {
+  margin-bottom: 35px;
+  font-size: 24px;
+  font-weight: 900;
+  font-family: 'eurostile-extended';
+  text-align: center;
+}
+
 .notfound--link {
   display: block;
   font: var(--text-sm);
@@ -32,5 +45,13 @@
 @media (min-width: 1024px) {
   .notfound {
     --listingMargins: 75px;
+  }
+
+  .notfound__title {
+    margin-bottom: 35px;
+    font: var(--text-lg);
+    color: var(--gray-500);
+    max-width: 385px;
+    text-align: center;
   }
 }

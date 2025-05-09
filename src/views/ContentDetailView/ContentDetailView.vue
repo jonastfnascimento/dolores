@@ -693,7 +693,10 @@ const handleRegenerateContent = async (): Promise<void> => {
                   :key="i"
                 >
                   <div class="stepper__content-top">
-                    <p class="stepper__title">{{ content.title }}</p>
+                    <div>
+                      <img src="./img/star.svg" alt="Estrela vermelha" />
+                      <p class="stepper__title">{{ content.title }}</p>
+                    </div>
                     <img
                       src="./img/question-icon.svg"
                       alt="Botão com ícone de interrogação"
@@ -791,9 +794,14 @@ const handleRegenerateContent = async (): Promise<void> => {
           </div>
 
           <div class="finished" v-else>
-            <h2 class="finished__title">
-              {{ formattedContentTitle }}
-            </h2>
+            <div>
+              <h2 class="finished__title">
+                <img src="./img/star.svg" alt="Estrela vermelha" />
+                <span>
+                  {{ formattedContentTitle }}
+                </span>
+              </h2>
+            </div>
 
             <img
               src="./img/back-arrow.svg"

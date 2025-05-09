@@ -9,6 +9,7 @@ button {
   height: 43px;
   border: none;
   padding: 0;
+  cursor: pointer;
 }
 button img {
   display: block;

@@ -2,7 +2,7 @@
 import type { Props } from './types';
 
 const props = withDefaults(defineProps<Props>(), {
-  color: '#000000',
+  color: '#146A67',
   size: 'medium',
   speed: 'average',
 });

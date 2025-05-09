@@ -86,9 +86,19 @@ const startContentCreation = () => {
 <template>
   <div class="shelf-mate">
     <div class="shelf-mate__top row column">
-      <p class="shelf-mate__title">
-        {{ props.label }}
-      </p>
+      <div>
+        <img
+          src="./img/star.svg"
+          alt="Estrela vermelha"
+          width="23"
+          height="24"
+        />
+
+        <p class="shelf-mate__title">
+          {{ props.label }}
+        </p>
+      </div>
+
       <RouterLink
         v-if="formattedItems.length"
         :to="listingUrl"
@@ -125,7 +135,7 @@ const startContentCreation = () => {
             <RouterLink :to="item.url" class="shelf-mate--item-img">
               <img
                 v-if="props.types === 'avatar'"
-                src="./img/avatar.png"
+                src="./img/avatar.svg"
                 :width="isMobile ? 54 : 70"
                 :height="isMobile ? 54 : 70"
               />
