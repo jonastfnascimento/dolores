@@ -145,12 +145,7 @@ const startContentCreation = () => {
                 :width="isMobile ? 54 : 70"
                 :height="isMobile ? 54 : 70"
               />
-              <canvas
-                v-else
-                :width="isMobile ? 166 : 288"
-                :height="isMobile ? 63 : 90"
-                style="background-color: #c1c1c1; border-radius: 8px"
-              ></canvas>
+              <img v-else src="./img/no-image-dolores.jpg" />
             </RouterLink>
 
             <RouterLink :to="item.url" class="shelf-mate--item-name">
