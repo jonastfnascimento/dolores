@@ -53,7 +53,7 @@ const entityData = computed(() => {
         />
         <img
           v-else
-          src="./img/default-336-125.jpg"
+          src="./img/no-image-dolores.jpg"
           :alt="entityData.name"
           :title="entityData.name"
           width="336"
